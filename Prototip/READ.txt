@@ -1,8 +1,0 @@
-Izrada prototipa je bila zajednička, svako je imao po neke "glavne stranice" da napravi a, na kraju smo svi spajali uloge administartora, kupca, kolekcionara i kreatora.
-Dizajn stranica koje su clanovi tima radili:
-Natalija: Profil kreatora, pravljenje izlozbe, administratorova tabela sa zahtevima za registraciju
-Vuk: Pocetna strana, pregled kupca, pregled izlozbe
-Minja: profil NFT, izmena izlozbe, pregled kolekcionara
-Vojin: stranica za prijavu, stranica za registraciju, stranica za promenu lozinke
-
-Kako bi  testirali prototip, imate razlicite uloge u koje mozete da udjete, najpre preko index.html stranice. To je pocetna starnica preko koje mozete da se prijavite kao uloga u koju ste usli.
