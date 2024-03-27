@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Ostatak vašeg head dela ostaje nepromenjen -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextGen NFT Marketplace HTML CSS Template</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="css/vendor.css">
+    <link rel="stylesheet" type="text/css" href="fonts/icomoon.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800;900&display=swap"
+        rel="stylesheet">
+    <!-- script ================================================== -->
+    <script src="js/modernizr.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+    crossorigin="anonymous"></script>
+
+<!-- Zatim učitajte Bootstrap JavaScript fajl -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-dU7rsNE6zq9e9Hh8PLwGN7pZCEeKvX7jfsqfiLmqs9E+Q6e/EIsfBJSVv8WjzFHF sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL sha384-9aSd9NlqzVJXwB2pMSgBO/RUJgvyH3p2E+PNNJ2m2QSHhj2o6z5zKW+3RLbrGk21"
+    crossorigin="anonymous"></script>
+
+    <style>
+        /* Dodatni stil za centriranje i postavljanje slika */
+        .swiper-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .swiper-slide {
+            width: 25%;
+            flex-shrink: 0;
+        }
+
+        /* Dodatni stil za carousel-item */
+        .carousel-item {
+            min-height: 280px;
+        }
+    </style>
+ <style>
+    /* Dodatni stil za prilagođavanje izgleda */
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .profile-container {
+        background-color: #fff;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-picture {
+        max-width: 150px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+    }
+
+    .profile-info label {
+        font-weight: bold;
+    }
+
+    .user-options ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .user-options li {
+        margin-bottom: 10px;
+    }
+</style>
+
+<style>
+  /* Dodatna margina između carousela */
+  #myCarousel1,
+  #myCarousel2 {
+      margin-bottom: 20px; /* Prilagodite vrednost prema potrebi */
+  }
+</style>
+</head>
+
+
+<body class="bg-dark">
+  <header id="header">
+    <nav class="navbar navbar-expand-lg padding-small px-lg-4">
+        <div class="container-fluid">
+            <div class="main-logo">
+                <a href="index_reg.html">
+                    <img class="logo" src="images/main-logo.png" alt="logo">
+                </a>
+            </div>
+
+            <button class="navbar-toggler mb-0" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <iconify-icon icon="system-uicons:menu-hamburger" class="hamburger-menu"></iconify-icon>
+            </button>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+                aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">Menu</h5>
+                    <button type="button" class="btn-close btn-close-white text-reset"
+                        data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body ">
+                    <div class="main-menu text-center d-lg-flex align-items-center">
+
+                        <ul class="menu-list list-unstyled d-lg-flex m-0">
+                            <li class="menu-item">
+                                <a href="index_reg.html" class="item-anchor active" data-effect="Home">Početna
+                                    strana</a>
+                            </li>
+                            <li class="menu-item ">
+                                <form class="search-form" action=".." method="GET">
+                                    <input type="search" id="search-input" name="q" placeholder="Pretraži..."
+                                        class="form-control placeholder-color" style="color: black; margin-top:10px">
+                                </form>
+                            </li>
+                            <li class="menu-item ">
+                                <button type="button"
+                                    class="search-btn btn btn-outline-linear btn-medium"
+                                    onclick="pretrazi()">Pretraži</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="btn-wrap d-flex my-4 my-lg-4 ">
+                        <a href="buyer_profile_about_view_reg.html"
+                            class="btn btn-linear btn-medium">Moj
+                            profil</a>
+                        <a href="index.html" class="btn btn-outline-linear btn-medium m-0">Odjavi se</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="row">
+        <div class="col-lg-4 col-md-6">
+            
+            <button class="btn btn-outline-linear btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Sortiraj
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#" onclick="refreshPage('poImenu')">Po imenu</a>
+                <a class="dropdown-item" href="#" onclick="refreshPage('poOceni')">Po oceni</a>
+                <a class="dropdown-item" href="#" onclick="refreshPage('poVelicini')">Po velicini</a>
+                <a class="dropdown-item" href="#" onclick="refreshPage('poVrednosti')">Po vrednosti</a>
+            </div>
+                
+            
+            
+        </div>
+    </div>
+</div>
+
+<script>
+  function pretrazi() {
+      var searchValue = document.getElementById('search-input').value.toLowerCase();
+      if (searchValue.includes('kreator')) {
+          window.location.href = 'creator_profile_about_view_reg.html';
+      } else if (searchValue.includes('kupac')) {
+          window.location.href = 'buyer_profile_about_view_reg.html';
+      } else if (searchValue.includes('kolekcionar')) {
+          window.location.href = 'collector_profile_about_view_reg.html';
+      } else {
+          alert("Unesite: kreator, kupac ili kolekcionar!");
+      }
+         
+  }
+</script>
+
+    <div class="container mt-5">
+        <div class="text-center">
+          <img src="images/clients-item-lg4.jpg" alt="Profile Picture" onclick="window.location.href='creator_profile_about_view_reg.html'" class="img-fluid circle-rounded mb-3 profile-img">
+          <h4 class="mb-4">@user1</h4>
+    
+        </div>
+        
+          
+        
+      </div>
+      
+      <div class="container mt-5">
+        
+        <div class="profile-info">
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    
+                    
+                    <div class="d-flex align-items-center justify-content-center mb-3">
+                        <label for="nazivIzlozbe" class="me-2"><strong>Naziv:</strong></label>
+                        <span id="nazivIzlozbe">Prva izlozba</span>
+                    </div>
+                    
+
+                    <div class="d-flex align-items-center justify-content-center mb-3">
+                        <label for="vrednostIzlozbe" class="me-2"><strong>Vrednost izlozbe:</strong></label>
+                        <span id="vrednostIzlozbe">200ETH</span>
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-center mb-3">
+                        <label for="prosecnaOcenaNFT" class="me-2"><strong>Prosecna ocena NFT:</strong></label>
+                        <span id="procesnaOcenaNFT">8.5</span>
+                    </div>
+                    
+                    <div class="d-flex align-items-center justify-content-center mb-3">
+                        <label for="vlasnikIzlozbe" class="me-2"><strong>username:</strong></label>
+                        <span id="vlasnikIzlozbe" onclick="window.location.href='creator_profile_about_view_reg.html'">@user</span>
+                    </div>
+        
+                    
+                    <div class="d-flex align-items-center justify-content-center mb-3">
+                        <label for="datumKreiranjaIzlozbe" class="me-2"><strong>Datum kreiranja:</strong></label>
+                        <span id="datumKreiranjaIzlozbe">01.01.1990.</span>
+                    </div>
+                    
+                </div>
+        
+            </div>
+        
+            
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 mb-4">
+              <div class="album-item" onclick="window.location.href='NFT_review_reg.html'" style="cursor: pointer;">
+                <img src="images/collection-item1.jpg" alt="Slika 1">
+                <div class="caption text-center">Slika 1</div>
+              </div>
+            </div>
+        
+            <div class="col-md-3 mb-4">
+              <div class="album-item" onclick="window.location.href='NFT_review_reg.html'" style="cursor: pointer;">
+                <img src="images/collection-item4.jpg" alt="Slika 2">
+                <div class="caption text-center">Slika 2</div>
+              </div>
+            </div>
+        
+            <div class="col-md-3 mb-4">
+              <div class="album-item" onclick="window.location.href='NFT_review_reg.html'" style="cursor: pointer;">
+                <img src="images/collection-item8.jpg" alt="Slika 3">
+                <div class="caption text-center">Slika 3</div>
+              </div>
+            </div>
+        
+            <div class="col-md-3 mb-4">
+              <div class="album-item" onclick="window.location.href='NFT_review_reg.html'" style="cursor: pointer;">
+                <img src="images/collection-item5.jpg" alt="Slika 4">
+                <div class="caption text-center">Slika 4</div>
+              </div>
+            </div>
+        
+            <!-- Ponovite ove blokove za dodatne slike -->
+        
+          </div>
+          <div class="row">
+              <div class="col-md-3 mb-4">
+                <div class="album-item" onclick="window.location.href='NFT_review_reg.html'" style="cursor: pointer;">
+                  <img src="images/nft-item1.jpg" alt="Slika 1">
+                  <div class="caption text-center">Slika 1</div>
+                </div>
+              </div>
+          
+              <div class="col-md-3 mb-4">
+                <div class="album-item" onclick="window.location.href='NFT_review_reg.html'" style="cursor: pointer;">
+                  <img src="images/nft-item3.jpg" alt="Slika 2">
+                  <div class="caption text-center">Slika 2</div>
+                </div>
+              </div>
+          
+              <div class="col-md-3 mb-4">
+                <div class="album-item" onclick="window.location.href='NFT_review_reg.html'" style="cursor: pointer;">
+                  <img src=images/nft-item4.jpg alt="Slika 3">
+                  <div class="caption text-center">Slika 3</div>
+                </div>
+              </div>
+          
+              <div class="col-md-3 mb-4">
+                <div class="album-item" onclick="window.location.href='NFT_review_reg.html'" style="cursor: pointer;">
+                  <img src=images/nft-item2.jpg alt="Slika 4">
+                  <div class="caption text-center">Slika 4</div>
+                </div>
+              </div>
+          
+              <!-- Ponovite ove blokove za dodatne slike -->
+          
+            </div>
+            <div class="row">
+              <div class="col-md-3 mb-4">
+                <div class="album-item" onclick="window.location.href='NFT_review_reg.html'" style="cursor: pointer;">
+                  <img src="images/nft-item1.jpg" alt="Slika 1">
+                  <div class="caption text-center">Slika 1</div>
+                </div>
+              </div>
+          
+              <div class="col-md-3 mb-4">
+                <div class="album-item" onclick="window.location.href='NFT_review_reg.html'" style="cursor: pointer;">
+                  <img src="images/nft-item3.jpg" alt="Slika 2">
+                  <div class="caption text-center">Slika 2</div>
+                </div>
+              </div>
+          
+              <div class="col-md-3 mb-4">
+                <div class="album-item" onclick="window.location.href='NFT_review_reg.html'" style="cursor: pointer;">
+                  <img src=images/nft-item4.jpg alt="Slika 3">
+                  <div class="caption text-center">Slika 3</div>
+                </div>
+              </div>
+          
+              <div class="col-md-3 mb-4">
+                <div class="album-item" onclick="window.location.href='NFT_review_reg.html'" style="cursor: pointer;">
+                  <img src=images/nft-item2.jpg alt="Slika 4">
+                  <div class="caption text-center">Slika 4</div>
+                </div>
+              </div>
+          
+              <!-- Ponovite ove blokove za dodatne slike -->
+          
+            </div>
+            <div class="row">
+              <div class="col-md-3 mb-4">
+                <div class="album-item" onclick="window.location.href='NFT_review_reg.html'" style="cursor: pointer;">
+                  <img src="images/nft-item1.jpg" alt="Slika 1">
+                  <div class="caption text-center">Slika 1</div>
+                </div>
+              </div>
+          
+              <div class="col-md-3 mb-4">
+                <div class="album-item" onclick="window.location.href='NFT_review_reg.html'" style="cursor: pointer;">
+                  <img src="images/nft-item3.jpg" alt="Slika 2">
+                  <div class="caption text-center">Slika 2</div>
+                </div>
+              </div>
+          
+              <div class="col-md-3 mb-4">
+                <div class="album-item" onclick="window.location.href='NFT_review_reg.html'" style="cursor: pointer;">
+                  <img src=images/nft-item4.jpg alt="Slika 3">
+                  <div class="caption text-center">Slika 3</div>
+                </div>
+              </div>
+          
+              <div class="col-md-3 mb-4">
+                <div class="album-item" onclick="window.location.href='NFT_review_reg.html'" style="cursor: pointer;">
+                  <img src="images/collection-item1.jpg" alt="Slika 4">
+                  <div class="caption text-center">Slika 4</div>
+                </div>
+              </div>
+          
+              <!-- Ponovite ove blokove za dodatne slike -->
+          
+            </div>
+
+      </div>
+
+
+    <footer id="footer" class="bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-widget">
+                        <img src="images/main-logo.png" alt="logo">
+                        <p class="mt-3">A NFT marketplace for digital assets. Buy, sell, and discover exclusive digital assets on the blockchain.</p>
+                        <p>Team members from the Faculty of Electrical Engineering, University of Belgrade:</p>
+                        <ul>
+                            <li>Natalija Minja Vuk Vojin</li>
+        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Dodajte vaše skripte na kraju dokumenta pre nego što zatvorite body tag -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+    <script>
+      function refreshPage(option) {
+          switch(option) {
+              case 'poImenu':
+                  window.location.href = 'exhibition_review_reg.html'; // Postavite URL stranice koja se otvara kada se klikne na ovu opciju
+                  break;
+              case 'poOceni':
+                  window.location.href = 'exhibition_review_reg.html'; // Postavite URL stranice koja se otvara kada se klikne na ovu opciju
+              break;
+              case 'poVelicini':
+                  window.location.href = 'exhibition_review_reg.html'; // Postavite URL stranice koja se otvara kada se klikne na ovu opciju
+                  break;
+              case 'poVrednosti':
+                  window.location.href = 'exhibition_review_reg.html'; // Postavite URL stranice koja se otvara kada se klikne na ovu opciju
+                  break;
+              default:
+                  break;
+          }
+      }
+  </script>
+</body>
+
+</html>
