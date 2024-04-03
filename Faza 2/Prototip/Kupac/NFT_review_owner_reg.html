@@ -181,13 +181,6 @@ integrity="sha384-dU7rsNE6zq9e9Hh8PLwGN7pZCEeKvX7jfsqfiLmqs9E+Q6e/EIsfBJSVv8WjzF
                     <div class="description" style="margin-top: 20px;">
                         Opis: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero.
                     </div>
-                    <div  style="margin-top: 157px;">
-                        <span class="info-label">Promeni vrednost</span>
-                        <input type="text" id="new-price" placeholder="Nova vrednost">
-                        <button onclick="changePrice()" class="btn btn-lg" 
-                            style="background-color: #8D52F5;
-                            height: 48px; margin-top: 10px;">Promeni</button>
-                    </div>
                 </div>
 
 
@@ -217,21 +210,7 @@ integrity="sha384-dU7rsNE6zq9e9Hh8PLwGN7pZCEeKvX7jfsqfiLmqs9E+Q6e/EIsfBJSVv8WjzF
     <!-- Dodajte vaše skripte na kraju dokumenta pre nego što zatvorite body tag -->
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
-    <script>
-        function changePrice() {
-            var newPriceInput = document.getElementById("new-price");
-            var newPriceValue = parseFloat(newPriceInput.value);
-    
-            if (newPriceValue > 0) {
-                var currentValue = document.querySelector('.info-row:nth-child(3) .info-value');
-                currentValue.textContent = newPriceValue.toFixed(2) + " ETH";
-            } else {
-                alert("Vrednost mora biti veća od 0.");
-            }
-    
-            newPriceInput.value = ""; // Resetujemo polje nakon promene vrednosti
-        }
-    </script>
+
 </body>
 
 </html>
