@@ -14,6 +14,7 @@ class Administrator(models.Model):
     class Meta:
         managed = False
         db_table = 'administrator'
+        app_label = 'exhibitions'
 
 
 class Izloba(models.Model):
@@ -24,7 +25,9 @@ class Izloba(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'izloûba'
+        db_table = 'izlo≈æba'
+        app_label = 'exhibitions'
+
 
 
 class Kolekcija(models.Model):
@@ -33,6 +36,8 @@ class Kolekcija(models.Model):
     class Meta:
         managed = False
         db_table = 'kolekcija'
+        app_label = 'exhibitions'
+
 
 
 class Kolekcionar(models.Model):
@@ -41,6 +46,8 @@ class Kolekcionar(models.Model):
     class Meta:
         managed = False
         db_table = 'kolekcionar'
+        app_label = 'exhibitions'
+
 
 
 class Korisnik(models.Model):
@@ -51,6 +58,8 @@ class Korisnik(models.Model):
     class Meta:
         managed = False
         db_table = 'korisnik'
+        app_label = 'exhibitions'
+
 
 
 class Kreator(models.Model):
@@ -59,6 +68,8 @@ class Kreator(models.Model):
     class Meta:
         managed = False
         db_table = 'kreator'
+        app_label = 'exhibitions'
+
 
 
 class Kupac(models.Model):
@@ -67,6 +78,8 @@ class Kupac(models.Model):
     class Meta:
         managed = False
         db_table = 'kupac'
+        app_label = 'exhibitions'
+
 
 
 class Listanft(models.Model):
@@ -78,6 +91,8 @@ class Listanft(models.Model):
     class Meta:
         managed = False
         db_table = 'listanft'
+        app_label = 'exhibitions'
+
 
 
 class Nft(models.Model):
@@ -93,6 +108,8 @@ class Nft(models.Model):
     class Meta:
         managed = False
         db_table = 'nft'
+        app_label = 'exhibitions'
+
 
 
 class Ocena(models.Model):
@@ -104,6 +121,8 @@ class Ocena(models.Model):
         managed = False
         db_table = 'ocena'
         unique_together = (('idkor', 'idnft'),)
+        app_label = 'exhibitions'
+
 
 
 class Portfolio(models.Model):
@@ -112,6 +131,8 @@ class Portfolio(models.Model):
     class Meta:
         managed = False
         db_table = 'portfolio'
+        app_label = 'exhibitions'
+
 
 
 class Pripada(models.Model):
@@ -122,6 +143,8 @@ class Pripada(models.Model):
         managed = False
         db_table = 'pripada'
         unique_together = (('idlis', 'idnft'),)
+        app_label = 'exhibitions'
+
 
 
 class Registrovanikorisnik(models.Model):
@@ -138,6 +161,8 @@ class Registrovanikorisnik(models.Model):
     class Meta:
         managed = False
         db_table = 'registrovanikorisnik'
+        app_label = 'exhibitions'
+
 
 
 class Zahtevzaregistraciju(models.Model):
@@ -154,3 +179,5 @@ class Zahtevzaregistraciju(models.Model):
     class Meta:
         managed = False
         db_table = 'zahtevzaregistraciju'
+        app_label = 'exhibitions'
+

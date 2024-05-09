@@ -16,12 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from exhibitions import views as exhibitions_views  # Uvozite pogled iz exhibitions app
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),
-    path('nft/', include('nft.urls')),
-    path('exhibitions/', include('exhibitions.urls')),
-    path('profiles/', include('profiles.urls')),
+    path('', exhibitions_views.home_page, name='home'),
+    # path('accounts/', include('accounts.urls')),
+    # path('nft/', include('nft.urls')),
+    # path('exhibitions/', include('exhibitions.urls')),
+    # path('profiles/', include('profiles.urls')),
     # Dodajte ostale rute po potrebi
 ]
