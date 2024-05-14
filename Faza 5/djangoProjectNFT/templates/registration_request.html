@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block navbar1 %}
+     <li class="menu-item ">
+        <form class="search-form" action=".." method="GET">
+            <input type="search" id="search-input" name="q" placeholder="Pretraži..." class="form-control placeholder-color"  >
+        </form>
+     </li>
+    <li class="menu-item ">
+        <button type="button" class="search-btn btn btn-outline-linear btn-medium" onclick="pretrazi()">Pretraži</button>
+    </li>
+
+{% endblock %}
+{% block navbar3 %}
+    <div class="btn-wrap d-flex my-4 my-lg-4 ">
+    <a href="{% url 'login' %}" class="btn btn-linear btn-medium">Zahtevi za registraciju se</a>
+    <a href="{% url 'register' %}" class="btn btn-outline-linear btn-medium m-0">Odjavi se</a>
+    </div>
+
+{% endblock %}
+
+{% block maincontent %}
+    <div class="container mt-8">
+    <table id="tabelica" class="table table-striped table-bordered">
+        <thead id="redic" class="thead-dark">
+            <tr>
+                <th>Ime Prezime</th>
+                <th>Username</th>
+                <th>Mail</th>
+                <th>Broj Telefona</th>
+                <th>Datum Rođenja</th>
+                <th>Mesto Rođenja</th>
+                <th>Uloga</th>
+                <th>Info o Kartici</th>
+                <th>Prihvati/Odbij</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for zahtev in zahtevi %}
+            <tr>
+                <td>{{ zahtev.ime }} {{ zahtev.prezime }}</td>
+                <td>{{ zahtev.korime }}</td>
+                <td>{{ zahtev.email }}</td>
+                <td>{{ zahtev.brojtelefona }}</td>
+                <td>{{ zahtev.datumrodjenja }}</td>
+                <td>{{ zahtev.mestorodjenja }}</td>
+                <td>{{ zahtev.uloga }}</td>
+                <td>**** **** **** {{ zahtev.brojkartice }}</td>
+                <td>
+                    <button type="button" class="btn btn-success btn-sm" onclick="deleteRow(this)">Prihvati</button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">Odbij</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

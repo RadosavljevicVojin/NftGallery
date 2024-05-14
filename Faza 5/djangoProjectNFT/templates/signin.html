@@ -9,67 +9,55 @@
 
 {% block maincontent %}
     
-{#    <style>#}
-{#    .input-row {#}
-{#      display: flex;#}
-{#      margin-bottom: 10px;#}
-{#  }#}
-{##}
-{#  .input-row label {#}
-{#      width: 120px;#}
-{#  }#}
-{##}
-{#  .input-row input {#}
-{#      flex: 1;#}
-{#      padding: 5px;#}
-{#  }#}
-{#    </style>#}
     <div class="container col-md-12">
         <h2>Registracija</h2>
+        {% if error %}
+        <p style="color: red;">{{ error }}</p>
+        {% endif %}
        
         <div class="row">
             <form method="post">
                 {% csrf_token %}
                 <div class="input-row">
-                    <label for="korisnicko-ime">Korisničko ime:</label>
-                    <input type="text" id="korisnicko-ime" name="korisnicko-ime" style = "margin-right: 20px;" required>
-                    <label for="datum-rodjenja">Datum rođenja:</label>
-                    <input type="date" id="datum-rodjenja" name="datum-rodjenja" required>
+                    <label for="username">Korisničko ime:</label>
+                    <input type="text" id="username" name="username" style = "margin-right: 20px;" required>
+                    <label for="birthdate">Datum rođenja:</label>
+                    <input type="date" id="birthdate" name="birthdate" required>
                 </div>
         
                 <div class="input-row">
-                    <label for="ime">Ime:</label>
-                    <input type="text" id="ime" name="ime"  style = "margin-right: 20px;" required>
-                    <label for="mesto-rodjenja">Mesto rođenja:</label>
-                    <input type="text" id="mesto-rodjenja" name="mesto-rodjenja" required>
+                    <label for="name">Ime:</label>
+                    <input type="text" id="name" name="name"  style = "margin-right: 20px;" required>
+                    <label for="birthplace">Mesto rođenja:</label>
+                    <input type="text" id="birthplace" name="birthplace" required>
                 </div>
         
                 <div class="input-row">
-                    <label for="prezime">Prezime:</label>
-                    <input type="text" id="prezime" name="prezime"  style = "margin-right: 20px;" required>
-                    <label for="broj-telefona">Broj telefona:</label>
-                    <input type="text" id="broj-telefona" name="broj-telefona" required>
+                    <label for="surname">Prezime:</label>
+                    <input type="text" id="surname" name="surname"  style = "margin-right: 20px;" required>
+                    <label for="phone">Broj telefona:</label>
+                    <input type="text" id="phone" name="phone" required>
                 </div>
         
                 <div class="input-row">
-                    <label for="sifra">Šifra:</label>
-                    <input type="password" id="sifra" name="sifra"  style = "margin-right: 20px;" required>
-                    <label for="kartica">Kartica:</label>
-                    <input type="text" id="kartica" name="kartica">
+                    <label for="password">Šifra:</label>
+                    <input type="password" id="password" name="password"  style = "margin-right: 20px;" required>
+                    <label for="card">Kartica:</label>
+                    <input type="text" id="card" name="card">
                 </div>
                 <div class="input-row">
-                    <label for="potvrda-sifre">Potvrda šifre:</label>
-                    <input type="password" id="potvrda-sifre" name="potvrda-sifre"  style = "margin-right: 20px;" required>
-                    <label for="mejl">Mejl:</label>
-                    <input type="email" id="mejl" name="mejl" required>
+                    <label for="confirm_password">Potvrda šifre:</label>
+                    <input type="password" id="confirm_password" name="confirm_password"  style = "margin-right: 20px;" required>
+                    <label for="email">Mejl:</label>
+                    <input type="email" id="email" name="email" required>
                 </div>
                 <div class="input-row col-lg-6" >
                     <label >Želim da se prijavim kao:</label>
-                    <input  type="radio" id="creator" name="user-type" value="creator">
+                    <input  type="radio" id="creator" name="user_type" value="kreator">
                     <label for="creator">Kreator</label>
-                    <input type="radio" id="collector" name="user-type" value="collector">
+                    <input type="radio" id="collector" name="user_type" value="kolekcionar">
                     <label for="collector">Kolekcionar</label>
-                    <input type="radio" id="buyer" name="user-type" value="buyer" checked>
+                    <input type="radio" id="buyer" name="user_type" value="kupac" checked>
                     <label for="buyer">Kupac</label>
                 </div>
         
