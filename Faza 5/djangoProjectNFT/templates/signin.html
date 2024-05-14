@@ -28,7 +28,8 @@
         <h2>Registracija</h2>
        
         <div class="row">
-                <form>
+            <form method="post">
+                {% csrf_token %}
                 <div class="input-row">
                     <label for="korisnicko-ime">Korisničko ime:</label>
                     <input type="text" id="korisnicko-ime" name="korisnicko-ime" style = "margin-right: 20px;" required>
@@ -72,12 +73,12 @@
                     <label for="buyer">Kupac</label>
                 </div>
         
+                <div class="row">
+                    <input type="submit" value="Registruj se" class="login-button btn-wrap btn-outline-linear" id="register-button">
+                </div>
             
             </form>
-            </div>
-            <div class="row">
-                <input type="submit" value="Registruj se" class="login-button btn-wrap btn-outline-linear" id="register-button">
-        
-            </div>
         </div>
+            
+    </div>
 {% endblock %}
