@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+
+{% block navbar1 %}
+     <li class="menu-item ">
+        <form class="search-form" action=".." method="GET">
+            <input type="search" id="search-input" name="q" placeholder="Pretraži..." class="form-control placeholder-color"  >
+        </form>
+     </li>
+    <li class="menu-item ">
+        <button type="button" class="search-btn btn btn-outline-linear btn-medium" onclick="pretrazi()">Pretraži</button>
+    </li>
+
+{% endblock %}
+{% block navbar3 %}
+    <div class="btn-wrap d-flex my-4 my-lg-4 ">
+    <a href="{% url 'login' %}" class="btn btn-linear btn-medium">Prijavi se</a>
+    <a href="signin.html" class="btn btn-outline-linear btn-medium m-0">Registruj se</a>
+    </div>
+
+{% endblock %}
+
+
+{% block maincontent %}
+<div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+
+                <button class="btn btn-outline-linear btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Sortiraj
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#" onclick="refreshPage('poImenu')">Po imenu</a>
+                    <a class="dropdown-item" href="#" onclick="refreshPage('poOceni')">Po oceni</a>
+                    <a class="dropdown-item" href="#" onclick="refreshPage('poVelicini')">Po velicini</a>
+                    <a class="dropdown-item" href="#" onclick="refreshPage('poVrednosti')">Po vrednosti</a>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container-lg my-3">
+        <div id="myCarousel2" class="carousel slide" data-bs-ride="carousel">
+            <!-- Carousel indicators -->
+
+            <a href="index.html" style="color: whitesmoke;">
+                Izlozba1
+            </a>
+
+            <!-- Wrapper for carousel items -->
+            <div class="carousel-inner" onclick="window.location.href='exhibition_review.html'">
+
+                <div class="carousel-item active">
+                    <div class="d-flex justify-content-between">
+                        <img src="static/images/nft-item1.jpg" class="d-block w-25" alt="Slide 1">
+                        <img src="static/images/nft-item2.jpg" class="d-block w-25" alt="Slide 2">
+                        <img src="static/images/nft-item3.jpg" class="d-block w-25" alt="Slide 3">
+                        <img src="static/images/nft-item4.jpg" class="d-block w-25" alt="Slide 4">
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="d-flex justify-content-between">
+                        <img src="static/images/nft-item2.jpg" class="d-block w-25" alt="Slide 1">
+                        <img src="static/images/nft-item3.jpg" class="d-block w-25" alt="Slide 2">
+                        <img src="static/images/nft-item4.jpg" class="d-block w-25" alt="Slide 3">
+                        <img src="static/images/nft-item2.jpg" class="d-block w-25" alt="Slide 4">
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="d-flex justify-content-between">
+                        <img src="static/images/nft-item3.jpg" class="d-block w-25" alt="Slide 1">
+                        <img src="static/images/nft-item4.jpg" class="d-block w-25" alt="Slide 2">
+                        <img src="static/images/nft-item2.jpg" class="d-block w-25" alt="Slide 3">
+                        <img src="static/images/nft-item1.jpg" class="d-block w-25" alt="Slide 4">
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="d-flex justify-content-between">
+                        <img src="static/images/nft-item4.jpg" class="d-block w-25" alt="Slide 1">
+                        <img src="static/images/nft-item2.jpg" class="d-block w-25" alt="Slide 2">
+                        <img src="static/images/nft-item1.jpg" class="d-block w-25" alt="Slide 3">
+                        <img src="static/images/nft-item4.jpg" class="d-block w-25" alt="Slide 4">
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="d-flex justify-content-between">
+                        <img src="static/images/nft-item2.jpg" class="d-block w-25" alt="Slide 1">
+                        <img src="static/images/nft-item1.jpg" class="d-block w-25" alt="Slide 2">
+                        <img src="static/images/nft-item4.jpg" class="d-block w-25" alt="Slide 3">
+                        <img src="static/images/nft-item3.jpg" class="d-block w-25" alt="Slide 4">
+                    </div>
+                </div>
+                <!-- Add more carousel items as needed -->
+            </div>
+
+            <!-- Carousel controls -->
+            <a class="carousel-control-prev" href="#myCarousel2" role="button" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </a>
+            <a class="carousel-control-next" href="#myCarousel2" role="button" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </a>
+        </div>
+        <div id="myCarousel1" class="carousel slide" data-bs-ride="carousel">
+          <!-- Carousel indicators -->
+
+          <a href="index.html" style="color: whitesmoke;">
+            Izlozba2
+        </a>
+
+          <!-- Wrapper for carousel items -->
+          <div class="carousel-inner" onclick="window.location.href='exhibition_review.html'">
+
+              <div class="carousel-item active">
+                  <div class="d-flex justify-content-between">
+                      <img src="static/images/nft-item1.jpg" class="d-block w-25" alt="Slide 1">
+                      <img src="static/images/nft-item2.jpg" class="d-block w-25" alt="Slide 2">
+                      <img src="static/images/nft-item3.jpg" class="d-block w-25" alt="Slide 3">
+                      <img src="static/images/nft-item4.jpg" class="d-block w-25" alt="Slide 4">
+                  </div>
+              </div>
+              <div class="carousel-item">
+                  <div class="d-flex justify-content-between">
+                      <img src="static/images/nft-item2.jpg" class="d-block w-25" alt="Slide 1">
+                      <img src="static/images/nft-item3.jpg" class="d-block w-25" alt="Slide 2">
+                      <img src="static/images/nft-item4.jpg" class="d-block w-25" alt="Slide 3">
+                      <img src="static/images/nft-item2.jpg" class="d-block w-25" alt="Slide 4">
+                  </div>
+              </div>
+              <div class="carousel-item">
+                  <div class="d-flex justify-content-between">
+                      <img src="static/images/nft-item3.jpg" class="d-block w-25" alt="Slide 1">
+                      <img src="static/images/nft-item4.jpg" class="d-block w-25" alt="Slide 2">
+                      <img src="static/images/nft-item2.jpg" class="d-block w-25" alt="Slide 3">
+                      <img src="static/images/nft-item1.jpg" class="d-block w-25" alt="Slide 4">
+                  </div>
+              </div>
+              <div class="carousel-item">
+                  <div class="d-flex justify-content-between">
+                      <img src="static/images/nft-item4.jpg" class="d-block w-25" alt="Slide 1">
+                      <img src="static/images/nft-item2.jpg" class="d-block w-25" alt="Slide 2">
+                      <img src="static/images/nft-item1.jpg" class="d-block w-25" alt="Slide 3">
+                      <img src="static/images/nft-item4.jpg" class="d-block w-25" alt="Slide 4">
+                  </div>
+              </div>
+              <div class="carousel-item">
+                  <div class="d-flex justify-content-between">
+                      <img src="static/images/nft-item2.jpg" class="d-block w-25" alt="Slide 1">
+                      <img src="static/images/nft-item1.jpg" class="d-block w-25" alt="Slide 2">
+                      <img src="static/images/nft-item4.jpg" class="d-block w-25" alt="Slide 3">
+                      <img src="static/images/nft-item3.jpg" class="d-block w-25" alt="Slide 4">
+                  </div>
+              </div>
+              <!-- Add more carousel items as needed -->
+          </div>
+
+          <!-- Carousel controls -->
+          <a class="carousel-control-prev" href="#myCarousel1" role="button" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          </a>
+          <a class="carousel-control-next" href="#myCarousel1" role="button" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          </a>
+      </div>
+      <div id="myCarousel3" class="carousel slide" data-bs-ride="carousel">
+        <!-- Carousel indicators -->
+
+        <a href="index.html" style="color: whitesmoke;">
+          Izlozba3
+      </a>
+
+        <!-- Wrapper for carousel items -->
+        <div class="carousel-inner" onclick="window.location.href='exhibition_review.html'">
+
+            <div class="carousel-item active">
+                <div class="d-flex justify-content-between">
+                    <img src="static/images/nft-item1.jpg" class="d-block w-25" alt="Slide 1">
+                    <img src="static/images/nft-item2.jpg" class="d-block w-25" alt="Slide 2">
+                    <img src="static/images/nft-item3.jpg" class="d-block w-25" alt="Slide 3">
+                    <img src="static/images/nft-item4.jpg" class="d-block w-25" alt="Slide 4">
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="d-flex justify-content-between">
+                    <img src="static/images/nft-item2.jpg" class="d-block w-25" alt="Slide 1">
+                    <img src="static/images/nft-item3.jpg" class="d-block w-25" alt="Slide 2">
+                    <img src="static/images/nft-item4.jpg" class="d-block w-25" alt="Slide 3">
+                    <img src="static/images/nft-item2.jpg" class="d-block w-25" alt="Slide 4">
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="d-flex justify-content-between">
+                    <img src="static/images/nft-item3.jpg" class="d-block w-25" alt="Slide 1">
+                    <img src="static/images/nft-item4.jpg" class="d-block w-25" alt="Slide 2">
+                    <img src="static/images/nft-item2.jpg" class="d-block w-25" alt="Slide 3">
+                    <img src="static/images/nft-item1.jpg" class="d-block w-25" alt="Slide 4">
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="d-flex justify-content-between">
+                    <img src="static/images/nft-item4.jpg" class="d-block w-25" alt="Slide 1">
+                    <img src="static/images/nft-item2.jpg" class="d-block w-25" alt="Slide 2">
+                    <img src="static/images/nft-item1.jpg" class="d-block w-25" alt="Slide 3">
+                    <img src="static/images/nft-item4.jpg" class="d-block w-25" alt="Slide 4">
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="d-flex justify-content-between">
+                    <img src="static/images/nft-item2.jpg" class="d-block w-25" alt="Slide 1">
+                    <img src="static/images/nft-item1.jpg" class="d-block w-25" alt="Slide 2">
+                    <img src="static/images/nft-item4.jpg" class="d-block w-25" alt="Slide 3">
+                    <img src="static/images/nft-item3.jpg" class="d-block w-25" alt="Slide 4">
+                </div>
+            </div>
+            <!-- Add more carousel items as needed -->
+        </div>
+
+        <!-- Carousel controls -->
+        <a class="carousel-control-prev" href="#myCarousel3" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </a>
+        <a class="carousel-control-next" href="#myCarousel3" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </a>
+    </div>
+      </div>
+
+{% endblock %}
