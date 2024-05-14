@@ -3,7 +3,6 @@
 # exhibitions/views.py
 
 from django.shortcuts import render
-from models import Izloba
 
 def home_page(request):
     # Dohvati sve izložbe i sortiraj ih po željenom kriteriju (npr. po datumu)

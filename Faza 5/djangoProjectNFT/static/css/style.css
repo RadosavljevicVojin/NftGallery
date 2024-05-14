@@ -65,6 +65,12 @@
 /** 1. VARIABLES
 --------------------------------------------------------------*/
 
+#search_input{
+  color:black;
+}
+
+
+
 .slides {
   display: flex;
   overflow-x: auto;
@@ -416,7 +422,10 @@ i {
   clear: both;
   content: "";
 }
+#search_input{
 
+  color:black;
+}
 /** Text Align
 --------------------------------------------------------------*/
 .text-left {
