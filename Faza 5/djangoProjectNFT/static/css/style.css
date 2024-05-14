@@ -1,3 +1,69 @@
+.swiper-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+  }
+
+.swiper-slide {
+    width: 25%;
+    flex-shrink: 0;
+}
+
+/* Dodatni stil za carousel-item */
+.carousel-item {
+    min-height: 280px;
+}
+
+
+
+#myCarousel1, #myCarousel2 {
+        margin-bottom: 20px; /* Prilagodite vrednost prema potrebi */
+      }
+.input-row {
+      display: flex;
+      margin-bottom: 10px;
+  }
+
+  .input-row label {
+      width: 120px;
+  }
+
+  .input-row input {
+      flex: 1;
+      padding: 5px;
+  }
+
+  .back-button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 10px;
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      color: #333;
+  }
+
+  .back-button:hover {
+      background-color: #ddd;
+  }
+
+  .login-button {
+      padding: 10px;
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      color: #333;
+  }
+
+  .login-button:hover {
+      background-color: #ddd;
+  }
 #search_input{
   color:black;
 }
@@ -300,7 +366,7 @@ p.dim-light {
 }
 
 p.grey {
-  color: var(--grey-color);
+  /*color: var(--grey-color);*/
 }
 
 p:empty {
@@ -311,10 +377,10 @@ small {
   font-size: 85%;
 }
 
-mark {
-  background-color: var(--grey-color);
-  padding: 0.28rem;
-}
+/*mark {*/
+/*  background-color: var(--grey-color);*/
+/*  padding: 0.28rem;*/
+/*}*/
 
 dfn,
 cite,
@@ -323,9 +389,9 @@ i {
   font-style: italic;
 }
 
-::placeholder {
-  color: var(--grey-color);
-}
+/*::placeholder {*/
+/*  color: var(--grey-color);*/
+/*}*/
 
 /*----------------------------------------------*/
 /* 2.1 Floating & Alignment */
@@ -401,7 +467,7 @@ i {
 }
 
 .text-hide {
-  font: 0/0 a;
+  /*font: 0/0 a;*/
   color: transparent;
   text-shadow: none;
   background-color: transparent;
@@ -1424,7 +1490,7 @@ blockquote cite {
   border-radius: 0;
   box-shadow: none;
   overflow-anchor: none;
-  background-color: var(--light-background-color);
+  /*background-color: var(--light-background-color);*/
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, border-radius 0.15s ease;
 }
 
@@ -1477,7 +1543,7 @@ blockquote cite {
 }
 
 .accordion-item {
-  background-color: var(--light-background-color);
+  /*background-color: var(--light-background-color);*/
   /* border-bottom: 1px solid var(--accent-color); */
 }
 
@@ -1640,9 +1706,9 @@ img.rounded-shape {
   background-color: #52575C;
 }
 
-.dropdown-item {
-  padding: 0px var(--bs-dropdown-item-padding-x);
-}
+/*.dropdown-item {*/
+/*  padding: 0px var(--bs-dropdown-item-padding-x);*/
+/*}*/
 
 iconify-icon.hamburger-menu{
  color: var(--accent-color);
@@ -2092,10 +2158,10 @@ button.filter-button.active, button.filter-button:hover {
   --bs-pagination-color: var(--accent-color);
   --bs-pagination-bg: transparent;
   --bs-pagination-hover-color: var(--primary-color);
-  --bs-pagination-hover-bg: transparent;
-  --bs-pagination-hover-border-color: var(--bs-border-color);
-  --bs-pagination-focus-color: var(--bs-link-hover-color);
-  --bs-pagination-focus-bg: var(--bs-secondary-bg);
+  /*--bs-pagination-hover-bg: transparent;*/
+  /*--bs-pagination-hover-border-color: var(--bs-border-color);*/
+  /*--bs-pagination-focus-color: var(--bs-link-hover-color);*/
+  /*--bs-pagination-focus-bg: var(--bs-secondary-bg);*/
   --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
   --bs-pagination-active-color: var(--primary-color);
   --bs-pagination-active-bg: transparent
@@ -2116,9 +2182,9 @@ iconify-icon.pagination-arrow{
 
 /* Item Detail Page Style
 --------------------------------------------------------------*/
-img.item-detail-image{
-  width: -webkit-fill-available;
-}
+/*img.item-detail-image{*/
+/*  width: -webkit-fill-available;*/
+/*}*/
 
 iconify-icon.share-icon{
   font-size: 2rem;

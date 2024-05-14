@@ -4,11 +4,10 @@ from django.shortcuts import render
 
 
 def login_page(request):
-    # Dohvati sve izložbe i sortiraj ih po željenom kriteriju (npr. po datumu)
-   # exhibitions = Izloba.objects.all()
-
-    # context = {
-    #     'exhibitions': exhibitions
-    # }
 
     return render(request, 'login.html')
+
+
+def register_page(request):
+
+    return render(request, 'signin.html')

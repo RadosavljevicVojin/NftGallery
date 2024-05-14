@@ -23,7 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', exhibitions_views.home_page, name='home'),
     path('accounts/', include('accounts.urls')),
-    path('login', accounts_views.login_page, name='login1')
      # path('nft/', include('nft.urls')),
      # path('profiles/', include('profiles.urls')),
     # Dodajte ostale rute po potrebi

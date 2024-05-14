@@ -1,1 +1,83 @@
 {% extends 'base.html' %}
+{% block navbar3 %}
+    <div class="btn-wrap d-flex my-4 my-lg-4 ">
+    <a href="{% url 'login' %}" class="btn btn-linear btn-medium">Prijavi se</a>
+    <a href="{% url 'register' %}" class="btn btn-outline-linear btn-medium m-0">Registruj se</a>
+    </div>
+
+{% endblock %}
+
+{% block maincontent %}
+    
+{#    <style>#}
+{#    .input-row {#}
+{#      display: flex;#}
+{#      margin-bottom: 10px;#}
+{#  }#}
+{##}
+{#  .input-row label {#}
+{#      width: 120px;#}
+{#  }#}
+{##}
+{#  .input-row input {#}
+{#      flex: 1;#}
+{#      padding: 5px;#}
+{#  }#}
+{#    </style>#}
+    <div class="container col-md-12">
+        <h2>Registracija</h2>
+       
+        <div class="row">
+                <form>
+                <div class="input-row">
+                    <label for="korisnicko-ime">Korisničko ime:</label>
+                    <input type="text" id="korisnicko-ime" name="korisnicko-ime" style = "margin-right: 20px;" required>
+                    <label for="datum-rodjenja">Datum rođenja:</label>
+                    <input type="date" id="datum-rodjenja" name="datum-rodjenja" required>
+                </div>
+        
+                <div class="input-row">
+                    <label for="ime">Ime:</label>
+                    <input type="text" id="ime" name="ime"  style = "margin-right: 20px;" required>
+                    <label for="mesto-rodjenja">Mesto rođenja:</label>
+                    <input type="text" id="mesto-rodjenja" name="mesto-rodjenja" required>
+                </div>
+        
+                <div class="input-row">
+                    <label for="prezime">Prezime:</label>
+                    <input type="text" id="prezime" name="prezime"  style = "margin-right: 20px;" required>
+                    <label for="broj-telefona">Broj telefona:</label>
+                    <input type="text" id="broj-telefona" name="broj-telefona" required>
+                </div>
+        
+                <div class="input-row">
+                    <label for="sifra">Šifra:</label>
+                    <input type="password" id="sifra" name="sifra"  style = "margin-right: 20px;" required>
+                    <label for="kartica">Kartica:</label>
+                    <input type="text" id="kartica" name="kartica">
+                </div>
+                <div class="input-row">
+                    <label for="potvrda-sifre">Potvrda šifre:</label>
+                    <input type="password" id="potvrda-sifre" name="potvrda-sifre"  style = "margin-right: 20px;" required>
+                    <label for="mejl">Mejl:</label>
+                    <input type="email" id="mejl" name="mejl" required>
+                </div>
+                <div class="input-row col-lg-6" >
+                    <label >Želim da se prijavim kao:</label>
+                    <input  type="radio" id="creator" name="user-type" value="creator">
+                    <label for="creator">Kreator</label>
+                    <input type="radio" id="collector" name="user-type" value="collector">
+                    <label for="collector">Kolekcionar</label>
+                    <input type="radio" id="buyer" name="user-type" value="buyer" checked>
+                    <label for="buyer">Kupac</label>
+                </div>
+        
+            
+            </form>
+            </div>
+            <div class="row">
+                <input type="submit" value="Registruj se" class="login-button btn-wrap btn-outline-linear" id="register-button">
+        
+            </div>
+        </div>
+{% endblock %}

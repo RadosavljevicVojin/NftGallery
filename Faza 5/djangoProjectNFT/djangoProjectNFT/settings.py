@@ -60,10 +60,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, 'exhibitions', 'static'),
-    os.path.join(BASE_DIR, 'accounts', 'static'),
-    os.path.join(BASE_DIR, 'nft', 'static'),
-    os.path.join(BASE_DIR, 'profiles', 'static'),
+
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
