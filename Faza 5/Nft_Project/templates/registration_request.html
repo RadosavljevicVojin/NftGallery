@@ -1,4 +1,75 @@
 {% extends 'base.html' %}
+
+{% block additional_style %}
+
+    <style>
+
+        .swiper-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .swiper-slide {
+            width: 25%;
+            flex-shrink: 0;
+        }
+
+        /* Dodatni stil za carousel-item */
+        .carousel-item {
+            min-height: 280px;
+        }
+
+        .input-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .input-row label {
+            width: 120px;
+        }
+
+        .input-row input {
+            flex: 1;
+            padding: 5px;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .back-button:hover {
+            background-color: #ddd;
+        }
+
+        .login-button {
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .login-button:hover {
+            background-color: #ddd;
+        }
+
+    </style>
+
+{% endblock %}
+
 {% block navbar1 %}
      <li class="menu-item ">
         <form class="search-form" action=".." method="GET">
@@ -34,9 +105,11 @@
                 <th>Prihvati/Odbij</th>
             </tr>
         </thead>
+
         <tbody>
             {% for zahtev in zahtevi %}
-            <tr>
+            <tr >
+
                 <td>{{ zahtev.ime }} {{ zahtev.prezime }}</td>
                 <td>{{ zahtev.korime }}</td>
                 <td>{{ zahtev.email }}</td>
@@ -46,8 +119,12 @@
                 <td>{{ zahtev.uloga }}</td>
                 <td>**** **** **** {{ zahtev.brojkartice }}</td>
                 <td>
-                    <button type="button" class="btn btn-success btn-sm" onclick="deleteRow(this)">Prihvati</button>
-                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">Odbij</button>
+                    <form method="post">
+                                        {% csrf_token %}
+
+                <button type="submit" class="btn btn-success btn-sm" name="accept-{{ zahtev.idzah }}"  onclick="deleterow(this)">Prihvati</button>
+                <button type="submit" class="btn btn-danger btn-sm" name="reject-{{ zahtev.idzah }}"  onclick="deleterow(this)">Odbij</button>
+               </form>
                 </td>
             </tr>
             {% endfor %}
@@ -55,4 +132,14 @@
     </table>
 </div>
 
+{% endblock %}
+
+{% block more %}
+    
+    <script>
+    function deleterow(button) {
+    var row = button.closest('tr'); 
+    row.remove();
+}
+    </script>
 {% endblock %}

@@ -16,7 +16,7 @@ class Nft(models.Model):
     slika = models.TextField(db_column='Slika')  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed =  True
         db_table = 'nft'
         app_label = 'nft'
 
@@ -29,7 +29,7 @@ class Ocena(models.Model):
     ocena = models.IntegerField(db_column='Ocena')  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed =  True
         db_table = 'ocena'
         unique_together = (('idkor', 'idnft'),)
         app_label = 'nft'

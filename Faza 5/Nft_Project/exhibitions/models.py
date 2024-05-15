@@ -18,8 +18,8 @@ class Izlozba(models.Model):
     prosecnaocena = models.CharField(db_column='ProsecnaOcena', max_length=18, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
-        db_table = 'izložba'
+        managed = True
+        db_table = 'izlozba'
         app_label = 'exhibitions'
 
 
@@ -28,7 +28,7 @@ class Kolekcija(models.Model):
     idlis = models.OneToOneField('Listanft', models.DO_NOTHING, db_column='IdLis', primary_key=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'kolekcija'
         app_label = 'exhibitions'
 
@@ -36,12 +36,12 @@ class Kolekcija(models.Model):
 
 class Listanft(models.Model):
     idlis = models.AutoField(db_column='IdLis', primary_key=True)  # Field name made lowercase.
-    idvla = models.ForeignKey(Registrovanikorisnik, models.DO_NOTHING, db_column='IdVla')  # Field name made lowercase.
+    idvla = models.ForeignKey(Registrovanikorisnik, models.DO_NOTHING, db_column='IdVla', null=True)  # Field name made lowercase.
     ukupnavrednost = models.FloatField(db_column='UkupnaVrednost')  # Field name made lowercase.
     brojnft = models.IntegerField(db_column='BrojNFT')  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'listanft'
         app_label = 'exhibitions'
 
@@ -51,7 +51,7 @@ class Portfolio(models.Model):
     idlis = models.OneToOneField(Listanft, models.DO_NOTHING, db_column='IdLis', primary_key=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'portfolio'
         app_label = 'exhibitions'
 
@@ -59,10 +59,10 @@ class Portfolio(models.Model):
 
 class Pripada(models.Model):
     idlis = models.OneToOneField(Listanft, models.DO_NOTHING, db_column='IdLis', primary_key=True)  # Field name made lowercase. The composite primary key (IdLis, IdNFT) found, that is not supported. The first column is selected.
-    idnft = models.ForeignKey(Nft, models.DO_NOTHING, db_column='IdNFT')  # Field name made lowercase.
+    idnft = models.ForeignKey(Nft, models.DO_NOTHING, db_column='IdNFT', default=-1)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'pripada'
         unique_together = (('idlis', 'idnft'),)
         app_label = 'exhibitions'

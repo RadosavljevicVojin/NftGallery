@@ -1,5 +1,6 @@
 from MySQLdb import IntegrityError, Date
 from django.contrib.auth import authenticate, login
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from pyexpat.errors import messages
 
@@ -78,7 +79,28 @@ def register_page(request):
 
 
 def registration_request(request):
-    request = Zahtevzaregistraciju.objects.all()
-    print(request)
-    return render(request, 'registration_request.html', {'zahtevi': request})
+    if request.method == 'POST':
+        for key, value in request.POST.items():
+            print(f"{key}: {value}")
+
+        all_keys = list(request.POST.keys())  # Pretvaranje ključeva u listu
+        action= ""
+        id= ""
+        if len(all_keys) > 1:
+            second_key = all_keys[1]
+            action, id= second_key.split('-')
+
+        if action == 'accept':
+            request_to_accept = Zahtevzaregistraciju.objects.get(idzah=id)
+            # Implementirajte logiku za stvaranje korisnika s podacima iz request_to_accept objekta
+            request_to_accept.delete()
+
+        elif action == 'reject':
+            # Logika za jednostavno brisanje zahtjeva
+            Zahtevzaregistraciju.objects.filter(idzah=id).delete()
+
+    requests = Zahtevzaregistraciju.objects.all()
+    print(requests)
+
+    return render(request, 'registration_request.html', {'zahtevi': requests})
 
