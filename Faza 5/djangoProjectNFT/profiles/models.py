@@ -7,7 +7,7 @@ class Kolekcionar(models.Model):
     idkor = models.OneToOneField('Registrovanikorisnik', models.DO_NOTHING, db_column='IdKor', primary_key=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'kolekcionar'
         app_label = 'profiles'
 
@@ -16,7 +16,7 @@ class Kreator(models.Model):
     idkor = models.IntegerField(db_column='IdKor', primary_key=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed =  True
         db_table = 'kreator'
         app_label = 'profiles'
 
@@ -26,7 +26,7 @@ class Kupac(models.Model):
     idkor = models.IntegerField(db_column='IdKor', primary_key=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed =  True
         db_table = 'kupac'
         app_label = 'profiles'
 
@@ -42,7 +42,7 @@ class Registrovanikorisnik(models.Model):
     slika = models.TextField(db_column='Slika')  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed =  True
         db_table = 'registrovanikorisnik'
         app_label = 'profiles'
 

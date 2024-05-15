@@ -3,6 +3,8 @@
 import django.db.models.deletion
 from django.db import migrations, models
 
+from profiles.models import Registrovanikorisnik
+
 
 class Migration(migrations.Migration):
 
@@ -12,113 +14,28 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='Korisnik',
-            fields=[
-                ('idkor', models.AutoField(db_column='IdKor', primary_key=True, serialize=False)),
-                ('korime', models.CharField(db_column='KorIme', max_length=32)),
-                ('sifra', models.CharField(db_column='Sifra', max_length=32)),
-            ],
-            options={
-                'db_table': 'korisnik',
-                'managed': False,
-            },
-        ),
+
         migrations.CreateModel(
             name='Listanft',
             fields=[
                 ('idlis', models.AutoField(db_column='IdLis', primary_key=True, serialize=False)),
                 ('ukupnavrednost', models.FloatField(db_column='UkupnaVrednost')),
                 ('brojnft', models.IntegerField(db_column='BrojNFT')),
+                ('idvla',
+                 models.ForeignKey('profiles.Registrovanikorisnik', on_delete=models.DO_NOTHING, db_column='IdVla',
+                                   null=True)),
             ],
             options={
                 'db_table': 'listanft',
-                'managed': False,
+                'managed': True,
             },
         ),
+
+
+
+
         migrations.CreateModel(
-            name='Kreator',
-            fields=[
-                ('idkor', models.IntegerField(db_column='IdKor', primary_key=True, serialize=False)),
-            ],
-            options={
-                'db_table': 'kreator',
-                'managed': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='Kupac',
-            fields=[
-                ('idkor', models.IntegerField(db_column='IdKor', primary_key=True, serialize=False)),
-            ],
-            options={
-                'db_table': 'kupac',
-                'managed': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='Nft',
-            fields=[
-                ('idnft', models.AutoField(db_column='IdNFT', primary_key=True, serialize=False)),
-                ('naziv', models.CharField(db_column='Naziv', max_length=20)),
-                ('vrednost', models.FloatField(db_column='Vrednost')),
-                ('prosecnaocena', models.DecimalField(db_column='ProsecnaOcena', decimal_places=0, max_digits=10)),
-                ('opis', models.CharField(db_column='Opis', max_length=18)),
-                ('slika', models.TextField(db_column='Slika')),
-            ],
-            options={
-                'db_table': 'nft',
-                'managed': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='Zahtevzaregistraciju',
-            fields=[
-                ('idzah', models.AutoField(db_column='IdZah', primary_key=True, serialize=False)),
-                ('ime', models.CharField(db_column='Ime', max_length=20)),
-                ('prezime', models.CharField(db_column='Prezime', max_length=20)),
-                ('email', models.CharField(db_column='Email', max_length=50)),
-                ('brojtelefona', models.CharField(db_column='BrojTelefona', max_length=20)),
-                ('datumrodjenja', models.DateTimeField(db_column='DatumRodjenja')),
-                ('mestorodjenja', models.CharField(db_column='MestoRodjenja', max_length=20)),
-                ('brojkartice', models.DecimalField(db_column='BrojKartice', decimal_places=0, max_digits=10)),
-                ('uloga', models.CharField(blank=True, db_column='Uloga', max_length=11, null=True)),
-            ],
-            options={
-                'db_table': 'zahtevzaregistraciju',
-                'managed': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='Administrator',
-            fields=[
-                ('idkor', models.OneToOneField(db_column='IdKor', on_delete=django.db.models.deletion.DO_NOTHING, primary_key=True, serialize=False, to='exhibitions.korisnik')),
-            ],
-            options={
-                'db_table': 'administrator',
-                'managed': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='Registrovanikorisnik',
-            fields=[
-                ('idkor', models.OneToOneField(db_column='IdKor', on_delete=django.db.models.deletion.DO_NOTHING, primary_key=True, serialize=False, to='exhibitions.korisnik')),
-                ('ime', models.CharField(db_column='Ime', max_length=20)),
-                ('prezime', models.CharField(db_column='Prezime', max_length=20)),
-                ('email', models.CharField(db_column='Email', max_length=50)),
-                ('brojtelefona', models.CharField(db_column='BrojTelefona', max_length=20)),
-                ('datumrodjenja', models.DateTimeField(db_column='DatumRodjenja')),
-                ('mestorodjenja', models.CharField(db_column='MestoRodjenja', max_length=20)),
-                ('brojkartice', models.DecimalField(db_column='BrojKartice', decimal_places=0, max_digits=10)),
-                ('slika', models.TextField(db_column='Slika')),
-            ],
-            options={
-                'db_table': 'registrovanikorisnik',
-                'managed': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='Izloba',
+            name='Izlozba',
             fields=[
                 ('idlis', models.OneToOneField(db_column='IdLis', on_delete=django.db.models.deletion.DO_NOTHING, primary_key=True, serialize=False, to='exhibitions.listanft')),
                 ('naziv', models.CharField(blank=True, db_column='Naziv', max_length=18, null=True)),
@@ -126,8 +43,8 @@ class Migration(migrations.Migration):
                 ('prosecnaocena', models.CharField(blank=True, db_column='ProsecnaOcena', max_length=18, null=True)),
             ],
             options={
-                'db_table': 'izložba',
-                'managed': False,
+                'db_table': 'izlozba',
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -137,7 +54,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'kolekcija',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -147,38 +64,24 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'portfolio',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
             name='Pripada',
             fields=[
                 ('idlis', models.OneToOneField(db_column='IdLis', on_delete=django.db.models.deletion.DO_NOTHING, primary_key=True, serialize=False, to='exhibitions.listanft')),
-            ],
+
+                ('idnft', models.ForeignKey(db_column='IdNFT', default=-1, on_delete=django.db.models.deletion.DO_NOTHING, to='nft.nft')),
+],
             options={
                 'db_table': 'pripada',
-                'managed': False,
+                'managed': True,
             },
         ),
-        migrations.CreateModel(
-            name='Kolekcionar',
-            fields=[
-                ('idkor', models.OneToOneField(db_column='IdKor', on_delete=django.db.models.deletion.DO_NOTHING, primary_key=True, serialize=False, to='exhibitions.registrovanikorisnik')),
-            ],
-            options={
-                'db_table': 'kolekcionar',
-                'managed': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='Ocena',
-            fields=[
-                ('idkor', models.OneToOneField(db_column='IdKor', on_delete=django.db.models.deletion.DO_NOTHING, primary_key=True, serialize=False, to='exhibitions.registrovanikorisnik')),
-                ('ocena', models.IntegerField(db_column='Ocena')),
-            ],
-            options={
-                'db_table': 'ocena',
-                'managed': False,
-            },
-        ),
+        migrations.AlterUniqueTogether(
+            name='pripada',
+            unique_together={('idlis', 'idnft')},
+        )
+
     ]

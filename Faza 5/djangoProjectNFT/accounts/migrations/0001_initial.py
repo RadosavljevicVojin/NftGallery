@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'korisnik',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -29,17 +29,19 @@ class Migration(migrations.Migration):
             fields=[
                 ('idzah', models.AutoField(db_column='IdZah', primary_key=True, serialize=False)),
                 ('ime', models.CharField(db_column='Ime', max_length=20)),
+                ('korime', models.CharField(db_column='KorIme', max_length=32, default='')),  # Field name made lowercase.
+                ('sifra' ,models.CharField(db_column='Sifra', max_length=128, null=True)),  # Field name made lowercase. Povećan max_length zbog hesirane šifre.
                 ('prezime', models.CharField(db_column='Prezime', max_length=20)),
                 ('email', models.CharField(db_column='Email', max_length=50)),
                 ('brojtelefona', models.CharField(db_column='BrojTelefona', max_length=20)),
-                ('datumrodjenja', models.DateTimeField(db_column='DatumRodjenja')),
+                ('datumrodjenja', models.DateField(db_column='DatumRodjenja')),
                 ('mestorodjenja', models.CharField(db_column='MestoRodjenja', max_length=20)),
-                ('brojkartice', models.DecimalField(db_column='BrojKartice', decimal_places=0, max_digits=10)),
+                ('brojkartice', models.CharField(db_column='BrojKartice', max_length=10)),
                 ('uloga', models.CharField(blank=True, db_column='Uloga', max_length=11, null=True)),
             ],
             options={
                 'db_table': 'zahtevzaregistraciju',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -49,7 +51,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'administrator',
-                'managed': False,
+                'managed': True,
             },
         ),
     ]

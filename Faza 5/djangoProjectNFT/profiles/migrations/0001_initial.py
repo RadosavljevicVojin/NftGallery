@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'registrovanikorisnik',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'kreator',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -48,7 +48,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'kupac',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -58,7 +58,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'kolekcionar',
-                'managed': False,
+                'managed': True,
             },
         ),
     ]

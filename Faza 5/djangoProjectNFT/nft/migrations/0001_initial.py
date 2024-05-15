@@ -25,18 +25,42 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'nft',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
             name='Ocena',
             fields=[
-                ('idkor', models.OneToOneField(db_column='IdKor', on_delete=django.db.models.deletion.DO_NOTHING, primary_key=True, serialize=False, to='profiles.registrovanikorisnik')),
+                ('idkor', models.OneToOneField(db_column='IdKor', on_delete=django.db.models.deletion.DO_NOTHING, primary_key=True, serialize=False,  to='profiles.registrovanikorisnik')),
                 ('ocena', models.IntegerField(db_column='Ocena')),
             ],
             options={
                 'db_table': 'ocena',
-                'managed': False,
+                'managed': True,
             },
+        ),
+        migrations.AddField(
+            model_name='nft',
+            name='idkre',
+            field=models.ForeignKey(blank=True, db_column='IdKre', null=True,
+                                    on_delete=django.db.models.deletion.DO_NOTHING, to='profiles.registrovanikorisnik'),
+        ),
+        migrations.AddField(
+            model_name='nft',
+            name='idvla',
+            field=models.ForeignKey(blank=True, db_column='IdVla', null=True,
+                                    on_delete=django.db.models.deletion.DO_NOTHING, related_name='nft_idvla_set',
+                                    to='profiles.registrovanikorisnik'),
+        ),
+        migrations.AddField(
+            model_name='ocena',
+            name='idnft',
+            field=models.ForeignKey(db_column='IdNFT', default=-1, on_delete=django.db.models.deletion.DO_NOTHING,
+                                    to='nft.nft'),
+            preserve_default=False,
+        ),
+        migrations.AlterUniqueTogether(
+            name='ocena',
+            unique_together={('idkor', 'idnft')},
         ),
     ]

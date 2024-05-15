@@ -22,8 +22,8 @@ class Administrator(models.Model):
 
 class Zahtevzaregistraciju(models.Model):
     idzah = models.AutoField(db_column='IdZah', primary_key=True)  # Field name made lowercase.
-    korime = models.CharField(db_column='KorIme', max_length=32)  # Field name made lowercase.
-    sifra = models.CharField(db_column='Sifra', max_length=128)  # Field name made lowercase. Povećan max_length zbog hesirane šifre.
+    korime = models.CharField(db_column='KorIme', max_length=32, default='' ) # Field name made lowercase.
+    sifra = models.CharField(db_column='Sifra', max_length=128, null=True)  # Field name made lowercase. Povećan max_length zbog hesirane šifre.
     ime = models.CharField(db_column='Ime', max_length=20)  # Field name made lowercase.
     prezime = models.CharField(db_column='Prezime', max_length=20)  # Field name made lowercase.
     email = models.CharField(db_column='Email', max_length=50)  # Field name made lowercase.
