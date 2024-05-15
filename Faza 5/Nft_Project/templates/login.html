@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block navbar3 %}
+    <div class="btn-wrap d-flex my-4 my-lg-4 ">
+        <a href="{% url 'login' %}" class="btn btn-linear btn-medium">Prijavi se</a>
+        <a href="{% url 'register' %}" class="btn btn-outline-linear btn-medium m-0">Registruj se</a>
+    </div>
+{% endblock %}
+
+{% block maincontent %}
+    
+    <div class="container col-md-6">
+        <form method="post">
+            <div class="input-row" >
+                <label for="korisnicko-ime">Korisničko ime:</label>
+                <input type="text" id="korisnicko-ime" name="korisnicko-ime" required>
+            </div>
+        
+            <div class="input-row">
+                <label for="sifra">Šifra:</label>
+                <input type="password" id="sifra" name="sifra" required>
+            </div>
+        
+            <div class="input-row">
+                <input type="submit" value="Prijavi se" class="login-button btn-wrap btn-outline-linear" id="register-button">
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        document.getElementById('register-button').addEventListener('click', function(event) {
+            // Za svako polje u formi
+            var inputs = document.querySelectorAll('input, select, textarea');
+            for (var i = 0; i < inputs.length; i++) {
+                // Provera da li je polje required i da li je prazno
+                if (inputs[i].hasAttribute('required') && inputs[i].value.trim() === '') {
+                    alert('Morate popuniti sva obavezna polja.');
+                    event.preventDefault(); // Zaustavljanje slanja forme
+                    return;
+                }
+            }
+            alert('Uspešna prijava!');
+    
+    // Preusmeravanje na index.html
+    window.location.href = 'index_reg.html';
+        });
+    </script>
+    
+{% endblock %}
