@@ -1,31 +1,39 @@
 from MySQLdb import IntegrityError, Date
-from django.contrib.auth import authenticate, login
-from django.http import HttpResponse
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from pyexpat.errors import messages
 
 from .utils import check_data_for_registration
 # Create your views here.
-from .models import Zahtevzaregistraciju, Korisnik
+from .models import Zahtevzaregistraciju, Korisnik, CustomUserManager
+from profiles.models import Registrovanikorisnik, Kupac, Kreator, Kolekcionar
 
+
+
+
+def logout_view(request):
+
+    logout(request)
+    redirect('index')
 def login_page(request):
     if request.method=='POST':
         username = request.POST['username']
         password = request.POST['password']
-        users = Korisnik.objects.all()
-        print("users",users)
 
-        # user= authenticate(request, username=username, sifra=password)
-        # print(user, username, password)
-        #
-        # if user is not None:
-        #     login(request, user)
-        #     print("Logged in successfully")
-        #     return redirect('home')  # Preusmeri korisnika na početnu stranicu nakon uspešnog logina
-        # else:
-        #     print("NOT Logged in successfully")
-        #
-        #     return redirect('register')
+
+        user= authenticate(request, username=username, password=password)
+        print(user, username, password)
+
+        if user is not None:
+            login(request, user)
+            print("Logged in successfully")
+            return redirect('index')  # Preusmeri korisnika na početnu stranicu nakon uspešnog logina
+        else:
+            print("Nema korisnika sa tim usenamemom")
+            return redirect('register')
 
     return render(request, 'login.html')
 
@@ -54,30 +62,24 @@ def register_page(request):
             email = request.POST['email']
             card= request.POST['card']
             user_type = request.POST['user_type']
-
-            print("1")
-
             message = check_data_for_registration(username,birthdate, birthplace,first_name,last_name, phone_number, password, confirm_password, email, card)
             if message=="":
-                print("2")
                 new_request = Zahtevzaregistraciju(korime=username, ime= first_name, prezime=last_name, sifra=password,
                                                        email= email, brojtelefona=phone_number, brojkartice=card,
                                                        datumrodjenja=birthdate, mestorodjenja=birthplace, uloga=user_type)
 
                 new_request.save()
-                print("3")
                 return redirect('index')
 
         except IntegrityError as e:
              message = "Greška pri unosu u bazu: " + str(e)
-
         return render(request, 'signin.html', {'error': message})
-
-
 
     return render(request, 'signin.html')
 
 
+#Natalija
+#Odobravanje zahteva - brisanje iz baze zahtevi, ukoliko je prijavljen pravljenje novog Korisnika
 def registration_request(request):
     if request.method == 'POST':
         for key, value in request.POST.items():
@@ -93,6 +95,28 @@ def registration_request(request):
         if action == 'accept':
             request_to_accept = Zahtevzaregistraciju.objects.get(idzah=id)
             # Implementirajte logiku za stvaranje korisnika s podacima iz request_to_accept objekta
+            # pravljenje korisnika- pa onda Regsitrovanog pa onda tip
+
+            user= Korisnik(username=request_to_accept.korime, user_type=request_to_accept.uloga)
+            user.set_password(request_to_accept.sifra)
+            user.save()
+            reg_user=  Registrovanikorisnik(ime=request_to_accept.ime,
+                                            prezime=request_to_accept.prezime, brojkartice=request_to_accept.brojkartice,
+                                            brojtelefona=request_to_accept.brojtelefona, datumrodjenja=request_to_accept.datumrodjenja,
+                                            mestorodjenja=request_to_accept.mestorodjenja, email=request_to_accept.email, idkor=user, slika= "PUTANJA DO SLIKE PROMENITI")
+
+            reg_user.save()
+
+            if  request_to_accept.uloga=="kreator":
+                role= Kreator(idkor=reg_user.idkor.idkor)
+                role.save()
+
+            elif request_to_accept.uloga=="kupac":
+                role = Kupac(idkor=reg_user.idkor)
+                role.save()
+            elif request_to_accept.uloga=="kolekcionar":
+                role = Kolekcionar(idkor=reg_user.idkor.idkor)
+                role.save()
             request_to_accept.delete()
 
         elif action == 'reject':

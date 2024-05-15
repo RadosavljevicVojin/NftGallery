@@ -4,6 +4,7 @@ from accounts import views as accounts_views  # Uvozite pogled iz exhibitions ap
 urlpatterns = [
     path("login", accounts_views.login_page, name="login"),
     path("register", accounts_views.register_page, name="register"),
-    path("reg_requests", accounts_views.registration_request, name="reg_requests")
+    path("reg_requests", accounts_views.registration_request, name="reg_requests"),
+    path("logout", accounts_views.logout_view, name="logout"),
 
 ]

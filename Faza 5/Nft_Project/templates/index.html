@@ -73,7 +73,6 @@
 {% endblock %}
 
 {% block navbar1 %}
-    
     <li class="menu-item ">
         <form class="search-form" action=".." method="GET">
             <input type="search" id="search-input" name="q" placeholder="Pretraži..." class="form-control placeholder-color" style="color: black;">
@@ -85,11 +84,54 @@
     
 {% endblock %}
 
+{% block navbar2 %}
+     {% if request.user.is_authenticated %}
+            {% if request.user.user_type == 'kreator' %}
+                
+       <li class="menu-item ">
+                <a href="create_NFT_reg.html" class="item-anchor active" data-effect="Home">Kreiraj
+                    NFT</a>
+        </li>
+        <li class="menu-item ">
+            <a href="create_exhibition_reg.html" class="item-anchor active"
+                data-effect="Home">Napravi
+                izložbu</a>
+        </li>
+            {% elif request.user.user_type == 'kolekcionar'  %}
+        <li class="menu-item ">
+                
+            {% endif %}
+     {% endif %}
+
+    
+{% endblock %}
+
+
 {% block navbar3 %}
+
+    {% if request.user.is_authenticated %}
+            {% if request.user.user_type == 'admin' %}
+                
+             <div class="btn-wrap d-flex my-4 my-lg-4 ">
+
+    <a href="{% url 'reg_requests' %}" class="btn btn-linear btn-medium">Zahtevi za registraciju se</a>
+    <a href="{% url 'logout' %}" class="btn btn-outline-linear btn-medium m-0">Odjavi se</a>
+    </div>
+            {% else %}
+                <div class="btn-wrap d-flex my-4 my-lg-4 ">
+            <a href="{% url 'login' %}" class="btn btn-linear btn-medium">Moj profil</a>
+            <a href="{% url 'logout' %}" class="btn btn-outline-linear btn-medium m-0">Odjavi se</a>
+                </div>
+
+            {% endif %}
+        
+    {% else %}
     <div class="btn-wrap d-flex my-4 my-lg-4 ">
         <a href="{% url 'login' %}" class="btn btn-linear btn-medium">Prijavi se</a>
         <a href="{% url 'register' %}" class="btn btn-outline-linear btn-medium m-0">Registruj se</a>
     </div>
+{% endif %}
+    
 {% endblock %}
 
 {% block maincontent %}
