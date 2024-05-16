@@ -13,7 +13,7 @@ class Kolekcionar(models.Model):
 
 
 class Kreator(models.Model):
-    idkor = models.IntegerField(db_column='IdKor', primary_key=True)  # Field name made lowercase.
+    idkor = models.OneToOneField('Registrovanikorisnik', models.DO_NOTHING, db_column='IdKor', primary_key=True)  # Field name made lowercase.
 
     class Meta:
         managed =  True
@@ -23,7 +23,7 @@ class Kreator(models.Model):
 
 
 class Kupac(models.Model):
-    idkor = models.IntegerField(db_column='IdKor', primary_key=True)  # Field name made lowercase.
+    idkor = models.OneToOneField('Registrovanikorisnik', models.DO_NOTHING, db_column='IdKor', primary_key=True)
 
     class Meta:
         managed =  True

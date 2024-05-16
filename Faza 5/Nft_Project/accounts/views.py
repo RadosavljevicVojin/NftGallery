@@ -17,7 +17,8 @@ from profiles.models import Registrovanikorisnik, Kupac, Kreator, Kolekcionar
 def logout_view(request):
 
     logout(request)
-    redirect('index')
+    return redirect('index')
+
 def login_page(request):
     if request.method=='POST':
         username = request.POST['username']
@@ -108,14 +109,14 @@ def registration_request(request):
             reg_user.save()
 
             if  request_to_accept.uloga=="kreator":
-                role= Kreator(idkor=reg_user.idkor.idkor)
+                role= Kreator(idkor=reg_user)
                 role.save()
 
             elif request_to_accept.uloga=="kupac":
-                role = Kupac(idkor=reg_user.idkor)
+                role = Kupac(idkor=reg_user)
                 role.save()
             elif request_to_accept.uloga=="kolekcionar":
-                role = Kolekcionar(idkor=reg_user.idkor.idkor)
+                role = Kolekcionar(idkor=reg_user)
                 role.save()
             request_to_accept.delete()
 
