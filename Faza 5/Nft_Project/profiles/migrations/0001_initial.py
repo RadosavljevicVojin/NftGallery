@@ -61,4 +61,16 @@ class Migration(migrations.Migration):
                 'managed': True,
             },
         ),
+        migrations.AlterField(
+            model_name='kreator',
+            name='idkor',
+            field=models.OneToOneField(db_column='IdKor', on_delete=django.db.models.deletion.DO_NOTHING,
+                                       primary_key=True, serialize=False, to='profiles.registrovanikorisnik'),
+        ),
+        migrations.AlterField(
+            model_name='kupac',
+            name='idkor',
+            field=models.OneToOneField(db_column='IdKor', on_delete=django.db.models.deletion.DO_NOTHING,
+                                       primary_key=True, serialize=False, to='profiles.registrovanikorisnik'),
+        ),
     ]

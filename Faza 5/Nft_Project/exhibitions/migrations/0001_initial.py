@@ -70,18 +70,22 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Pripada',
             fields=[
-                ('idlis', models.OneToOneField(db_column='IdLis', on_delete=django.db.models.deletion.DO_NOTHING, primary_key=True, serialize=False, to='exhibitions.listanft')),
+                ( 'idpri',models.AutoField(db_column='IdPri', primary_key=True, serialize=False)),
 
-                ('idnft', models.ForeignKey(db_column='IdNFT', default=-1, on_delete=django.db.models.deletion.DO_NOTHING, to='nft.nft')),
+                ('idlis', models.OneToOneField(db_column='IdLis', on_delete=django.db.models.deletion.DO_NOTHING,  serialize=False, to='exhibitions.listanft')),
+
+                ('idnft', models.OneToOneField(db_column='IdNFT', on_delete=django.db.models.deletion.DO_NOTHING, to='nft.nft')),
 ],
             options={
                 'db_table': 'pripada',
                 'managed': True,
             },
         ),
-        migrations.AlterUniqueTogether(
-            name='pripada',
-            unique_together={('idlis', 'idnft')},
+        migrations.AlterField(
+            model_name='pripada',
+            name='idlis',
+            field=models.OneToOneField(db_column='IdLis', on_delete=django.db.models.deletion.DO_NOTHING,
+                                       to='exhibitions.listanft'),
         )
 
     ]

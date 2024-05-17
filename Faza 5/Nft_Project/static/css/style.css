@@ -87,6 +87,69 @@ CSS STRUCTURE:
 
 
 
+.swiper-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.swiper-slide {
+    width: 25%;
+    flex-shrink: 0;
+}
+
+/* Dodatni stil za carousel-item */
+.carousel-item {
+    min-height: 280px;
+}
+
+.input-row {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.input-row label {
+    width: 120px;
+}
+
+.input-row input {
+    flex: 1;
+    padding: 5px;
+}
+
+.back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+}
+
+.back-button:hover {
+    background-color: #ddd;
+}
+
+.login-button {
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+}
+
+.login-button:hover {
+    background-color: #ddd;
+}
+
+
 .slides {
   display: flex;
   overflow-x: auto;

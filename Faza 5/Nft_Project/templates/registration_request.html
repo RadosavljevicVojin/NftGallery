@@ -1,93 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'baseNavBar.html' %}
 
-{% block additional_style %}
 
-    <style>
-
-        .swiper-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        }
-
-        .swiper-slide {
-            width: 25%;
-            flex-shrink: 0;
-        }
-
-        /* Dodatni stil za carousel-item */
-        .carousel-item {
-            min-height: 280px;
-        }
-
-        .input-row {
-            display: flex;
-            margin-bottom: 10px;
-        }
-
-        .input-row label {
-            width: 120px;
-        }
-
-        .input-row input {
-            flex: 1;
-            padding: 5px;
-        }
-
-        .back-button {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 10px;
-            background-color: #f0f0f0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            color: #333;
-        }
-
-        .back-button:hover {
-            background-color: #ddd;
-        }
-
-        .login-button {
-            padding: 10px;
-            background-color: #f0f0f0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            color: #333;
-        }
-
-        .login-button:hover {
-            background-color: #ddd;
-        }
-
-    </style>
-
-{% endblock %}
-
-{% block navbar1 %}
-     <li class="menu-item ">
-        <form class="search-form" action=".." method="GET">
-            <input type="search" id="search-input" name="q" placeholder="Pretraži..." class="form-control placeholder-color"  >
-        </form>
-     </li>
-    <li class="menu-item ">
-        <button type="button" class="search-btn btn btn-outline-linear btn-medium" onclick="pretrazi()">Pretraži</button>
-    </li>
-
-{% endblock %}
-{% block navbar3 %}
-    <div class="btn-wrap d-flex my-4 my-lg-4 ">
-    <a href="{% url 'login' %}" class="btn btn-linear btn-medium">Zahtevi za registraciju</a>
-    <a href="{% url 'register' %}" class="btn btn-outline-linear btn-medium m-0">Odjavi se</a>
-    </div>
-
-{% endblock %}
 
 {% block maincontent %}
     <div class="container mt-8">
@@ -108,7 +21,7 @@
 
         <tbody>
             {% for zahtev in zahtevi %}
-            <tr >
+            <tr>
 
                 <td>{{ zahtev.ime }} {{ zahtev.prezime }}</td>
                 <td>{{ zahtev.korime }}</td>

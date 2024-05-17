@@ -58,13 +58,13 @@ class Portfolio(models.Model):
 
 
 class Pripada(models.Model):
-    idlis = models.OneToOneField(Listanft, models.DO_NOTHING, db_column='IdLis', primary_key=True)  # Field name made lowercase. The composite primary key (IdLis, IdNFT) found, that is not supported. The first column is selected.
-    idnft = models.ForeignKey(Nft, models.DO_NOTHING, db_column='IdNFT', default=-1)  # Field name made lowercase.
+    idpri = models.AutoField(db_column='IdPri', primary_key=True)  # Field name made lowercase.
+    idlis = models.OneToOneField(Listanft, models.DO_NOTHING, db_column='IdLis')  # Field name made lowercase. The composite primary key (IdLis, IdNFT) found, that is not supported. The first column is selected.
+    idnft = models.OneToOneField(Nft, models.DO_NOTHING, db_column='IdNFT')  # Field name made lowercase.
 
     class Meta:
         managed = True
         db_table = 'pripada'
-        unique_together = (('idlis', 'idnft'),)
         app_label = 'exhibitions'
 
 

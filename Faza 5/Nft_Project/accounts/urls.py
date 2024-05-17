@@ -6,5 +6,6 @@ urlpatterns = [
     path("register", accounts_views.register_page, name="register"),
     path("reg_requests", accounts_views.registration_request, name="reg_requests"),
     path("logout", accounts_views.logout_view, name="logout"),
+    path("error", accounts_views.error_view, name="error")
 
 ]

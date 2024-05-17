@@ -1,0 +1,152 @@
+{% extends 'baseNavBar.html' %}
+{% block additional_style %}
+       <style>
+        /* Dodatni stil za centriranje i postavljanje slika */
+        .swiper-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .swiper-slide {
+            width: 25%;
+            flex-shrink: 0;
+        }
+
+        /* Dodatni stil za carousel-item */
+        .carousel-item {
+            min-height: 280px;
+        }
+    </style>
+ <style>
+    /* Dodatni stil za prilagođavanje izgleda */
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .profile-container {
+        background-color: #fff;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-picture {
+        max-width: 150px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+    }
+
+    .profile-info label {
+        font-weight: bold;
+    }
+
+    .user-options ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .user-options li {
+        margin-bottom: 10px;
+    }
+
+    .info-row{
+        font-size: 30px;
+    }
+
+    .rating {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.rating > input {
+    display: none;
+}
+
+.rating > label {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.rating > label:before {
+    content: '\2605';
+    font-size: 36px;
+}
+
+.rating > input:checked ~ label:before,
+.rating > input:checked ~ label ~ label:before {
+    content: '\2606';
+}
+
+</style>
+
+<style>
+  /* Dodatna margina između carousela */
+  #myCarousel1,
+  #myCarousel2 {
+      margin-bottom: 20px; /* Prilagodite vrednost prema potrebi */
+  }
+</style>
+</head>
+
+<style>
+    /* Stilizacija tekstualnih polja */
+    input[type="text"],
+    textarea {
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        width: 100%;
+    }
+
+    /* Stilizacija labela */
+    label {
+        font-weight: bold;
+    }
+</style>
+{%  endblock %}
+
+
+
+{% block maincontent %}
+    {%  load static %}
+    <div class="padding-medium">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 style="font-weight:bold; font-size:50; text-align: center; color:white; margin-bottom: 100px;">Kreiranje NFT</h1>
+                </div>
+            <div class="row ">
+                <div class="col-md-6 col-sm-12">
+                    <img src="{% static 'images/collection-item1.jpg' %}" alt="" class="img-fluid">
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <form>
+                        <label for="fileUpload">Postavi datoteku:</label>
+                        <input type="file" id="fileUpload" name="fileUpload"><br>
+
+                        <label for="nftName">Ime NFT:</label>
+                        <input type="text" id="nftName" name="nftName"><br>
+
+                        <label for="nftPrice">Cena NFT:</label>
+                        <input type="text" id="nftPrice" name="nftPrice"><br>
+
+                        <label for="nftDescription">Opis NFT:</label>
+                        <textarea id="nftDescription" name="nftDescription" rows="4" cols="50"></textarea>
+                        
+                        <button  type="submit" id="submitBtn" class="btn btn-lg"  type="button"
+                             style="background-color: #8D52F5; margin-top: 58px;">Potvrdi
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>>
+
+
+{% endblock %}

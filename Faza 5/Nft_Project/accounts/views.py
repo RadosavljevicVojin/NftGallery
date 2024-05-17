@@ -1,11 +1,12 @@
 from MySQLdb import IntegrityError, Date
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from pyexpat.errors import messages
 
+from common.decoraters import is_admin
 from .utils import check_data_for_registration
 # Create your views here.
 from .models import Zahtevzaregistraciju, Korisnik, CustomUserManager
@@ -13,12 +14,14 @@ from profiles.models import Registrovanikorisnik, Kupac, Kreator, Kolekcionar
 
 
 
-
+#Natalija - logout
+@login_required(login_url='/accounts/error/')
 def logout_view(request):
 
     logout(request)
     return redirect('index')
 
+#Natalija - logovanje na sistem
 def login_page(request):
     if request.method=='POST':
         username = request.POST['username']
@@ -38,10 +41,6 @@ def login_page(request):
 
     return render(request, 'login.html')
 
-
-
-
-    return render(request, 'login.html')
 
 
 # Natalija
@@ -81,6 +80,8 @@ def register_page(request):
 
 #Natalija
 #Odobravanje zahteva - brisanje iz baze zahtevi, ukoliko je prijavljen pravljenje novog Korisnika
+@login_required( login_url='/accounts/error')
+@user_passes_test(is_admin, login_url='/accounts/error')
 def registration_request(request):
     if request.method == 'POST':
         for key, value in request.POST.items():
@@ -129,3 +130,7 @@ def registration_request(request):
 
     return render(request, 'registration_request.html', {'zahtevi': requests})
 
+def error_view(request):
+    error_code='403'
+    error_message='permission denied'
+    return render(request, 'error.html', {'error_code': error_code, 'error_message': error_message})
