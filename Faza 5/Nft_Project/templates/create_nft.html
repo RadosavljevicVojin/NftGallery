@@ -111,42 +111,125 @@
 {%  endblock %}
 
 
-
 {% block maincontent %}
     {%  load static %}
     <div class="padding-medium">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h1 style="font-weight:bold; font-size:50; text-align: center; color:white; margin-bottom: 100px;">Kreiranje NFT</h1>
+                    <h1 style="font-weight:bold; font-size:50px; text-align: center; color:white; margin-bottom: 100px;">Kreiranje NFT</h1>
                 </div>
-            <div class="row ">
-                <div class="col-md-6 col-sm-12">
-                    <img src="{% static 'images/collection-item1.jpg' %}" alt="" class="img-fluid">
-                </div>
-                <div class="col-md-6 col-sm-12">
-                    <form>
-                        <label for="fileUpload">Postavi datoteku:</label>
-                        <input type="file" id="fileUpload" name="fileUpload"><br>
+                <div class="row ">
+                    <div class="col-md-6 col-sm-12">
+                        <img src="{% static 'images/empty_file.png' %}" alt="" class="img-fluid" style="width: 512px; height: 512px">
+                    </div>
+                    <div class="col-md-6 col-sm-12">
 
-                        <label for="nftName">Ime NFT:</label>
-                        <input type="text" id="nftName" name="nftName"><br>
+                        <div id="postaviDatoteku" style="display: inline-block; font-size: 30px;">
+                           Postavi datoteku
+                        </div>
+                        <div id="preuzmiDatoteku" style="display: inline-block; font-size: 30px; margin-left: 100px">
+                           Preuzmi datoteku
+                        </div>
 
-                        <label for="nftPrice">Cena NFT:</label>
-                        <input type="text" id="nftPrice" name="nftPrice"><br>
+                        <br>
 
-                        <label for="nftDescription">Opis NFT:</label>
-                        <textarea id="nftDescription" name="nftDescription" rows="4" cols="50"></textarea>
-                        
-                        <button  type="submit" id="submitBtn" class="btn btn-lg"  type="button"
-                             style="background-color: #8D52F5; margin-top: 58px;">Potvrdi
-                        </button>
-                    </form>
+                        <div>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div id="uploadForm" style="display:block;">
+                                <label for="fileUpload">Izaberi datoteku:</label>
+                                <input type="file" id="fileUpload" name="fileUpload"><br>
+                            </div>
+
+                            <div id="downloadForm" style="display:none;">
+                                <label for="nft_url">URL adresa:</label>
+                                <input type="text" id="nft_url" name="nft_url" placeholder="Unesite URL do NFT-a"><br>
+                                 <button type="button" id="showNftButton">Prikazi NFT</button><br>
+                            </div>
+
+                            <label for="nftName">Ime NFT:</label>
+                            <input type="text" id="nftName" name="nftName"><br>
+
+                            <label for="nftPrice">Cena NFT:</label>
+                            <input type="text" id="nftPrice" name="nftPrice"><br>
+
+                            <label for="nftDescription">Opis NFT:</label>
+                            <textarea id="nftDescription" name="nftDescription" rows="4" cols="50"></textarea>
+
+                            <button type="submit" id="submitBtn" class="btn btn-lg"  type="button" style="background-color: #8D52F5; margin-top: 58px;">Potvrdi</button>
+                        </form>
+                    </div>
+
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>>
 
+<script>
+
+    document.getElementById('postaviDatoteku').addEventListener('click', function() {
+                uploadForm.style.display = 'block';
+                downloadForm.style.display = 'none';
+                document.querySelector('.col-md-6 img').src = "../static/images/empty_file.png/";
+    });
+    document.getElementById('preuzmiDatoteku').addEventListener('click', function() {
+                downloadForm.style.display = 'block';
+                uploadForm.style.display = 'none';
+                document.querySelector('.col-md-6 img').src = "../static/images/empty_file.png/";
+
+
+    });
+
+    document.getElementById('showNftButton').addEventListener('click', function() {
+
+            // Get contract address and token ID from input fields
+            const nftUrl = document.getElementById('nft_url').value;
+
+            const parts = nftUrl.split('/');
+
+            const token_id = parts.pop(); // Poslednji element u nizu
+            const contractAddress = parts.pop(); // Pretposlednji element u nizu
+
+            // OpenSea API Endpoint for fetching NFT metadata for a single NFT: https://docs.opensea.io/reference/get_nft
+            const apiUrl = 'https://api.opensea.io/api/v2/chain/ethereum/contract/' + contractAddress + '/nfts/' + token_id;
+            console.log(apiUrl);
+
+            // Make a fetch request to the API with headers
+            fetch(apiUrl, {
+                headers: {
+                    'X-API-KEY': `e0d9ad00e95945918aec9ec56c057650`,
+                    'Content-Type': 'application/json',
+                    // Add any other headers required by your API
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+
+                    document.querySelector('.col-md-6 img').src = data.nft.image_url;
+                    document.querySelector('#nftName').value = data.nft.name
+                    document.querySelector('#nftDescription').value = data.nft.description;
+
+                })
+                .catch(error => {
+                    console.error('Error fetching image:', error);
+                });
+    });
+</script>
+
+<script>
+    document.getElementById('fileUpload').addEventListener('change', function() {
+    const file = this.files[0];     if (file) {
+        const reader = new FileReader(); // Kreiramo FileReader objekat
+        reader.onload = function(e) {
+            document.querySelector('.col-md-6 img').src = e.target.result; // Postavljamo izabranu sliku
+        }
+        reader.readAsDataURL(file); // Čitamo datoteku kao URL
+    }
+});
+</script>
 
 {% endblock %}
