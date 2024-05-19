@@ -1,11 +1,15 @@
+import os
+
 from MySQLdb import IntegrityError, Date
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.files import File
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from pyexpat.errors import messages
 
+from Nft_Project import settings
 from common.decoraters import is_admin
 from .utils import check_data_for_registration
 # Create your views here.
@@ -102,12 +106,21 @@ def registration_request(request):
             user= Korisnik(username=request_to_accept.korime, user_type=request_to_accept.uloga)
             user.set_password(request_to_accept.sifra)
             user.save()
+
+
             reg_user=  Registrovanikorisnik(ime=request_to_accept.ime,
                                             prezime=request_to_accept.prezime, brojkartice=request_to_accept.brojkartice,
                                             brojtelefona=request_to_accept.brojtelefona, datumrodjenja=request_to_accept.datumrodjenja,
-                                            mestorodjenja=request_to_accept.mestorodjenja, email=request_to_accept.email, idkor=user, slika= "PUTANJA DO SLIKE PROMENITI")
+                                            mestorodjenja=request_to_accept.mestorodjenja, email=request_to_accept.email, idkor=user)
+
+
 
             reg_user.save()
+            image_path = os.path.join(settings.BASE_DIR, 'static/images/def_profile.png')
+            with open(image_path, 'rb') as f:
+                slika = File(f)
+                # Postavljanje slike korisniku
+                reg_user.slika.save('def_profile.jpg', slika, save=True)
 
             if  request_to_accept.uloga=="kreator":
                 role= Kreator(idkor=reg_user)

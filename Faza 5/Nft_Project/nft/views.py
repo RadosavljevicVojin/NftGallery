@@ -6,7 +6,6 @@ from common.decoraters import is_creator
 from .models import Nft
 from profiles.models import Registrovanikorisnik
 
-import requests
 
 from urllib.parse import urlparse
 

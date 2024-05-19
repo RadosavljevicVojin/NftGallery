@@ -1,22 +1,8 @@
-{% extends 'baseNavBar.html' %}
+{% extends 'base_nav_bar.html' %}
 
 {% block maincontent %}
     
-    <script>
-        function pretrazi() {
-            var searchValue = document.getElementById('search-input').value.toLowerCase();
-            if (searchValue.includes('kreator')) {
-                window.location.href = 'creator_profile_about_view.html';
-            } else if (searchValue.includes('kupac')) {
-                window.location.href = 'buyer_profile_about_view.html';
-            } else if (searchValue.includes('kolekcionar')) {
-                window.location.href = 'collector_profile_about_view.html';
-            } else {
-                alert("Unesite: kreator, kupac ili kolekcionar!");
-            }
-               
-        }
-    </script>
+  
 
     {% load static %}
     <div class="container">
