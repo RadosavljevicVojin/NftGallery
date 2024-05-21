@@ -37,8 +37,8 @@ class Registrovanikorisnik(models.Model):
     mestorodjenja = models.CharField(db_column='MestoRodjenja', max_length=20)  # Field name made lowercase.
     brojkartice = models.DecimalField(db_column='BrojKartice', max_digits=10, decimal_places=0)  # Field name made lowercase.
     slika = models.ImageField(db_column='Slika',upload_to='profile_images/', default='profile_images/default.jpg')
-    prodatihNFT = models.IntegerField(default=0)
-    kupljenihNFT = models.IntegerField(default=0)
+    prodatihNFT = models.IntegerField(default=0, db_column='prodatihNft')
+    kupljenihNFT = models.IntegerField(default=0, db_column='kupljenihNft')
     datumkreiranja = models.DateField(db_column='DatumKreiranja', null=True, blank=True)  # New field for account creation date
 
     class Meta:

@@ -8,6 +8,7 @@ from common.decoraters import is_creator
 from .models import Nft
 from profiles.models import Registrovanikorisnik
 from django.shortcuts import render, get_object_or_404
+from exhibitions.models import Kolekcija, Portfolio, Pripada, Listanft
 
 from urllib.parse import urlparse
 
@@ -24,10 +25,11 @@ API_KEY = "e0d9ad00e95945918aec9ec56c057650"
 def get_nft_data(nft_url):
     parsed_url = urlparse(nft_url)
     path_parts = parsed_url.path.split('/')
+    chain = path_parts[-3]
     nft_contract_address = path_parts[-2]
     nft_token_id = path_parts[-1]
 
-    api_url = 'https://api.opensea.io/api/v2/chain/ethereum/contract/' + nft_contract_address + '/nfts/' + nft_token_id
+    api_url = 'https://api.opensea.io/api/v2/chain/' + chain + '/contract/' + nft_contract_address + '/nfts/' + nft_token_id
     headers = {
         "Accept": "application/json",
         "X-API-KEY": "e0d9ad00e95945918aec9ec56c057650"
@@ -85,10 +87,22 @@ def create_nft(request):
 
             nft.save()
 
-            # Display svih nft-ova u bazi
-            """
-            nfts = Nft.objects.all())
-            return render(request,'preview.html', {'nfts':nfts})"""
+            creator_lists = Listanft.objects.filter(idvla=creator)
+            all_collections = Kolekcija.objects.all()
+            for creator_list in creator_lists:
+                for collection in all_collections:
+                    if creator_list == collection.idlis:
+                        belong = Pripada(idlis = creator_list, idnft = nft)
+                        belong.save()
+
+            if request.user.user_type == 'kreator':
+                all_portfolios = Portfolio.objects.all()
+                for creator_list in creator_lists:
+                    for portfolio in all_portfolios:
+                        if creator_list == portfolio.idlis:
+                            belong = Pripada(idlis=creator_list, idnft=nft)
+                            belong.save()
+
 
             return redirect('index')
 
@@ -100,23 +114,17 @@ def create_nft(request):
 
 
 def nft_review(request):
-    context = dict()
-    nft = Nft.objects.get(idnft = 2)
+    nft = Nft.objects.get(idnft=1)
+    nft_data = {
+        'nft': nft,
+        'data': None
+    }
+    if nft.slika == "":
+        nft_data['data'] = get_nft_data(nft.url)
 
-    if nft.slika is "":
 
-        nft_url = nft.url
-        data = get_nft_data(nft_url)
-        context['data'] = data
+    context = {"nft":nft_data}
 
-    context['ime'] = nft.naziv
-
-    context['vlasnik'] = nft.idvla.idkor
-    context['kreator'] = nft.idkre.idkor
-    context['vrednost'] = nft.vrednost
-    context['ocena'] = nft.prosecnaocena
-    context['opis'] = nft.opis
-    context['nft'] = nft
     return render(request, 'nft_review.html', context)
 
 

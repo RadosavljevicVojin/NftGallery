@@ -16,6 +16,8 @@ from .utils import check_data_for_registration
 # Create your views here.
 from .models import Zahtevzaregistraciju, Korisnik, CustomUserManager
 from profiles.models import Registrovanikorisnik, Kupac, Kreator, Kolekcionar
+from exhibitions.models import Listanft, Kolekcija, Portfolio
+
 
 
 
@@ -117,6 +119,14 @@ def registration_request(request):
 
 
             reg_user.save()
+
+            collection_list = Listanft(idvla=reg_user, ukupnavrednost=0, brojnft=0)
+            collection_list.save()
+
+            # Креирање и чување новог Kolekcija објекта
+            collection = Kolekcija(idlis=collection_list)
+            collection.save()
+
             image_path = os.path.join(settings.BASE_DIR, 'static/images/def_profile.png')
             with open(image_path, 'rb') as f:
                 slika = File(f)
@@ -126,6 +136,12 @@ def registration_request(request):
             if  request_to_accept.uloga=="kreator":
                 role= Kreator(idkor=reg_user)
                 role.save()
+                portfolio_list = Listanft(idvla=reg_user, ukupnavrednost=0, brojnft=0)
+                portfolio_list.save()
+
+                # Креирање и чување новог Kolekcija објекта
+                portfolio = Portfolio(idlis=portfolio_list)
+                portfolio.save()
 
             elif request_to_accept.uloga=="kupac":
                 role = Kupac(idkor=reg_user)

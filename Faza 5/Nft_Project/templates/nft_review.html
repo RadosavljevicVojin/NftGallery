@@ -97,75 +97,77 @@
 
 {% block maincontent %}
     {%  load static %}
-    <div class="padding-medium">
-        <div class="container">
-            <div class="row ">
-                <div class="col-md-6">
-                    {% if data %}
-                        <img src="{{ data.nft.image_url }}" class="d-block w-25" alt="Slide 1">
-                    {% else %}
-                        <img src="{{ nft.slika.url }}" class="d-block w-25" alt="Slide 1">
-                    {% endif %}
-                </div>
-                <div class="col-md-6">
-                    <div class="info-row">
-                        <span style=" font-size: 40px; font-weight: bold;">{{ ime }}</span>
-
+        <div class="padding-medium">
+            <div class="container">
+                <div class="row ">
+                    <div class="col-md-6">
+                        {% if nft.data %}
+                            <img src="{{ nft.data.nft.image_url }}" class="d-block w-25" alt="Slide 1">
+                        {% else %}
+                            <img src="{{ nft.nft.slika.url }}" class="d-block w-25" alt="Slide 1">
+                        {% endif %}
                     </div>
-                    <div class="info-row">
-                        <span class="info-label">Vlasnik: </span>
-                        <a href="creator_profile_about_view.html" class="info-value">@{{ vlasnik }}</a>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Kreator: </span>
-                        <a href="creator_profile_about_view_reg.html" class="info-value">@{{ kreator }}</a>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Trenutna vrednost:</span>
-                        <span class="info-value">{{ vrednost }} ETH</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Prosečna ocena:</span>
-                        <span class="info-value">{{ ocena }}</span>
-                    </div>
-                    <div class="description" style="margin-top: 20px;">
-                        <!--Opis: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero.-->
-                        {{ opis }}
-                    </div>
-                    <!-- ako nije vlasnik -->
-                    <!-- ako je registrovan -->
-                    
-                    {% if request.user.is_authenticated %}
-                    
-                    
-                    <div class="info-row" style="margin-top: 90px;">
-                        <span class="info-label">Kupovina:</span>
-                        <button style="background-color: #8D52F5;" onclick="buyNow()" class="btn btn-lg">Kupi NFT</button>
-                    </div>
-                    <div class="info-row">
-                      
-                        <div class="rating">
-                            <button style="background-color: #8D52F5;" onclick="submitRating()" class="btn btn-lg">Oceni</button>
-                            <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 stars"></label>
-                            <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars"></label>
-                            <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars"></label>
-                            <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars"></label>
-                            <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star"></label>
+                    <div class="col-md-6">
+                        <div class="info-row">
+                            <span style=" font-size: 40px; font-weight: bold;">{{ nft.nft.ime }}</span>
+    
                         </div>
+                        <div class="info-row">
+                            <span class="info-label">Vlasnik: </span>
+                            <a href="creator_profile_about_view.html" class="info-value">@{{ nft.nft.idvla.idkor }}</a>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Kreator: </span>
+                            <a href="creator_profile_about_view_reg.html" class="info-value">@{{ nft.nft.idkre.idkor }}</a>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Trenutna vrednost:</span>
+                            <span class="info-value">{{ nft.nft.vrednost }} ETH</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Prosečna ocena:</span>
+                            <span class="info-value">{{ nft.nft.prosecnaocena }}</span>
+                        </div>
+                        <div class="description" style="margin-top: 20px;">
+                            <!--Opis: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero.-->
+                            {{ nft.nft.opis }}
+                        </div>
+                        <!-- ako nije vlasnik -->
+                        <!-- ako je registrovan -->
+    
+                        {% if request.user.is_authenticated %}
+    
+    
+                        <div class="info-row" style="margin-top: 90px;">
+                            <span class="info-label">Kupovina:</span>
+                            <button style="background-color: #8D52F5;" onclick="buyNow()" class="btn btn-lg">Kupi NFT</button>
+                        </div>
+                        <div class="info-row">
+    
+                            <div class="rating">
+                                <button style="background-color: #8D52F5;" onclick="submitRating()" class="btn btn-lg">Oceni</button>
+                                <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 stars"></label>
+                                <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars"></label>
+                                <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars"></label>
+                                <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars"></label>
+                                <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star"></label>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
-                    {% endif %}
+    
+                    <script>
+    
+                        function submitRating() {
+                            alert("Ne mozete da ocenite, prijavite se ili registrujte se!");
+                        }
+                    </script>
+    
+    
                 </div>
-
-                <script>
-                  
-                    function submitRating() {
-                        alert("Ne mozete da ocenite, prijavite se ili registrujte se!");
-                    }
-                </script>
-
-
             </div>
         </div>
-    </div>
+    
+    
 
 {% endblock %}

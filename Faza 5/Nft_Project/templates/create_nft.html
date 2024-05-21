@@ -175,11 +175,17 @@
                 uploadForm.style.display = 'block';
                 downloadForm.style.display = 'none';
                 document.querySelector('.col-md-6 img').src = "../static/images/empty_file.png/";
+                document.querySelector('#nftName').value = ""
+                document.querySelector('#nftDescription').value = ""
+                document.querySelector('#nftPrice').value = ""
     });
     document.getElementById('preuzmiDatoteku').addEventListener('click', function() {
                 downloadForm.style.display = 'block';
                 uploadForm.style.display = 'none';
                 document.querySelector('.col-md-6 img').src = "../static/images/empty_file.png/";
+                document.querySelector('#nftName').value = ""
+                document.querySelector('#nftDescription').value = ""
+                document.querySelector('#nftPrice').value = ""
 
 
     });
@@ -193,9 +199,14 @@
 
             const token_id = parts.pop(); // Poslednji element u nizu
             const contractAddress = parts.pop(); // Pretposlednji element u nizu
+            const chain = parts.pop();
+
 
             // OpenSea API Endpoint for fetching NFT metadata for a single NFT: https://docs.opensea.io/reference/get_nft
-            const apiUrl = 'https://api.opensea.io/api/v2/chain/ethereum/contract/' + contractAddress + '/nfts/' + token_id;
+            let apiUrl = 'https://api.opensea.io/api/v2/chain/' + chain + '/contract/' + contractAddress + '/nfts/' + token_id;
+            if(chain == "base"){
+                apiUrl = 'https://api.opensea.io/api/v2/chain/' + chain + '/contract/' + contractAddress + '/nfts/';
+            }
             console.log(apiUrl);
 
             // Make a fetch request to the API with headers
@@ -212,6 +223,7 @@
                     document.querySelector('.col-md-6 img').src = data.nft.image_url;
                     document.querySelector('#nftName').value = data.nft.name
                     document.querySelector('#nftDescription').value = data.nft.description;
+                    document.querySelector('#nftPrice').value = data.nft.traits[0].value;
 
                 })
                 .catch(error => {
