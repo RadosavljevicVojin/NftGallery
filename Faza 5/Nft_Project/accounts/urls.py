@@ -6,6 +6,7 @@ urlpatterns = [
     path("register", accounts_views.register_page, name="register"),
     path("reg_requests", accounts_views.registration_request, name="reg_requests"),
     path("logout", accounts_views.logout_view, name="logout"),
+    path("delete_user",  accounts_views.delete_user, name="delete_user"),
     path("error", accounts_views.error_view, name="error")
 
 ]

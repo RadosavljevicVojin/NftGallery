@@ -3,6 +3,8 @@
 {% load static %}
 
 {% block maincontent %}
+     {% block profilemore %}
+    {% endblock %}
 <div class="container mt-5">
 
      <div class="text-center">
@@ -10,8 +12,7 @@
               <h4 class="mb-4">@{{ username }}</h4>
 
     </div>
-    {% block profilemore %}
-    {% endblock %}
+   
         <div id="profileusage" class="row">
             <div class="col-md-3 col-sm-6 text-center">
                 <a href="#" onclick="submitForm('{{ username }}', '{% url 'profile_info' %}')" class="custom-card" id="information">
@@ -59,9 +60,8 @@
                 document.getElementById("profileForm").submit();
             }
         </script>
-
-
-{% endblock %}
-
 {% block profilecontent %}
+    {% endblock %}
+
 {% endblock %}
+

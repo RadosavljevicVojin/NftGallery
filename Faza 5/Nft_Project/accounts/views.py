@@ -1,4 +1,5 @@
 import os
+from datetime import timezone, date
 
 from MySQLdb import IntegrityError, Date
 from django.contrib.auth import authenticate, login, logout
@@ -111,7 +112,7 @@ def registration_request(request):
             reg_user=  Registrovanikorisnik(ime=request_to_accept.ime,
                                             prezime=request_to_accept.prezime, brojkartice=request_to_accept.brojkartice,
                                             brojtelefona=request_to_accept.brojtelefona, datumrodjenja=request_to_accept.datumrodjenja,
-                                            mestorodjenja=request_to_accept.mestorodjenja, email=request_to_accept.email, idkor=user)
+                                            mestorodjenja=request_to_accept.mestorodjenja, email=request_to_accept.email, idkor=user,   datumkreiranja=date.today())
 
 
 
@@ -142,6 +143,20 @@ def registration_request(request):
     print(requests)
 
     return render(request, 'registration_request.html', {'zahtevi': requests})
+
+
+def delete_user(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+
+        user = Korisnik.objects.get(username=username)
+        user.delete()
+
+
+    return redirect("reg_requests")
+
+
+
 
 def error_view(request):
     error_code='403'

@@ -2,7 +2,11 @@
 
 {% block maincontent %}
     
-  
+  {% if message %}
+          <script>
+        alert("Ne postoji korisnik!")
+        </script>>
+    {% endif %}
 
     {% load static %}
     <div class="container">

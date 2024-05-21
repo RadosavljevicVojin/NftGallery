@@ -8,36 +8,31 @@ from profiles.utils import create_main_context
 
 # Create your views here.
 
-
+#Natalija
+# prikaz informacija o profilu, preko searcja, preko buttona moj ptofil- to je else deo - get zahtev
 def view_profile_info(request):
-    print("req ")
-
     if request.method == 'POST':
-        print("post ")
-
         username = request.POST.get('username', None)
         if username:
-            print("nadjen ")
-
             if Korisnik.objects.filter(username=username).exclude(user_type='admin').exists():
-                print("nadjen2 ")
-
                 context = create_main_context(request, username)
-               #  dopuniti kontekst ya informacije
-
                 return render(request, 'profile_info.html', context)
-        else:
-            print("Kor ime nema")
-            return HttpResponse("Molimo vas da unesete korisničko ime.")
+            else:
+                return render(request, "index.html", {"message": True})
     else:
-        print("Kor ")
-
         context = create_main_context(request, request.user.username)
 
+        card = str(Registrovanikorisnik.objects.get(idkor=request.user).brojkartice)
+        last_3_digits = card[-3:]
+        new_card_view = '*' * (len(card) - 3) + last_3_digits
+        context['phone']= Registrovanikorisnik.objects.get(idkor=request.user).brojtelefona
+        context['card']= new_card_view
+        context['name']= Registrovanikorisnik.objects.get(idkor=request.user).ime
+        context['surname']= Registrovanikorisnik.objects.get(idkor=request.user).prezime
+        context['birthplace']= Registrovanikorisnik.objects.get(idkor=request.user).mestorodjenja
         return render(request, 'profile_info.html', context)
 
-        # deo za search treba staviti
-        # Ukoliko nije POST zahtev, možemo prikazati formu za unos korisničkog imena ili redirectovati na drugu stranicu
+
 
 
 def view_profile_portfolio(request):
