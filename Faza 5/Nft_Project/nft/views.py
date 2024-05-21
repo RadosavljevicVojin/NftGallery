@@ -1,11 +1,13 @@
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.shortcuts import render, redirect
 
+import requests
+
 from common.decoraters import is_creator
 
 from .models import Nft
 from profiles.models import Registrovanikorisnik
-
+from django.shortcuts import render, get_object_or_404
 
 from urllib.parse import urlparse
 
@@ -18,7 +20,7 @@ API_KEY = "e0d9ad00e95945918aec9ec56c057650"
     # nft_url = nft.url
     # data = get_nft_data(nft_url)
     # data.nft.image_url -> url koji se stavlja u src atribut za slike u .html fajlovima
-"""
+
 def get_nft_data(nft_url):
     parsed_url = urlparse(nft_url)
     path_parts = parsed_url.path.split('/')
@@ -38,7 +40,6 @@ def get_nft_data(nft_url):
     else:
         return None
 
-"""
 
 def check_nft_param(file, name, price, description, creator, owner):
     # TODO
@@ -96,4 +97,33 @@ def create_nft(request):
             print("Error")
 
     return render(request, 'create_nft.html')
+
+
+def nft_review(request):
+    context = dict()
+    nft = Nft.objects.get(idnft = 2)
+
+    if nft.slika is "":
+
+        nft_url = nft.url
+        data = get_nft_data(nft_url)
+        context['data'] = data
+
+    context['ime'] = nft.naziv
+
+    context['vlasnik'] = nft.idvla.idkor
+    context['kreator'] = nft.idkre.idkor
+    context['vrednost'] = nft.vrednost
+    context['ocena'] = nft.prosecnaocena
+    context['opis'] = nft.opis
+    context['nft'] = nft
+    return render(request, 'nft_review.html', context)
+
+
+
+
+
+
+
+
 
