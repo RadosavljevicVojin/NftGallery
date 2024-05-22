@@ -14,6 +14,7 @@ from profiles.models import Registrovanikorisnik
 class Izlozba(models.Model):
     idlis = models.OneToOneField('Listanft', models.CASCADE, db_column='IdLis', primary_key=True)  # Field name made lowercase.
     naziv = models.CharField(db_column='Naziv', max_length=18, blank=True, null=True)  # Field name made lowercase.
+    opis = models.CharField(db_column='Opis', max_length=128, blank=True, null=True)  # Field name made lowercase.
     datumkreiranja = models.CharField(db_column='DatumKreiranja', max_length=18, blank=True, null=True)  # Field name made lowercase.
     prosecnaocena = models.CharField(db_column='ProsecnaOcena', max_length=18, blank=True, null=True)  # Field name made lowercase.
 

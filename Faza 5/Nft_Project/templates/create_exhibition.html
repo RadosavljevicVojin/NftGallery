@@ -11,16 +11,12 @@
             {% endif %}
 
             {% if request.user.user_type == 'kolekcionar' or  request.user.user_type == 'kreator'%}
-
                 <li class="menu-item ">
                     <a href="{% url 'create_exhibition' %}" class="item-anchor active"
                         data-effect="Home">Napravi
                         izložbu</a>
                 </li>
-                <li class="menu-item ">
-                                    <a href="{% url 'change_password' %}" class="item-anchor active"
-                                        data-effect="Home">Promeni lozinku</a>
-                </li>
+
 
             {% endif %}
  {% endif %}
@@ -32,6 +28,7 @@
 
     <form method="post" id="formaIzlozba" class="center" style="text-align: center;" enctype="multipart/form-data">
         {% csrf_token %}
+        <input type="hidden" name="selected_nfts" id="selected_nfts" value="">
         <div>
             <h2>Popunjavanje Informacija o Izložbi</h2>
 
@@ -49,138 +46,28 @@
         <div class="container mt-5">
             <h2 class="me-2">Izaberi Slike za Izložbu</h2>
             <header> </header>
-            <div class="row">
-                <div class="col-md-3 mb-4">
-                <div class="album-item">
-                    <img src="images/collection-item1.jpg" alt="Slika 1" onclick="selektujSliku(this)">
-                    <div class="caption text-center">Slika 1</div>
-                </div>
-                </div>
-
-                <div class="col-md-3 mb-4">
-                <div class="album-item">
-                    <img src="images/collection-item4.jpg" alt="Slika 2" onclick="selektujSliku(this)">
-                    <div class="caption text-center">Slika 2</div>
-                </div>
-                </div>
-
-                <div class="col-md-3 mb-4">
-                <div class="album-item">
-                    <img src="images/collection-item8.jpg" alt="Slika 3" onclick="selektujSliku(this)">
-                    <div class="caption text-center">Slika 3</div>
-                </div>
-                </div>
-
-                <div class="col-md-3 mb-4">
-                <div class="album-item">
-                    <img src="images/collection-item5.jpg" alt="Slika 4" onclick="selektujSliku(this)">
-                    <div class="caption text-center">Slika 4</div>
-                </div>
-                </div>
-
-                <!-- Ponovite ove blokove za dodatne slike -->
-
-            </div>
-            <div class="row">
-                <div class="col-md-3 mb-4">
-                    <div class="album-item">
-                    <img src="images/nft-item1.jpg" alt="Slika 1"onclick="selektujSliku(this)">
-                    <div class="caption text-center">Slika 1</div>
-                    </div>
-                </div>
-
-                <div class="col-md-3 mb-4">
-                    <div class="album-item">
-                    <img src="images/nft-item3.jpg" alt="Slika 2" onclick="selektujSliku(this)">
-                    <div class="caption text-center">Slika 2</div>
-                    </div>
-                </div>
-
-                <div class="col-md-3 mb-4">
-                    <div class="album-item">
-                    <img src=images/nft-item4.jpg alt="Slika 3" onclick="selektujSliku(this)">
-                    <div class="caption text-center">Slika 3</div>
-                    </div>
-                </div>
-
-                <div class="col-md-3 mb-4">
-                    <div class="album-item">
-                    <img src=images/nft-item2.jpg alt="Slika 4" onclick="selektujSliku(this)">
-                    <div class="caption text-center">Slika 4</div>
-                    </div>
-                </div>
-
-                <!-- Ponovite ove blokove za dodatne slike -->
-
-                </div>
+            
                 <div class="row">
-                <div class="col-md-3 mb-4">
-                    <div class="album-item">
-                    <img src="images/nft-item1.jpg" alt="Slika 1" onclick="selektujSliku(this)">
-                    <div class="caption text-center">Slika 1</div>
+                    {% for nft in nfts %}
+                    <div class="col-md-3 mb-4">
+                        <div class="album-item">
+                            {% if nft.data %}
+                                <img src="{{ nft.data.nft.image_url }}" alt="{{ nft.nft.naziv }}" id="{{ nft.nft.idnft }}" style="width: 300px;height: 300px" onclick="selektujSliku(this)">
+                            {% else %}
+                                <img src="{{ nft.nft.slika.url }}" alt="Slika" id="{{ nft.nft.idnft }}" style="width: 300px;height: 300px" onclick="selektujSliku(this)">
+                            {% endif %}
+                            <div class="caption text-center">{{ nft.nft.naziv }}</div>
+                        </div>
                     </div>
+                    {% endfor %}
                 </div>
+            
 
-                <div class="col-md-3 mb-4">
-                    <div class="album-item">
-                    <img src="images/nft-item3.jpg" alt="Slika 2" onclick="selektujSliku(this)">
-                    <div class="caption text-center">Slika 2</div>
-                    </div>
-                </div>
-
-                <div class="col-md-3 mb-4">
-                    <div class="album-item">
-                    <img src=images/nft-item4.jpg alt="Slika 3" onclick="selektujSliku(this)">
-                    <div class="caption text-center">Slika 3</div>
-                    </div>
-                </div>
-
-                <div class="col-md-3 mb-4">
-                    <div class="album-item">
-                    <img src=images/nft-item2.jpg alt="Slika 4" onclick="selektujSliku(this)">
-                    <div class="caption text-center">Slika 4</div>
-                    </div>
-                </div>
-
-                <!-- Ponovite ove blokove za dodatne slike -->
-
-                </div>
-                <div class="row">
-                <div class="col-md-3 mb-4">
-                    <div class="album-item">
-                    <img src="images/nft-item1.jpg" alt="Slika 1" onclick="selektujSliku(this)">
-                    <div class="caption text-center">Slika 1</div>
-                    </div>
-                </div>
-
-                <div class="col-md-3 mb-4">
-                    <div class="album-item">
-                    <img src="images/nft-item3.jpg" alt="Slika 2" onclick="selektujSliku(this)">
-                    <div class="caption text-center">Slika 2</div>
-                    </div>
-                </div>
-
-                <div class="col-md-3 mb-4">
-                    <div class="album-item">
-                    <img src=images/nft-item4.jpg alt="Slika 3" onclick="selektujSliku(this)">
-                    <div class="caption text-center">Slika 3</div>
-                    </div>
-                </div>
-
-                <div class="col-md-3 mb-4">
-                    <div class="album-item">
-                    <img src="images/collection-item1.jpg" alt="Slika 4" onclick="selektujSliku(this)">
-                    <div class="caption text-center">Slika 4</div>
-                    </div>
-                </div>
-
-                <!-- Ponovite ove blokove za dodatne slike -->
-            </div>
         </div>
 
         <div>
         <!-- Dugme za kreiranje izložbe -->
-            <button type="submit" id="btn1" onclick="kreirajIzlozbu()"  class="btn btn-lg"  type="button" style="background-color: #8D52F5; margin-top: 58px;">Napravi Izložbu</button>
+            <button type="submit" id="btn1" onclick="kreirajIzlozbu()"  class="btn btn-lg" style="background-color: #8D52F5; margin-top: 58px;">Napravi Izložbu</button>
         </div>
 
         <script>
@@ -206,8 +93,16 @@
                 return;
             }
 
-
             // Dodatne funkcionalnosti za kreiranje izložbe na osnovu selektovanih slika
+            var selectedNfts = [];
+            // Za svaku selektovanu sliku, dodaj ID NFT-a u listu
+            selectedImages.forEach(function(image) {
+                selectedNfts.push(image.id);
+            });
+
+            document.getElementById('selected_nfts').value = selectedNfts.join(',');
+
+
             // Prikazivanje poruke ili slanje podataka serveru
             alert('Izložba je uspešno kreirana sa selektovanim slikama!');
             }
