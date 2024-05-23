@@ -29,19 +29,6 @@
     <form method="post" id="formaIzlozba" class="center" style="text-align: center;" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="hidden" name="selected_nfts" id="selected_nfts" value="">
-        <div>
-            <h2>Popunjavanje Informacija o Izložbi</h2>
-
-            <!-- Forma za informacije o izložbi -->
-
-              <label for="ime">Ime Izložbe:</label>
-              <input type="text" id="ime" name="ime" required><br>
-
-              <label for="opis">Opis Izložbe:</label>
-              <textarea id="opis" name="opis" rows="4" required></textarea><br>
-
-
-        </div>
 
         <div class="container mt-5">
             <h2 class="me-2">Izaberi Slike za Izložbu</h2>
@@ -51,13 +38,17 @@
                     {% for nft in nfts %}
                     <div class="col-md-3 mb-4">
                         <div class="album-item">
-                             <img 
+
+                                <img
                                         {% if nft.data %}
                                             src="{{ nft.data.nft.image_url }}"
                                         {% else %}
-                                            src="{{ nft.nft.slika.url }}" 
+                                            src="{{ nft.nft.slika.url }}"
                                         {% endif %}
-                             alt="Slika" id="{{ nft.nft.idnft }}" style="width: 300px;height: 300px" onclick="selektujSliku(this)">
+                                        {% if nft.select == True %}
+                                            class="selected"
+                                        {% endif %}
+                                alt="Slika" id="{{ nft.nft.idnft }}" style="width: 300px;height: 300px" onclick="selektujSliku(this)">
                             <div class="caption text-center">{{ nft.nft.naziv }}</div>
                         </div>
                     </div>
@@ -69,7 +60,7 @@
 
         <div>
         <!-- Dugme za kreiranje izložbe -->
-            <button type="submit" id="btn1" onclick="kreirajIzlozbu()"  class="btn btn-lg" style="background-color: #8D52F5; margin-top: 58px;">Napravi Izložbu</button>
+            <button type="submit" id="btn1" onclick="potvrdiIzlozbu()"  class="btn btn-lg" style="background-color: #8D52F5; margin-top: 58px;">Potvrdi</button>
         </div>
 
         <script>
@@ -78,20 +69,12 @@
               element.classList.toggle('selected');
             }
 
-            function kreirajIzlozbu() {
+            function potvrdiIzlozbu() {
             // Provera da li je bar jedna slika selektovana
             var selectedImages = document.querySelectorAll('.selected');
             if (selectedImages.length < 1) {
                 // Ako nijedna slika nije selektovana, prikazi alert
                 alert('Morate izabrati bar jednu sliku za izložbu!');
-                return;
-            }
-
-            var imeIzlozbe = document.getElementById('ime').value.trim();
-            var opisIzlozbe = document.getElementById('opis').value.trim();
-            if (imeIzlozbe === '' || opisIzlozbe === '') {
-                // Ako ime ili opis nisu popunjeni, prikazi alert
-                alert('Morate popuniti ime i opis izložbe!');
                 return;
             }
 
@@ -106,7 +89,7 @@
 
 
             // Prikazivanje poruke ili slanje podataka serveru
-            alert('Izložba je uspešno kreirana sa selektovanim slikama!');
+            alert('Uspesno ste izmenili izlozbu!');
             }
         </script>
     </form>

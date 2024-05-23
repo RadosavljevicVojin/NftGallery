@@ -6,7 +6,8 @@ from common.decoraters import is_creator_or_collector
 from profiles.models import Registrovanikorisnik
 from exhibitions.models import Listanft, Kolekcija, Pripada, Izlozba
 from nft.models import Nft
-from nft.views import get_nft_data
+
+from .utils import create_context_for_nfts, get_user_collection, get_nfts_from_collection
 from datetime import datetime
 
 
@@ -15,11 +16,10 @@ def index(request):
     return render(request, "index.html")
 
 
-
-
 @login_required(login_url='/accounts/error')
 @user_passes_test(is_creator_or_collector, login_url='/accounts/error')
 def create_exhibition(request):
+
     user = Registrovanikorisnik.objects.get(idkor=request.user)
 
     if request.method == 'POST':
@@ -38,11 +38,6 @@ def create_exhibition(request):
         exhibition_avg_grades = grades / exhibition_size
         date = datetime.now().strftime('%Y-%m-%d')
 
-        print(exhibition_name)
-        print(description)
-        print(str(selected_nfts))
-        print(str(nfts_objects))
-        print(exhibition_size)
 
         exhibition_list = Listanft(idvla=user, ukupnavrednost=exhibition_value, brojnft=exhibition_size)
         exhibition_list.save()
@@ -61,40 +56,56 @@ def create_exhibition(request):
     else:
 
         user = Registrovanikorisnik.objects.get(idkor=request.user)
-        print(str(user))
 
-        lists_nft = Listanft.objects.filter(idvla=user)
+        collection_user = get_user_collection(user)
 
-        collection_user = None
-        collections = Kolekcija.objects.all()
-        for list_nft in lists_nft:
-            for collection in collections:
-                if list_nft == collection.idlis:
-                    collection_user = collection
-                    break
+        nfts = get_nfts_from_collection(collection_user)
 
-        print(str(collection_user))
-
-        nfts = []
-        if collection_user:
-            belong = Pripada.objects.filter(idlis=collection_user.idlis)
-            nfts = [b.idnft for b in belong]
-
-        print(str(nfts))
-
-        nft_list = []
-        for nft in nfts:
-            print("slika: " + str(nft.slika))
-            print("url: " + str(nft.url))
-            nft_data = {
-                'nft': nft,
-                'data': None
-            }
-            if nft.slika == "":
-                nft_data['data'] = get_nft_data(nft.url)
-            print("data: " + str(nft_data['data']))
-            nft_list.append(nft_data)
-
-        context = {"nfts": nft_list}
+        context = create_context_for_nfts(nfts)
 
         return render(request, 'create_exhibition.html', context)
+
+@login_required(login_url='/accounts/error')
+@user_passes_test(is_creator_or_collector, login_url='/accounts/error')
+def change_exhibition(request, exhibition_id):
+
+    exhibition_list = Listanft.objects.get(idlis=exhibition_id)
+    belong = Pripada.objects.filter(idlis=exhibition_list)
+    exhibition_nfts = [b.idnft for b in belong]
+
+
+
+    if request.method == "POST":
+
+        selected_nfts = list(map(int, request.POST.get('selected_nfts').split(',')))
+        nfts_objects = Nft.objects.filter(idnft__in=selected_nfts)
+
+        [belong_obj.delete() for belong_obj in belong if belong_obj.idnft not in nfts_objects]
+
+        belong = [
+            Pripada(idlis=exhibition_list, idnft=nft_object) for nft_object in nfts_objects if nft_object not in exhibition_nfts
+        ]
+
+        for belong_obj in belong:
+            belong_obj.save()
+        return redirect("profile_info")
+
+    else:
+
+        user = Registrovanikorisnik.objects.get(idkor=request.user)
+
+        collection_user = get_user_collection(user)
+
+        collection_nfts = get_nfts_from_collection(collection_user)
+
+        context = create_context_for_nfts(collection_nfts)
+
+        nft_list = context['nfts']
+        for nft in nft_list:
+            if nft['nft'] in exhibition_nfts:
+                print("Selektovani nft sam ja " + str(nft['nft']))
+                nft['select'] = True
+            else:
+                nft['select'] = False
+
+        return render(request, 'change_exhibition.html', context)
