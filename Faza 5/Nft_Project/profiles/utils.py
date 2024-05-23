@@ -7,6 +7,7 @@ def create_main_context(request, username):
 
     user = Korisnik.objects.get(username=username)
     context = dict()
+    context["id"] = user.idkor
     context["username"] = user.username
     context["image"] = Registrovanikorisnik.objects.get(idkor=user).slika.url
     context["type"] = user.user_type
