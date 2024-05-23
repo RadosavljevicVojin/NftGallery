@@ -31,17 +31,4 @@ class Migration(migrations.Migration):
                 'managed': True,
             },
         ),
-        migrations.CreateModel(
-            name='Ocena',
-            fields=[
-                ('idoce', models.AutoField(db_column='IdOce', default=None, primary_key=True, serialize=False)),
-                ('ocena', models.IntegerField(db_column='Ocena')),
-                ('idkor', models.OneToOneField(db_column='IdKor', null=True, on_delete=django.db.models.deletion.SET_NULL, to='profiles.registrovanikorisnik')),
-                ('idnft', models.OneToOneField(db_column='IdNFT', on_delete=django.db.models.deletion.CASCADE, to='nft.nft')),
-            ],
-            options={
-                'db_table': 'ocena',
-                'managed': True,
-            },
-        ),
     ]

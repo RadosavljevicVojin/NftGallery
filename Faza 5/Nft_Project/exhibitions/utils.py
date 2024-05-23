@@ -1,7 +1,8 @@
 from nft.views import get_nft_data
-from .models import Listanft, Kolekcija, Pripada, Portfolio
-from exhibitions.models import Listanft, Pripada, Izlozba
+from .models import Listanft, Kolekcija, Pripada, Portfolio, Izlozba
 from nft.models import Nft
+
+
 def create_context_for_nfts(nfts):
     nft_list = []
     for nft in nfts:
@@ -53,18 +54,34 @@ def get_nfts_from_collection(collection_user):
     nfts = []
     if collection_user:
         belong = Pripada.objects.filter(idlis=collection_user.idlis)
-        for belon in belong:
-            nfts.append(belon.idnft)
-            print(str(belon.idlis))
-            print(str(belon.idnft))
-
-        print(nfts)
+        nfts = [b.idnft for b in belong]
 
     return nfts
 
 
+def get_nfts_from_exhibition(exhibition_user):
+    return get_nfts_from_collection(exhibition_user)
+
+
 def get_nfts_from_portfolio(portfolio_user):
     return get_nfts_from_collection(portfolio_user)
+
+
+def get_updated_exhibition_attr(request):
+    selected_nfts = list(map(int, request.POST.get('selected_nfts').split(',')))
+    nfts_objects = Nft.objects.filter(idnft__in=selected_nfts)
+
+    exhibition_size = len(selected_nfts)
+
+    grades = 0
+    exhibition_value = 0
+    for nft_object in nfts_objects:
+        grades += nft_object.prosecnaocena
+        exhibition_value += nft_object.vrednost
+
+    exhibition_avg_grades = grades / exhibition_size
+
+    return nfts_objects, exhibition_size,  exhibition_value, exhibition_avg_grades
 
 def getRandomExhibitions():
     izlozba_ids = Izlozba.objects.values_list('idlis', flat=True)[:3]

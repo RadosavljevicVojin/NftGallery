@@ -21,11 +21,10 @@ class Nft(models.Model):
         db_table = 'nft'
         app_label = 'nft'
 
-
-
 class Ocena(models.Model):
     idoce = models.AutoField(db_column='IdOce', primary_key=True, default=None)  # Field name made lowercase.
-    idkor = models.OneToOneField(Registrovanikorisnik, models.SET_NULL, db_column='IdKor',  null=True)  # Field name made lowercase. The composite primary key (IdKor, IdNFT) found, that is not supported. The first column is selected.
+    idkor = models.OneToOneField(Registrovanikorisnik, models.SET_NULL, db_column='IdKor',
+                                 null=True)  # Field name made lowercase. The composite primary key (IdKor, IdNFT) found, that is not supported. The first column is selected.
     idnft = models.OneToOneField(Nft, models.CASCADE, db_column='IdNFT')  # Field name made lowercase.
     ocena = models.IntegerField(db_column='Ocena')  # Field name made lowercase.
 

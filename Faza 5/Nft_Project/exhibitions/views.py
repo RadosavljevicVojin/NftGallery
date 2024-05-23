@@ -1,16 +1,16 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.http import HttpResponseNotAllowed
 from django.shortcuts import render, redirect
 
 from common.decoraters import is_creator_or_collector
 
 from profiles.models import Registrovanikorisnik
-from exhibitions.models import Listanft, Pripada, Izlozba
-from nft.models import Nft
 
-from .utils import create_context_for_nfts, get_user_collection, get_nfts_from_collection
+
+
+from .utils import *
 from datetime import datetime
-from nft.views import get_nft_data
-from .utils import getRandomExhibitions
+
 
 # Create your views here.
 def index(request):
@@ -34,28 +34,19 @@ def sort_index(request):
     context["izlozbe"] = izlozbe
     return render(request, 'index.html', context)
 
+
 @login_required(login_url='/accounts/error')
 @user_passes_test(is_creator_or_collector, login_url='/accounts/error')
 def create_exhibition(request):
-
     user = Registrovanikorisnik.objects.get(idkor=request.user)
 
     if request.method == 'POST':
         exhibition_name = request.POST['ime']
         description = request.POST['opis']
-        selected_nfts = list(map(int, request.POST.get('selected_nfts').split(',')))
-        nfts_objects = Nft.objects.filter(idnft__in=selected_nfts)
-        exhibition_size = len(selected_nfts)
 
-        grades = 0
-        exhibition_value = 0
-        for nft_object in nfts_objects:
-            grades += nft_object.prosecnaocena
-            exhibition_value += nft_object.vrednost
+        nfts_objects, exhibition_size, exhibition_value, exhibition_avg_grades = get_updated_exhibition_attr(request)
 
-        exhibition_avg_grades = grades / exhibition_size
         date = datetime.now().strftime('%Y-%m-%d')
-
 
         exhibition_list = Listanft(idvla=user, ukupnavrednost=exhibition_value, brojnft=exhibition_size)
         exhibition_list.save()
@@ -83,25 +74,31 @@ def create_exhibition(request):
 
         return render(request, 'create_exhibition.html', context)
 
+
 @login_required(login_url='/accounts/error')
 @user_passes_test(is_creator_or_collector, login_url='/accounts/error')
 def change_exhibition(request, exhibition_id):
-
     exhibition_list = Listanft.objects.get(idlis=exhibition_id)
     belong = Pripada.objects.filter(idlis=exhibition_list)
     exhibition_nfts = [b.idnft for b in belong]
 
-
-
     if request.method == "POST":
 
-        selected_nfts = list(map(int, request.POST.get('selected_nfts').split(',')))
-        nfts_objects = Nft.objects.filter(idnft__in=selected_nfts)
+        nfts_objects, exhibition_size,  exhibition_value, exhibition_avg_grades = get_updated_exhibition_attr(request)
+
+        exhibition_list.brojnft = exhibition_size
+        exhibition_list.ukupnavrednost = exhibition_value
+        exhibition_list.save()
+
+        exhibition = Izlozba.objects.get(idlis=exhibition_list)
+        exhibition.prosecnaocena = exhibition_avg_grades
+        exhibition.save()
 
         [belong_obj.delete() for belong_obj in belong if belong_obj.idnft not in nfts_objects]
 
         belong = [
-            Pripada(idlis=exhibition_list, idnft=nft_object) for nft_object in nfts_objects if nft_object not in exhibition_nfts
+            Pripada(idlis=exhibition_list, idnft=nft_object) for nft_object in nfts_objects if
+            nft_object not in exhibition_nfts
         ]
 
         for belong_obj in belong:
@@ -127,3 +124,46 @@ def change_exhibition(request, exhibition_id):
                 nft['select'] = False
 
         return render(request, 'change_exhibition.html', context)
+
+
+def exhibition_review(request, exhibition_id):
+
+    user = Registrovanikorisnik.objects.get(idkor=request.user)
+
+    exhibition_dict = dict()
+
+    exhibition_list = Listanft.objects.get(idlis=exhibition_id)
+    exhibition = Izlozba.objects.get(idlis=exhibition_list)
+
+    exhibition_dict["owner_image"] = user.slika.url
+    exhibition_dict["owner_name"] = request.user.username
+    exhibition_dict["name"] = exhibition.naziv
+    exhibition_dict["value"] = exhibition_list.ukupnavrednost
+    exhibition_dict["avg_grade"] = exhibition.prosecnaocena
+    exhibition_dict["date"] = exhibition.datumkreiranja
+    exhibition_dict["id"] = exhibition_id
+
+    nfts = get_nfts_from_exhibition(exhibition)
+    context = create_context_for_nfts(nfts)
+
+    context["exhibition"] = exhibition_dict
+
+    return render(request, "exhibition_review.html", context)
+
+
+@login_required(login_url='/accounts/error')
+@user_passes_test(is_creator_or_collector, login_url='/accounts/error')
+def remove_exhibition(request, exhibition_id):
+    if request.method == "POST":
+        exhibition_list = Listanft.objects.get(idlis=exhibition_id)
+
+        exhibition = Izlozba.objects.get(idlis=exhibition_list)
+        belong = Pripada.objects.filter(idlis=exhibition_list)
+        belong.delete()
+        exhibition.delete()
+        exhibition_list.delete()
+
+        return redirect("profile_info")
+
+    else:
+        return HttpResponseNotAllowed(['POST'])

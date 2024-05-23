@@ -17,3 +17,8 @@ def is_creator_or_collector(user):
     if user.user_type=='kreator' or user.user_type=='kolekcionar':
         return True
     return False;
+
+def is_not_admin(user):
+    if user.user_type=='admin':
+        return False
+    return True;

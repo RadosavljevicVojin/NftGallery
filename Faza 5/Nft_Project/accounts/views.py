@@ -11,7 +11,7 @@ from django.urls import reverse
 from pyexpat.errors import messages
 
 from Nft_Project import settings
-from common.decoraters import is_admin
+from common.decoraters import is_admin, is_not_admin
 from .utils import check_data_for_registration
 # Create your views here.
 from .models import Zahtevzaregistraciju, Korisnik, CustomUserManager
@@ -130,7 +130,6 @@ def registration_request(request):
 
             # Креирање и чување новог Kolekcija објекта
             collection = Kolekcija(idlis=collection_list)
-            print(collection)
             collection.save()
 
             image_path = os.path.join(settings.BASE_DIR, 'static/images/def_profile.png')
@@ -177,6 +176,8 @@ def delete_user(request):
 
     return redirect("reg_requests")
 
+@login_required( login_url='/accounts/error')
+@user_passes_test(is_not_admin, login_url='/accounts/error')
 def change_password(request):
     if request.method == 'POST':
         user = request.user
