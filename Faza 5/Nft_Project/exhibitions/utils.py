@@ -53,7 +53,12 @@ def get_nfts_from_collection(collection_user):
     nfts = []
     if collection_user:
         belong = Pripada.objects.filter(idlis=collection_user.idlis)
-        nfts = [b.idnft for b in belong]
+        for belon in belong:
+            nfts.append(belon.idnft)
+            print(str(belon.idlis))
+            print(str(belon.idnft))
+
+        print(nfts)
 
     return nfts
 

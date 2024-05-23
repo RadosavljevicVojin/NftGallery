@@ -130,6 +130,7 @@ def registration_request(request):
 
             # Креирање и чување новог Kolekcija објекта
             collection = Kolekcija(idlis=collection_list)
+            print(collection)
             collection.save()
 
             image_path = os.path.join(settings.BASE_DIR, 'static/images/def_profile.png')

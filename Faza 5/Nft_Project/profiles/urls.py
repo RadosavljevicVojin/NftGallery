@@ -7,5 +7,6 @@ urlpatterns = [
     path("profile_portfolio", profiles_view.view_profile_portfolio, name="profile_portfolio"),
     path("profile_exhibitions", profiles_view.view_profile_exhibitions, name="profile_exhibitions"),
     path("collection_sort",profiles_view.sort_profile_collection,name = "collection_sort"),
-    path("portfolio_sort",profiles_view.sort_profile_collection,name = "portfolio_sort")
+    path("portfolio_sort",profiles_view.sort_profile_collection,name = "portfolio_sort"),
+    path("exhibition_sort",profiles_view.sort_profile_exhibition,name = "exhibition_sort")
 ]

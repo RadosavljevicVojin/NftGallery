@@ -92,6 +92,7 @@ def create_nft(request):
             for creator_list in creator_lists:
                 for collection in all_collections:
                     if creator_list == collection.idlis:
+                        print("PripadaKolekcija")
                         belong = Pripada(idlis = creator_list, idnft = nft)
                         belong.save()
 
@@ -100,6 +101,7 @@ def create_nft(request):
                 for creator_list in creator_lists:
                     for portfolio in all_portfolios:
                         if creator_list == portfolio.idlis:
+                            print("pravimPripada")
                             belong = Pripada(idlis=creator_list, idnft=nft)
                             belong.save()
 
