@@ -58,6 +58,16 @@
                 <input type="password" id="password" name="password" required>
             </div>
         
+            {% if messages %}
+                <ul class="messages" style="text-align: center;">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                            <span style="font-weight: bold; color: red;">{{ message }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+                    
             <div class="input-row">
                 <input type="submit" value="Prijavi se" class="login-button btn-wrap btn-outline-linear" id="register-button">
             </div>

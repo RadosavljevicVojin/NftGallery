@@ -39,24 +39,20 @@
 {% block navbar2 %}
      {% if request.user.is_authenticated %}
             {% if request.user.user_type == 'kreator' %}
-
-               <li class="menu-item ">
-                        <a href="{% url 'create_nft' %}" class="item-anchor active" data-effect="Home">Kreiraj
-                            NFT</a>
-                </li>
                 <li class="menu-item ">
-                    <a href="{% url 'create_exhibition' %}" class="item-anchor active"
-                        data-effect="Home">Napravi
-                        izložbu</a>
-                </li>
-                    {% elif request.user.user_type == 'kolekcionar'  %}
-<li class="menu-item ">
-                    <a href="{% url 'create_exhibition' %}" class="item-anchor active"
-                        data-effect="Home">Napravi
-                        izložbu</a>
+                        <a href="{% url 'create_nft' %}" class="item-anchor active" data-effect="Home">Kreiraj NFT</a>
                 </li>
             {% endif %}
- {% endif %}
+            {% if request.user.user_type == 'kreator' or request.user.user_type == 'kolekcionar' %}
+                <li class="menu-item ">
+                    <a href="{% url 'create_exhibition' %}" class="item-anchor active" data-effect="Home">
+                        Napravi izložbu
+                    </a>
+                </li>
+            {% endif %}
+            {% block pass_change %}
+            {% endblock %}
+     {% endif %}
 
 
 {% endblock %}

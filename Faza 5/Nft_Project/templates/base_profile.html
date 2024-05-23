@@ -2,6 +2,14 @@
 
 {% load static %}
 
+{% block pass_change %}
+    <li class="menu-item ">
+        <a href="{% url 'change_password' %}" class="item-anchor active" data-effect="Home">
+            Promeni  lozinku
+        </a>
+    </li>
+{% endblock %}
+
 {% block maincontent %}
      {% block profilemore %}
     {% endblock %}

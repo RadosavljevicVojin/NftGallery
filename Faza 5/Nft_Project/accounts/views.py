@@ -17,6 +17,10 @@ from .utils import check_data_for_registration
 from .models import Zahtevzaregistraciju, Korisnik, CustomUserManager
 from profiles.models import Registrovanikorisnik, Kupac, Kreator, Kolekcionar
 from exhibitions.models import Listanft, Kolekcija, Portfolio
+from django.contrib.auth.hashers import make_password
+from django.contrib import messages
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth import update_session_auth_hash
 
 
 
@@ -43,8 +47,9 @@ def login_page(request):
             print("Logged in successfully")
             return redirect('index')  # Preusmeri korisnika na početnu stranicu nakon uspešnog logina
         else:
-            print("Nema korisnika sa tim usenamemom")
-            return redirect('register')
+            messages.error(request, 'Uneli ste pogrešne kredencijale!')
+
+            return render(request, 'login.html',{})
 
     return render(request, 'login.html')
 
@@ -170,6 +175,28 @@ def delete_user(request):
 
 
     return redirect("reg_requests")
+
+def change_password(request):
+    if request.method == 'POST':
+        user = request.user
+        old_password = request.POST['stara-lozinka']
+        new_password = request.POST['nova-lozinka']
+        confirm_password = request.POST['potvrda-lozinke']
+
+        if not check_password(old_password, user.password):
+            messages.error(request, 'Stara lozinka nije ispravna!')
+
+        elif new_password != confirm_password:
+            messages.error(request, 'Lozinke se ne podudaraju. Molimo Vas unesite istu lozinku u oba polja!')
+
+        else:
+            user.set_password(new_password)
+            user.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Lozinka je uspešno promenjena!')
+        return render(request, 'change_password.html',{})
+
+    return render(request, 'change_password.html')
 
 
 

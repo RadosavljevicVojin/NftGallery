@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from common.decoraters import is_creator_or_collector
 
 from profiles.models import Registrovanikorisnik
-from exhibitions.models import Listanft, Kolekcija, Pripada, Izlozba
+from exhibitions.models import Listanft, Pripada, Izlozba
 from nft.models import Nft
 
 from .utils import create_context_for_nfts, get_user_collection, get_nfts_from_collection

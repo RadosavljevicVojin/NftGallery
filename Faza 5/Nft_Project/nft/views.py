@@ -113,8 +113,8 @@ def create_nft(request):
     return render(request, 'create_nft.html')
 
 
-def nft_review(request):
-    nft = Nft.objects.get(idnft=1)
+def nft_review(request, idnft):
+    nft = Nft.objects.get(idnft=idnft)
     nft_data = {
         'nft': nft,
         'data': None
