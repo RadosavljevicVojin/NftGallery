@@ -9,12 +9,30 @@ from nft.models import Nft
 
 from .utils import create_context_for_nfts, get_user_collection, get_nfts_from_collection
 from datetime import datetime
-
+from nft.views import get_nft_data
+from .utils import getRandomExhibitions
 
 # Create your views here.
 def index(request):
-    return render(request, "index.html")
-
+   izlozbe= getRandomExhibitions()
+   context = dict()
+   context["izlozbe"] = izlozbe
+   return render(request, 'index.html', context)
+def sort_index(request):
+    izlozbe = getRandomExhibitions()
+    sort = request.POST.get('sort', None)
+    if (sort == "poImenu"):
+        # print("usao")
+        izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["naziv"])
+    elif (sort == "poOceni"):
+        izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["prosecnaOcena"])
+    elif (sort == "poVelicini"):
+        izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["velicina"])
+    elif (sort == "poVrednosti"):
+        izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["cena"])
+    context = dict()
+    context["izlozbe"] = izlozbe
+    return render(request, 'index.html', context)
 
 @login_required(login_url='/accounts/error')
 @user_passes_test(is_creator_or_collector, login_url='/accounts/error')

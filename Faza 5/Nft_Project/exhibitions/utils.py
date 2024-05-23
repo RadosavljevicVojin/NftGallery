@@ -1,7 +1,7 @@
 from nft.views import get_nft_data
 from .models import Listanft, Kolekcija, Pripada, Portfolio
-
-
+from exhibitions.models import Listanft, Pripada, Izlozba
+from nft.models import Nft
 def create_context_for_nfts(nfts):
     nft_list = []
     for nft in nfts:
@@ -65,3 +65,39 @@ def get_nfts_from_collection(collection_user):
 
 def get_nfts_from_portfolio(portfolio_user):
     return get_nfts_from_collection(portfolio_user)
+
+def getRandomExhibitions():
+    izlozba_ids = Izlozba.objects.values_list('idlis', flat=True)[:3]
+    izlozbe = []
+    for id in izlozba_ids:
+        nft_list = []
+        pripada_ids = Pripada.objects.filter(idlis=id).values_list('idnft', flat=True)
+        izloz = Izlozba.objects.get(idlis=id)
+        print(pripada_ids)
+        nfts = Nft.objects.filter(idnft__in=pripada_ids)
+        cena = 0
+        velicina = 0
+        ocena = 0
+        for nft in nfts:
+            print(nft.naziv)
+            nft_data = {
+                'nft': nft,
+                'data': None
+            }
+            if nft.slika == "":
+                nft_data['data'] = get_nft_data(nft.url)
+            nft_list.append(nft_data)
+            cena += nft.vrednost
+            velicina += 1
+            ocena += nft.prosecnaocena
+        prosOc = float(ocena) / velicina
+        izlozba = {
+            'nfts': nft_list,
+            'cena': cena,
+            'naziv': izloz.naziv,
+            'velicina': velicina,
+            'prosecnaOcena': prosOc
+        }
+        izlozbe.append(izlozba)
+    return izlozbe
+
