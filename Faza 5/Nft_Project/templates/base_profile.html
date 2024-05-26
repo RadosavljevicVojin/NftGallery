@@ -2,13 +2,7 @@
 
 {% load static %}
 
-{% block pass_change %}
-    <li class="menu-item ">
-        <a href="{% url 'change_password' %}" class="item-anchor active" data-effect="Home">
-            Promeni  lozinku
-        </a>
-    </li>
-{% endblock %}
+
 
 {% block maincontent %}
      {% block profilemore %}
@@ -50,7 +44,7 @@
                 <a href="#" onclick="submitForm('{{ username }}', '{% url 'profile_exhibitions' %}')" class="custom-card" id="exhibitions">
                     <h5 class="custom-card-title">Izlozbe</h5>
                 </a>
-            </div>
+            </div>>
 
             {% endif %}
 

@@ -8,5 +8,9 @@ urlpatterns = [
     path("profile_exhibitions", profiles_view.view_profile_exhibitions, name="profile_exhibitions"),
     path("collection_sort",profiles_view.sort_profile_collection,name = "collection_sort"),
     path("portfolio_sort",profiles_view.sort_profile_collection,name = "portfolio_sort"),
-    path("exhibition_sort",profiles_view.sort_profile_exhibition,name = "exhibition_sort")
+    path("exhibition_sort",profiles_view.sort_profile_exhibition,name = "exhibition_sort"),
+    path("change_info", profiles_view.view_change_info, name="change_info"),
+   path("change_info_submit", profiles_view.change_info, name="submit_change_info")
+
+
 ]

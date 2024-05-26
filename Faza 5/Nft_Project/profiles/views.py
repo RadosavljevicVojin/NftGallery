@@ -1,12 +1,18 @@
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.hashers import check_password
+from pyexpat.errors import messages
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import render
 
 from accounts.models import Korisnik
+from common.decoraters import is_not_admin
 from exhibitions.models import Listanft, Pripada,Izlozba
 from nft.models import Nft
 from nft.views import get_nft_data
 from profiles.models import Registrovanikorisnik
 from profiles.utils import create_main_context
+from django.contrib import messages
 
 
 # Create your views here.
@@ -278,3 +284,69 @@ def sort_profile_exhibition(request):
         # deo za search treba staviti
         # Ukoliko nije POST zahtev, možemo prikazati formu za unos korisničkog imena ili redirectovati na drugu stranicu
         return HttpResponseNotAllowed(['POST'])
+
+
+@login_required( login_url='/accounts/error')
+def view_change_info(request):
+
+
+    if request.method == 'POST':
+        context = dict()
+        user= request.user
+        reguser= Registrovanikorisnik.objects.get(idkor=user)
+
+
+        context["img"]= reguser.slika.url
+
+
+
+
+    return render(request, 'change_profile_info.html', context)
+
+
+
+
+
+
+
+
+
+
+
+@login_required( login_url='/accounts/error')
+@user_passes_test(is_not_admin, login_url='/accounts/error')
+def change_info(request):
+    if request.method == 'POST':
+        user = request.user
+        old_password = request.POST['stara-lozinka']
+        new_password = request.POST['nova-lozinka']
+        confirm_password = request.POST['potvrda-lozinke']
+        img=""
+        context={}
+        if "fileUpload" in request.FILES:
+            file = request.FILES["fileUpload"]
+            reguser= Registrovanikorisnik.objects.get(idkor=user)
+            if(reguser.slika!=file):
+                reguser.slika= file
+                reguser.save()
+                messages.success(request, 'Slika je uspešno promenjena!')
+
+        reguser = Registrovanikorisnik.objects.get(idkor=user)
+        context["img"] = reguser.slika.url
+        if old_password==""  and new_password=="" and confirm_password=="":
+            return render(request, 'change_profile_info.html')
+
+        if not check_password(old_password, user.password):
+            messages.error(request, 'Stara lozinka nije ispravna!')
+
+
+        elif new_password != confirm_password:
+            messages.error(request, 'Lozinke se ne podudaraju. Molimo Vas unesite istu lozinku u oba polja!')
+
+        else:
+            user.set_password(new_password)
+            user.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Lozinka je uspešno promenjena!')
+        return render(request, 'change_profile_info.html', context)
+    return render(request, 'change_profile_info.html')

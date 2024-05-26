@@ -9,9 +9,12 @@
          <div class="container">
           <div class="row">
               <div class="col-lg-4 col-md-6">
-                  <button class="btn btn-outline-linear btn-outline-light m-0" type="button" >
+                  <form action="{% url 'change_info' %}" method="post" id="deleteForm">
+                     {% csrf_token %}
+                  <button class="btn btn-outline-linear btn-outline-light m-0" type="submit" >
                       Izmeni profil
                   </button>
+                  </form>
               </div>
           </div>
     {% elif request.user.is_authenticated %}
