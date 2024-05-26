@@ -9,7 +9,7 @@ class Nft(models.Model):
     idnft = models.AutoField(db_column='IdNFT', primary_key=True)  # Field name made lowercase.
     naziv = models.CharField(db_column='Naziv', max_length=20)  # Field name made lowercase.
     vrednost = models.FloatField(db_column='Vrednost')  # Field name made lowercase.
-    prosecnaocena = models.DecimalField(db_column='ProsecnaOcena', max_digits=10, decimal_places=0)  # Field name made lowercase.
+    prosecnaocena = models.DecimalField(db_column='ProsecnaOcena', max_digits=10, decimal_places=0, null=True)  # Field name made lowercase.
     idkre = models.ForeignKey(Registrovanikorisnik, models.SET_NULL, db_column='IdKre', blank=True, null=True)  # Field name made lowercase.
     idvla = models.ForeignKey(Registrovanikorisnik, models.CASCADE, db_column='IdVla', related_name='nft_idvla_set', blank=True, null=True)  # Field name made lowercase.
     opis = models.CharField(db_column='Opis', max_length=256)  # Field name made lowercase.

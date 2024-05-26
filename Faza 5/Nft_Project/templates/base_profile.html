@@ -48,7 +48,7 @@
 
             <div class="col-md-3 col-sm-6 text-center">
                 <a href="#" onclick="submitForm('{{ username }}', '{% url 'profile_exhibitions' %}')" class="custom-card" id="exhibitions">
-                    <h5 class="custom-card-title">Moje izlozbe</h5>
+                    <h5 class="custom-card-title">Izlozbe</h5>
                 </a>
             </div>
 
@@ -58,6 +58,7 @@
         </div>
      </div>
         <form id="profileForm" method="post" action="" style="display: none;">
+            {% csrf_token %}
             <input type="hidden" name="username" id="usernameInput">
         </form>
 

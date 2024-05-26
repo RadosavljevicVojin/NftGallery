@@ -114,19 +114,29 @@
                         </div>
                         <div class="info-row">
                             <span class="info-label">Vlasnik: </span>
-                            <a href="creator_profile_about_view.html" class="info-value">@{{ nft.nft.idvla.idkor }}</a>
+                            <a
+                               href="#" onclick="submitForm('{{ owner.username }}', '{% url 'profile_info' %}')"
+                               class="info-value">@{{ owner.username }}
+                            </a>
                         </div>
                         <div class="info-row">
                             <span class="info-label">Kreator: </span>
-                            <a href="creator_profile_about_view_reg.html" class="info-value">@{{ nft.nft.idkre.idkor }}</a>
+                            <a
+                               href="#" onclick="submitForm('{{ creator.username }}', '{% url 'profile_info' %}')"
+                               class="info-value">@{{ creator.username }}
+                            </a>
                         </div>
                         <div class="info-row">
                             <span class="info-label">Trenutna vrednost:</span>
-                            <span class="info-value">{{ nft.nft.vrednost }} ETH</span>
+                            <span class="info-value">{{ nft.nft.vrednost|floatformat:2 }} ETH</span>
                         </div>
                         <div class="info-row">
                             <span class="info-label">Prosečna ocena:</span>
-                            <span class="info-value">{{ nft.nft.prosecnaocena }}</span>
+                            {% if nft.nft.prosecnaocena is not None %}
+                                <span class="info-value">{{ nft.nft.prosecnaocena|floatformat:2 }}</span>
+                            {% else %}
+                                <span class="info-value">Nije ocenjen</span>
+                            {% endif %}
                         </div>
                         <div class="description" style="margin-top: 20px;">
                             <!--Opis: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero.-->
@@ -135,39 +145,80 @@
                         <!-- ako nije vlasnik -->
                         <!-- ako je registrovan -->
     
-                        {% if request.user.is_authenticated %}
-    
-    
-                        <div class="info-row" style="margin-top: 90px;">
-                            <span class="info-label">Kupovina:</span>
-                            <button style="background-color: #8D52F5;" onclick="buyNow()" class="btn btn-lg">Kupi NFT</button>
-                        </div>
-                        <div class="info-row">
-    
-                            <div class="rating">
-                                <button style="background-color: #8D52F5;" onclick="submitRating()" class="btn btn-lg">Oceni</button>
-                                <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 stars"></label>
-                                <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars"></label>
-                                <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars"></label>
-                                <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars"></label>
-                                <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star"></label>
-                            </div>
-                        </div>
+                        {% if request.user.is_authenticated and request.user.idkor == owner.idkor %}
+                            <form method="post" action="{% url 'change_price' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="idnft_name" value="{{ nft.nft.idnft }}">
+                                <div style="margin-top: 157px;">
+                                    <span class="info-label">Promeni vrednost</span>
+                                    <input type="text" id="new-price" name="new_price" placeholder="Nova vrednost" required>
+                                    <button type="submit" class="btn btn-lg" style="background-color: #8D52F5; height: 48px; margin-top: 10px;">
+                                        Promeni
+                                    </button>
+                                </div>
+                            </form>
+                        {% elif not rerequest.user.is_authenticated or request.user.user_type != 'admin' %}
+                            <form method="post" action="{% url 'buy_nft' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="idnft_name" value="{{ nft.nft.idnft }}">
+                                <input type="hidden" name="idkre_name" value="{{ nft.nft.idkre }}">
+                                <input type="hidden" name="idvla_name" value="{{ nft.nft.idvla }}">
+                                
+                                <div class="info-row" style="margin-top: 90px;">
+                                    <span class="info-label">Kupovina:</span>
+                                    <button type="submit" style="background-color: #8D52F5;" class="btn btn-lg">Kupi NFT</button>
+                                </div>
+                            </form>
+                                
+                            <form method="post" enctype="multipart/form-data" action = "{% url 'grade_nft' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="idnft_name" value="{{ nft.nft.idnft }}">
+                                <div class="info-row">
+                                    <div class="rating">
+                                        <button type="submit" style="background-color: #8D52F5;" class="btn btn-lg">Oceni</button>
+                                        <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 stars"></label>
+                                        <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars"></label>
+                                        <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars"></label>
+                                        <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars"></label>
+                                        <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star"></label>
+                                    </div>
+                                </div>
+                            </form>
                         {% endif %}
+
+                        {% if messages %}
+                            <ul class="messages" style="text-align: center;">
+                               {% for message in messages %}
+                                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                                        <span style="font-weight: bold;
+                                                color:
+                                                {% if message.tags == 'error' %}red
+                                                {% elif message.tags == 'success' %}green
+                                                {% endif %};
+                                                ">{{ message }}
+                                        </span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    
+                    
                     </div>
+                
+                    <form id="profileForm" method="post" action="" style="display: none;">
+                        {% csrf_token %}
+                        <input type="hidden" name="username" id="usernameInput">
+                    </form>
     
                     <script>
-    
-                        function submitRating() {
-                            alert("Ne mozete da ocenite, prijavite se ili registrujte se!");
+                        function submitForm(username, action) {
+                            document.getElementById("usernameInput").value = username;
+                            document.getElementById("profileForm").action = action;
+                            document.getElementById("profileForm").submit();
                         }
                     </script>
-    
-    
                 </div>
             </div>
         </div>
     
-    
-
 {% endblock %}

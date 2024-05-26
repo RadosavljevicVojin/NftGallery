@@ -46,7 +46,7 @@
                 {% endif %}
                             <div class="col-md-3 mb-4">
                                 <div class="album-item">
-                                    <a href="{% url 'nft_review' nft.nft.idnft%}">
+                                    <a href="{% url 'exhibition_review' izlozba.id %}">
                                         {% if nft.data %}
                                             <img src="{{ nft.data.nft.image_url }} " alt="NFT Image" style="width: 300px;height: 300px">
                                         {% else %}
@@ -69,7 +69,7 @@
     </div>
 </div>
 {% endfor %}
-<form id="sortiraj" method="post" action="{% url 'sort_index' %}" style="display: none;">
+<form id="sortiraj" method="post" action="{% url 'index' %}" style="display: none;">
             {% csrf_token %}
             <input type="hidden" name="sort" id="sort">
             <input type="hidden" name="username" id="username">

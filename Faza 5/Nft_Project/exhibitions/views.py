@@ -6,30 +6,23 @@ from common.decoraters import is_creator_or_collector
 
 from profiles.models import Registrovanikorisnik
 
-
-
 from .utils import *
 from datetime import datetime
 
 
 # Create your views here.
 def index(request):
-   izlozbe= getRandomExhibitions()
-   context = dict()
-   context["izlozbe"] = izlozbe
-   return render(request, 'index.html', context)
-def sort_index(request):
     izlozbe = getRandomExhibitions()
-    sort = request.POST.get('sort', None)
-    if (sort == "poImenu"):
-        # print("usao")
-        izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["naziv"])
-    elif (sort == "poOceni"):
-        izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["prosecnaOcena"])
-    elif (sort == "poVelicini"):
-        izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["velicina"])
-    elif (sort == "poVrednosti"):
-        izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["cena"])
+    if request.method == 'POST':
+        sort = request.POST.get('sort', None)
+        if (sort == "poImenu"):
+            izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["naziv"])
+        elif (sort == "poOceni"):
+            izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["prosecnaOcena"])
+        elif (sort == "poVelicini"):
+            izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["velicina"])
+        elif (sort == "poVrednosti"):
+            izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["cena"])
     context = dict()
     context["izlozbe"] = izlozbe
     return render(request, 'index.html', context)
@@ -60,7 +53,7 @@ def create_exhibition(request):
             belong = Pripada(idlis=exhibition_list, idnft=nft_object)
             belong.save()
 
-        return redirect("profile_info")
+        return render(request, 'operation_on_exhibition_success.html')
 
     else:
 
@@ -79,12 +72,15 @@ def create_exhibition(request):
 @user_passes_test(is_creator_or_collector, login_url='/accounts/error')
 def change_exhibition(request, exhibition_id):
     exhibition_list = Listanft.objects.get(idlis=exhibition_id)
+    if exhibition_list.idvla.idkor != request.user:
+        return redirect("error")
+
     belong = Pripada.objects.filter(idlis=exhibition_list)
     exhibition_nfts = [b.idnft for b in belong]
 
     if request.method == "POST":
 
-        nfts_objects, exhibition_size,  exhibition_value, exhibition_avg_grades = get_updated_exhibition_attr(request)
+        nfts_objects, exhibition_size, exhibition_value, exhibition_avg_grades = get_updated_exhibition_attr(request)
 
         exhibition_list.brojnft = exhibition_size
         exhibition_list.ukupnavrednost = exhibition_value
@@ -103,7 +99,7 @@ def change_exhibition(request, exhibition_id):
 
         for belong_obj in belong:
             belong_obj.save()
-        return redirect("profile_info")
+        return render(request, 'operation_on_exhibition_success.html')
 
     else:
 
@@ -118,7 +114,6 @@ def change_exhibition(request, exhibition_id):
         nft_list = context['nfts']
         for nft in nft_list:
             if nft['nft'] in exhibition_nfts:
-                print("Selektovani nft sam ja " + str(nft['nft']))
                 nft['select'] = True
             else:
                 nft['select'] = False
@@ -128,15 +123,12 @@ def change_exhibition(request, exhibition_id):
 
 def exhibition_review(request, exhibition_id):
 
-    user = Registrovanikorisnik.objects.get(idkor=request.user)
-
     exhibition_dict = dict()
 
     exhibition_list = Listanft.objects.get(idlis=exhibition_id)
     exhibition = Izlozba.objects.get(idlis=exhibition_list)
 
-    exhibition_dict["owner_image"] = user.slika.url
-    exhibition_dict["owner_name"] = request.user.username
+    #exhibition_dict["owner_image"] = user.slika.url
     exhibition_dict["name"] = exhibition.naziv
     exhibition_dict["value"] = exhibition_list.ukupnavrednost
     exhibition_dict["avg_grade"] = exhibition.prosecnaocena
@@ -148,13 +140,16 @@ def exhibition_review(request, exhibition_id):
 
     context["exhibition"] = exhibition_dict
 
+    context["owner"] = exhibition_list.idvla.idkor
+
     return render(request, "exhibition_review.html", context)
 
 
 @login_required(login_url='/accounts/error')
 @user_passes_test(is_creator_or_collector, login_url='/accounts/error')
-def remove_exhibition(request, exhibition_id):
+def remove_exhibition(request):
     if request.method == "POST":
+        exhibition_id = request.POST["exhibition_id"]
         exhibition_list = Listanft.objects.get(idlis=exhibition_id)
 
         exhibition = Izlozba.objects.get(idlis=exhibition_list)
@@ -163,7 +158,7 @@ def remove_exhibition(request, exhibition_id):
         exhibition.delete()
         exhibition_list.delete()
 
-        return redirect("profile_info")
+        return render(request, 'operation_on_exhibition_success.html')
 
     else:
         return HttpResponseNotAllowed(['POST'])

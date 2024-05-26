@@ -11,7 +11,7 @@ from django.urls import reverse
 from pyexpat.errors import messages
 
 from Nft_Project import settings
-from common.decoraters import is_admin, is_not_admin
+from common.decoraters import is_admin, is_not_admin, is_not_logged_in, is_logged_in
 from .utils import check_data_for_registration
 # Create your views here.
 from .models import Zahtevzaregistraciju, Korisnik, CustomUserManager
@@ -21,18 +21,22 @@ from django.contrib.auth.hashers import make_password
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import update_session_auth_hash
+from exhibitions.models import Pripada
 
 
 
 
 #Natalija - logout
-@login_required(login_url='/accounts/error/')
-def logout_view(request):
 
-    logout(request)
-    return redirect('index')
+def logout_view(request):
+    if request.user.is_authenticated:
+        logout(request)
+        return redirect('index')
+    else:
+        return redirect('error')
 
 #Natalija - logovanje na sistem
+@user_passes_test(is_not_logged_in,  login_url='/accounts/error')
 def login_page(request):
     if request.method=='POST':
         username = request.POST['username']
@@ -40,11 +44,9 @@ def login_page(request):
 
 
         user= authenticate(request, username=username, password=password)
-        print(user, username, password)
 
         if user is not None:
             login(request, user)
-            print("Logged in successfully")
             return redirect('index')  # Preusmeri korisnika na početnu stranicu nakon uspešnog logina
         else:
             messages.error(request, 'Uneli ste pogrešne kredencijale!')
@@ -57,11 +59,11 @@ def login_page(request):
 
 # Natalija
 # Registracija - prikaz stranice za registraciju i pravljenje zahteva za registraciju
+@user_passes_test(is_not_logged_in,  login_url='/accounts/error')
 def register_page(request):
 
     if request.method == 'POST':
         try:
-            print("post")
         # Submit dugme je pritisnuto : 1. Povuci podatke iz forme 2. Proveriti podatke iz forme 3.Poslati zahtev za registraciju ukoliko su validni
             username = request.POST['username']
             birthdate = request.POST['birthdate']
@@ -96,8 +98,7 @@ def register_page(request):
 @user_passes_test(is_admin, login_url='/accounts/error')
 def registration_request(request):
     if request.method == 'POST':
-        for key, value in request.POST.items():
-            print(f"{key}: {value}")
+        #for key, value in request.POST.items():
 
         all_keys = list(request.POST.keys())  # Pretvaranje ključeva u listu
         action= ""
@@ -161,20 +162,38 @@ def registration_request(request):
             Zahtevzaregistraciju.objects.filter(idzah=id).delete()
 
     requests = Zahtevzaregistraciju.objects.all()
-    print(requests)
 
     return render(request, 'registration_request.html', {'zahtevi': requests})
 
-
+@login_required( login_url='/accounts/error')
+@user_passes_test(is_admin, login_url='/accounts/error')
 def delete_user(request):
     if request.method == 'POST':
         username = request.POST.get('username')
 
         user = Korisnik.objects.get(username=username)
+
+        reg_user = Registrovanikorisnik.objects.get(idkor=user)
+
+        lists = Listanft.objects.filter(idvla=reg_user)
+
+        # Brisanje objekta pripada za sve liste ciji je korisnik bio vlasnik
+        for l in lists:
+            for b in Pripada.objects.filter(idlis=l):
+                b.delete()
+
+        lists.delete()
+
+
+
         user.delete()
 
+        return redirect("reg_requests")
 
-    return redirect("reg_requests")
+    else:
+        return redirect("error")
+
+
 
 @login_required( login_url='/accounts/error')
 @user_passes_test(is_not_admin, login_url='/accounts/error')
@@ -199,9 +218,6 @@ def change_password(request):
         return render(request, 'change_password.html',{})
 
     return render(request, 'change_password.html')
-
-
-
 
 def error_view(request):
     error_code='403'

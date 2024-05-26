@@ -44,7 +44,7 @@
                 {% endif %}
                             <div class="col-md-3 mb-4">
                                 <div class="album-item">
-                                    <a href="{% url 'nft_review' nft.nft.idnft%}">
+                                    <a href="{% url 'exhibition_review' izlozba.id %}">
                                         {% if nft.data %}
                                             <img src="{{ nft.data.nft.image_url }}" alt="NFT Image" style="width: 300px;height: 300px">
                                         {% else %}
@@ -87,5 +87,6 @@
         document.getElementById("sortiraj").submit();
             }
         </script>
+
 
 {%  endblock %}

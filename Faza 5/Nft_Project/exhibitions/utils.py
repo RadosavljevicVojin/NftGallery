@@ -1,20 +1,18 @@
 from nft.views import get_nft_data
 from .models import Listanft, Kolekcija, Pripada, Portfolio, Izlozba
-from nft.models import Nft
+from nft.models import Nft, Ocena
 
 
 def create_context_for_nfts(nfts):
     nft_list = []
     for nft in nfts:
-        print("slika: " + str(nft.slika))
-        print("url: " + str(nft.url))
         nft_data = {
             'nft': nft,
             'data': None
         }
         if nft.slika == "":
             nft_data['data'] = get_nft_data(nft.url)
-        print("data: " + str(nft_data['data']))
+
         nft_list.append(nft_data)
 
     context = {"nfts": nft_list}
@@ -67,36 +65,61 @@ def get_nfts_from_portfolio(portfolio_user):
     return get_nfts_from_collection(portfolio_user)
 
 
+def get_list_attr(list_id):
+    belong = Pripada.objects.filter(idlis=list_id)
+    nfts = [b.idnft for b in belong]
+
+    list_value = sum(nft.vrednost for nft in nfts)
+    return list_value, len(nfts)
+
+
+def set_list_attr(creator_list, list_value, list_len):
+    list_nft = Listanft.objects.get(idlis=creator_list.idlis)
+    list_nft.ukupnavrednost = list_value
+    list_nft.brojnft = list_len
+    list_nft.save()
+
+
 def get_updated_exhibition_attr(request):
     selected_nfts = list(map(int, request.POST.get('selected_nfts').split(',')))
     nfts_objects = Nft.objects.filter(idnft__in=selected_nfts)
 
     exhibition_size = len(selected_nfts)
 
-    grades = 0
-    exhibition_value = 0
-    for nft_object in nfts_objects:
-        grades += nft_object.prosecnaocena
-        exhibition_value += nft_object.vrednost
+    exhibition_value = sum(nft.vrednost for nft in nfts_objects)
 
-    exhibition_avg_grades = grades / exhibition_size
+    grades = Ocena.objects.filter(idnft__in=nfts_objects)
 
-    return nfts_objects, exhibition_size,  exhibition_value, exhibition_avg_grades
+    if len(grades) != 0:
+        exhibition_avg_grades = float(sum(grade.ocena for grade in grades)) / len(grades)
+        print("\nBroj ocena kreiranje/izmenjene izlozbe je " + str(len(grades)))
+    else:
+        exhibition_avg_grades = 0
+        print("\nBroj ocena kreiranje/izmenjene izlozbe je 0" + str(len(grades)))
+
+    print("Ocene kreirane/izmenjene izlozbe su")
+    for grade in grades:
+        print("Ocena: " + str(grade.ocena))
+
+    print("\n Prosek : " + str(exhibition_avg_grades))
+
+    return nfts_objects, exhibition_size, exhibition_value, exhibition_avg_grades
+
 
 def getRandomExhibitions():
-    izlozba_ids = Izlozba.objects.values_list('idlis', flat=True)[:3]
+    izlozba_ids = Izlozba.objects.values_list('idlis', flat=True)[:4]
     izlozbe = []
     for id in izlozba_ids:
         nft_list = []
         pripada_ids = Pripada.objects.filter(idlis=id).values_list('idnft', flat=True)
         izloz = Izlozba.objects.get(idlis=id)
-        print(pripada_ids)
         nfts = Nft.objects.filter(idnft__in=pripada_ids)
-        cena = 0
-        velicina = 0
-        ocena = 0
+
+        cena = izloz.idlis.ukupnavrednost
+        velicina = izloz.idlis.brojnft
+        prosOc = izloz.prosecnaocena
+
         for nft in nfts:
-            print(nft.naziv)
             nft_data = {
                 'nft': nft,
                 'data': None
@@ -104,11 +127,9 @@ def getRandomExhibitions():
             if nft.slika == "":
                 nft_data['data'] = get_nft_data(nft.url)
             nft_list.append(nft_data)
-            cena += nft.vrednost
-            velicina += 1
-            ocena += nft.prosecnaocena
-        prosOc = float(ocena) / velicina
+
         izlozba = {
+            'id': izloz.idlis.idlis,
             'nfts': nft_list,
             'cena': cena,
             'naziv': izloz.naziv,
@@ -117,4 +138,3 @@ def getRandomExhibitions():
         }
         izlozbe.append(izlozba)
     return izlozbe
-

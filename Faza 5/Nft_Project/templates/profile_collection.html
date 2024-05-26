@@ -24,7 +24,7 @@
 {%  endblock %}
 {% block profilecontent %}
 <div class="container mt-5">
-    <header>Ukupna vrednost kolekcije: {{ cena }}  ETH </header>
+    <header>Ukupna vrednost kolekcije: {{ cena|floatformat:2 }}  ETH </header>
        <div class="row">
   {% for nft in nfts %}
     <div class="col-md-3 mb-4">

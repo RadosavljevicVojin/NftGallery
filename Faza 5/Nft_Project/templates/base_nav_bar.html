@@ -71,7 +71,7 @@
             {% else %}
             <div class="btn-wrap d-flex my-4 my-lg-4">
 
-            <a href="{%  url 'profile_info'  %}" class="btn btn-linear btn-medium">Moj profil</a>
+            <a href="#" onclick="openProfile()" class="btn btn-linear btn-medium">Moj profil</a>
             <a href="{% url 'logout' %}" class="btn btn-outline-linear btn-medium m-0">Odjavi se</a>
         </div>
 
@@ -79,12 +79,20 @@
             {% csrf_token %}
             <input type="hidden" name="username" id="usernameInput">
         </form>
+                
+        <form id="openProfileForm" method="post" action="{% url 'profile_info' %}" style="display: none;">
+            {% csrf_token %}
+        </form>
         <script>
             function submitForm(username) {
                 console.log("Username passed to function: ", username);  // Dodajte ovo za debugging
-        document.getElementById("usernameInput").value = username;
-        console.log("Username set in hidden input: ", document.getElementById("usernameInput").value);  // Dodajte ovo za debugging
-        document.getElementById("profileForm").submit();
+                document.getElementById("usernameInput").value = username;
+                console.log("Username set in hidden input: ", document.getElementById("usernameInput").value);  // Dodajte ovo za debugging
+                document.getElementById("profileForm").submit();
+            }
+
+            function openProfile(action){
+                document.getElementById("openProfileForm").submit();
             }
         </script>
             {% endif %}

@@ -2,50 +2,6 @@
 
 {% block maincontent %}
 
-    <div class="container">
-    <div class="row">
-        <div class="col-lg-4 col-md-6">
-
-            <button class="btn btn-outline-linear btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Sortiraj
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#" onclick="refreshPage('poImenu')">Po imenu</a>
-                <a class="dropdown-item" href="#" onclick="refreshPage('poOceni')">Po oceni</a>
-                <a class="dropdown-item" href="#" onclick="refreshPage('poVelicini')">Po velicini</a>
-                <a class="dropdown-item" href="#" onclick="refreshPage('poVrednosti')">Po vrednosti</a>
-            </div>
-
-
-
-        </div>
-    </div>
-</div>
-
-<script>
-  function pretrazi() {
-      var searchValue = document.getElementById('search-input').value.toLowerCase();
-      if (searchValue.includes('kreator')) {
-          window.location.href = 'creator_profile_about_view_reg.html';
-      } else if (searchValue.includes('kupac')) {
-          window.location.href = 'buyer_profile_about_view_reg.html';
-      } else if (searchValue.includes('kolekcionar')) {
-          window.location.href = 'collector_profile_about_view_reg.html';
-      } else {
-          alert("Unesite: kreator, kupac ili kolekcionar!");
-      }
-
-  }
-</script>
-
-    <div class="container mt-5">
-        <div class="text-center">
-              <img src="{{ exhibition.owner_image }}" alt="Profile Picture" class="img-fluid circle-rounded mb-3 profile-img">
-              <h4 class="mb-4">@{{ exhibition.owner_name }}</h4>
-        </div>
-
-    </div>
-
     <div class="container mt-5">
 
         <div class="profile-info">
@@ -58,52 +14,87 @@
 
                     <div class="d-flex align-items-center justify-content-center mb-3">
                         <label for="vrednostIzlozbe" class="me-2"><strong>Vrednost izlozbe:</strong></label>
-                        <span id="vrednostIzlozbe">{{ exhibition.value }}</span>
+                        <span id="vrednostIzlozbe">{{ exhibition.value|floatformat:2 }}</span>
                     </div>
 
                     <div class="d-flex align-items-center justify-content-center mb-3">
-                        <label for="prosecnaOcenaNFT" class="me-2"><strong>Prosecna ocena NFT:</strong></label>
-                        <span id="procesnaOcenaNFT">{{ exhibition.avg_grade }}</span>
+                        <label for="prosecnaOcenaNFT" class="me-2"><strong>Prosecna ocena:</strong></label>
+                        {% if exhibition.avg_grade != 0 %}
+                            <span id="procesnaOcenaNFT">{{ exhibition.avg_grade|floatformat:2 }}</span>
+                        {% else %}
+                            <span id="procesnaOcenaNFT">Nije ocenjena</span>
+                        {% endif %}
                     </div>
 
                     <div class="d-flex align-items-center justify-content-center mb-3">
                         <label for="vlasnikIzlozbe" class="me-2"><strong>username:</strong></label>
-                        <a href="{% url 'profile_info' %}" id="vlasnikIzlozbe" class="info-value">@{{ exhibition.owner_name }}</a>
+                        <a
+                           href="#" onclick="submitForm('{{ owner.username }}', '{% url 'profile_info' %}')"
+                           id="vlasnikIzlozbe" class="info-value">@{{ owner.username }}
+                        </a>
                     </div>
 
                     <div class="d-flex align-items-center justify-content-center mb-3">
                         <label for="datumKreiranjaIzlozbe" class="me-2"><strong>Datum kreiranja:</strong></label>
                         <span id="datumKreiranjaIzlozbe">{{ exhibition.date }}</span>
                     </div>
-                    
-                    <div class="container mt-5">
-                        <!-- Dodajemo dugmad za izmenu i brisanje izložbe -->
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-lg" type="button" style="background-color: #8D52F5;" onclick="izmeniIzlozbu()">Izmeni izložbu</button>
-                            <form id="deleteForm" action="{% url 'remove_exhibition' exhibition.id %}" method="post">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-lg" type="button" style="background-color: #8D52F5;" onclick="obrisiIzlozbu()" >Obriši izložbu</button>
-                            </form>
+
+                    <div class="col-lg-4 col-md-6 text-left">
+                        <button class="btn btn-outline-linear btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Sortiraj
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#" onclick="refreshPage('poImenu')">Po imenu</a>
+                            <a class="dropdown-item" href="#" onclick="refreshPage('poOceni')">Po oceni</a>
+                            <a class="dropdown-item" href="#" onclick="refreshPage('poVelicini')">Po velicini</a>
+                            <a class="dropdown-item" href="#" onclick="refreshPage('poVrednosti')">Po vrednosti</a>
                         </div>
+
+                        {% if request.user.is_authenticated %}
+                            {% if request.user.idkor == owner.idkor %}
+                                <button class="btn btn-outline-linear btn-outline-light m-0 btn-lg" type="button" onclick="izmeniIzlozbu()">
+                                      Izmeni izložbu
+                                </button>
+                                <form id="deleteForm" action="{% url 'remove_exhibition' %}" method="post" style="margin-top: 20px">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="exhibition_id" id="exhibition_id">
+                                    <button class="btn btn-outline-linear btn-outline-light m-0 btn-lg" type="button" onclick="obrisiIzlozbu()" >
+                                      Obriši izložbu
+                                    </button>
+                                </form>
+                            {% endif %}
+                        {% endif %}
                     </div>
-                    
-                    <script>
-                        function izmeniIzlozbu() {
-                            // Preusmeravanje na URL za izmenu izložbe
-                            window.location.href = "{% url 'change_exhibition' exhibition.id %}";
-                        }
-                    
-                        function obrisiIzlozbu() {
-                            // Preusmeravanje na URL za brisanje izložbe
-                            if (confirm("Da li ste sigurni da želite da izbrišete izložbu?")) {
-                                // Ako je korisnik potvrdio brisanje, preusmeravamo ga na odgovarajuću stranicu
-                                alert("Uspešno ste izbrisali izložbu");
-                                window.location.href = "{% url 'remove_exhibition' exhibition.id %}";
-                            }
-                            
-                        }
-                    </script>
                 </div>
+
+                <form id="profileForm" method="post" action="" style="display: none;">
+                    {% csrf_token %}
+                    <input type="hidden" name="username" id="usernameInput">
+                </form>
+                <script>
+                    function izmeniIzlozbu() {
+                        // Preusmeravanje na URL za izmenu izložbe
+                        window.location.href = "{% url 'change_exhibition' exhibition.id %}";
+                    }
+
+                    function obrisiIzlozbu() {
+                        
+                        // Preusmeravanje na URL za brisanje izložbe
+                        if (confirm("Da li ste sigurni da želite da izbrišete izložbu?")) {
+                            // Ako je korisnik potvrdio brisanje, preusmeravamo ga na odgovarajuću stranicu
+                            alert("Uspešno ste izbrisali izložbu");
+
+                            document.getElementById("exhibition_id").value={{ exhibition.id }};
+                            document.getElementById("deleteForm").submit();
+                        }
+
+                    }
+                    function submitForm(username, action) {
+                        document.getElementById("usernameInput").value = username;
+                        document.getElementById("profileForm").action = action;
+                        document.getElementById("profileForm").submit();
+                    }
+                </script>
             </div>
         </div>
 
@@ -111,13 +102,15 @@
             {% for nft in nfts %}
                 <div class="col-md-3 mb-4">
                     <div class="album-item">
-                        <img
-                            {% if nft.data %}
-                                src="{{ nft.data.nft.image_url }}"
-                            {% else %}
-                                src="{{ nft.nft.slika.url }}"
-                            {% endif %}
-                        alt="Slika" id="{{ nft.nft.idnft }}" style="width: 300px;height: 300px">
+                        <a href="{% url 'nft_review' nft.nft.idnft %}">
+                            <img
+                                {% if nft.data %}
+                                    src="{{ nft.data.nft.image_url }}"
+                                {% else %}
+                                    src="{{ nft.nft.slika.url }}"
+                                {% endif %}
+                            alt="Slika" id="{{ nft.nft.idnft }}" style="width: 300px;height: 300px">
+                        </a>
                         <div class="caption text-center">{{ nft.nft.naziv }}</div>
                     </div>
                 </div>
