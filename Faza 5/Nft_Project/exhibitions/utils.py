@@ -90,7 +90,7 @@ def get_updated_exhibition_attr(request):
 
     grades = Ocena.objects.filter(idnft__in=nfts_objects)
 
-    if len(grades) != 0:
+    if grades.exists():
         exhibition_avg_grades = float(sum(grade.ocena for grade in grades)) / len(grades)
         print("\nBroj ocena kreiranje/izmenjene izlozbe je " + str(len(grades)))
     else:

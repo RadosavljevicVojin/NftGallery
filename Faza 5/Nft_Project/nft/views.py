@@ -7,9 +7,7 @@ import requests
 
 from common.decoraters import is_creator
 
-from .models import Nft, Ocena
-from profiles.models import Registrovanikorisnik
-from exhibitions.models import Kolekcija, Portfolio, Pripada, Listanft, Izlozba
+
 from .utils import *
 
 from urllib.parse import urlparse
@@ -205,31 +203,29 @@ def change_price(request):
         idnft = int(request.POST['idnft_name'])
         nft = Nft.objects.get(idnft=idnft)
 
-        if not nova_cena:
-            return render(request, 'nft_review.html', {'idnft': nft.idnft})
+        nft_data = {
+            'nft': nft,
+            'data': None
+        }
+        if nft.slika == "":
+            nft_data['data'] = get_nft_data(nft.url)
 
-        else:
+        context = {"nft": nft_data}
+        context["owner"] = nft.idvla.idkor
+        context["creator"] = nft.idkre.idkor
+
+        if nova_cena is not None and nova_cena != '':
             stara_cena = nft.vrednost
             nft.vrednost = nova_cena
             nft.save()
 
-            prosecna_ocena = Ocena.objects.filter(idnft=nft).aggregate(avg_rating=Avg('ocena'))['avg_rating']
+            nft_se_nalazi = Pripada.objects.filter(idnft=nft)
+            liste = [l.idlis for l in nft_se_nalazi]
+            for l in liste:
+                l.ukupnavrednost += nova_cena - stara_cena
+                l.save()
 
-            nft.prosecnaocena = prosecna_ocena
-            nft.save()
-
-            promenio_kolekcija = Listanft.objects.get(idvla=nft.idvla)
-            promenio_kolekcija.ukupnavrednost += (nova_cena - stara_cena)
-            promenio_kolekcija.save()
-
-            kreator_portfolio = Listanft.objects.filter(idvla=nft.idkre)
-            for kol in kreator_portfolio:
-                if Portfolio.objects.filter(idlis=kol.idlis).exists():
-                    kol.ukupnavrednost += (nova_cena - stara_cena)
-                    kol.save()
-                    break
-
-            return redirect('index')  # Preusmeravanje na 'index' nakon ocenjivanja
+        return render(request, 'nft_review.html', context)
 
     else:
         return HttpResponseNotAllowed(['POST'])
@@ -260,26 +256,42 @@ def buy_nft(request):
         prosli_vlasnik_kolekcije = Listanft.objects.filter(idvla=prosli_vlasnik)
 
         for kol in prosli_vlasnik_kolekcije:
-            if not Portfolio.objects.filter(idlis=kol.idlis).exists():
-                Pripada.objects.filter(idlis=kol, idnft=nft.idnft).delete()
+            if not Portfolio.objects.filter(idlis=kol).exists():
+                if Izlozba.objects.filter(idlis=kol).exists() and Pripada.objects.filter(idlis=kol, idnft = nft).exists():
+                    Pripada.objects.filter(idlis=kol, idnft=nft).delete()
+                    izlozba = Izlozba.objects.get(idlis=kol)
+                    nft_izlozbe = get_nfts_from_exhibition(izlozba)
+                    update_exhibition_grade(izlozba, nft_izlozbe)
+                else:
+                    Pripada.objects.filter(idlis=kol, idnft=nft).delete()
+
+                kol.ukupnavrednost -= nft.vrednost
+                kol.brojnft -= 1
+                kol.save()
+
 
         platio_kolekcija = Listanft.objects.filter(idvla=platio)
         for kol in platio_kolekcija:
-            if not Portfolio.objects.filter(idlis=kol.idlis).exists():
-                if not Izlozba.objects.filter(idlis=kol.idlis).exists():
-                    Pripada.objects.create(idlis=kol, idnft=nft)
-                    kol.ukupnavrednost += nft.vrednost
-                    kol.brojnft += 1
-                    kol.save()
+            if Kolekcija.objects.filter(idlis=kol).exists():
+                Pripada.objects.create(idlis=kol, idnft=nft)
+                kol.ukupnavrednost += nft.vrednost
+                kol.brojnft += 1
+                kol.save()
 
-        for kol in prosli_vlasnik_kolekcije:
-            if not Portfolio.objects.filter(idlis=kol.idlis).exists():
-                if not Izlozba.objects.filter(idlis=kol.idlis).exists():
-                    kol.ukupnavrednost -= nft.vrednost
-                    kol.brojnft -= 1
-                    kol.save()
 
-        return redirect('index')  # Preusmeravanje na 'index' nakon ocenjivanja
+        # Treba da se doda da se u svakoj izlozbi promeni atributi
+        nft_data = {
+            'nft': nft,
+            'data': None
+        }
+        if nft.slika == "":
+            nft_data['data'] = get_nft_data(nft.url)
+
+        context = {"nft": nft_data}
+        context["owner"] = nft.idvla.idkor
+        context["creator"] = nft.idkre.idkor
+
+        return render(request, 'nft_review.html', context)
 
     else:
         return HttpResponseNotAllowed(['POST'])

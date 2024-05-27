@@ -255,7 +255,8 @@ def sort_profile_exhibition(request):
                         nft_list.append(nft_data)
                         cena += nft.vrednost
                         velicina += 1
-                        ocena += nft.prosecnaocena
+                        if nft.prosecnaocena:
+                            ocena += nft.prosecnaocena
                     prosOc = float(ocena) / velicina
                     izlozba = {
                         'id': izloz.idlis.idlis,

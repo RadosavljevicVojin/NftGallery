@@ -16,7 +16,14 @@ def get_exhibitions_from_nft(nft):
 
 def update_exhibition_grade(exhibition, exhibition_nfts):
     grades = Ocena.objects.filter(idnft__in=exhibition_nfts)
-    exhibition.prosecnaocena = float(sum(grade.ocena for grade in grades)) / len(grades)
+
+    if grades.exists():
+        exhibition.prosecnaocena = float(sum(grade.ocena for grade in grades)) / len(grades)
+        print("\nBroj ocena apdejtovane izlozbe je " + str(len(grades)))
+    else:
+        exhibition.prosecnaocena = 0
+        print("\nBroj ocena apdejtovane izlozbe je 0" + str(len(grades)))
+
     exhibition.save()
 
     print("Ocene apdejtovane izlozbe su")
