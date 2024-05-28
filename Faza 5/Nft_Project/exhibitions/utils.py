@@ -1,6 +1,8 @@
 from nft.views import get_nft_data
 from .models import Listanft, Kolekcija, Pripada, Portfolio, Izlozba
 from nft.models import Nft, Ocena
+from profiles.utils import get_user_exhibitions
+
 
 
 def create_context_for_nfts(nfts):
@@ -107,7 +109,7 @@ def get_updated_exhibition_attr(request):
 
 
 def getRandomExhibitions():
-    izlozba_ids = Izlozba.objects.values_list('idlis', flat=True)[:4]
+    izlozba_ids = Izlozba.objects.order_by('?').values_list('idlis', flat=True)[:4]
     izlozbe = []
     for id in izlozba_ids:
         nft_list = []

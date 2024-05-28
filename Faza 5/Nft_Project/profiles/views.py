@@ -13,6 +13,8 @@ from nft.views import get_nft_data
 from profiles.models import Registrovanikorisnik
 from profiles.utils import create_main_context
 from django.contrib import messages
+from profiles.utils import create_main_context,pack_nfts,pack_nfts_exhibitions,get_user_exhibitions,get_user_portfolio,get_user_collection
+
 
 
 # Create your views here.
@@ -59,27 +61,10 @@ def view_profile_portfolio(request):
         if username:
             if Korisnik.objects.filter(username=username).exclude(user_type='admin').exists():
                 context = create_main_context(request, username)
-                #  dopuniti kontekst ya informacije
                 id = context["id"]
-                listanft = Listanft.objects.filter(portfolio__isnull=False,idvla= id).first()
-
-                pripada_ids = Pripada.objects.filter(idlis=listanft.idlis).values_list('idnft', flat=True)
-
-                nfts = Nft.objects.filter(idnft__in=pripada_ids)
-
-                nft_list = []
-                cena = 0
-                for nft in nfts:
-                    nft_data = {
-                        'nft': nft,
-                        'data': None
-                    }
-                    if nft.slika == "":
-                        nft_data['data'] = get_nft_data(nft.url)
-                    nft_list.append(nft_data)
-                    cena += nft.vrednost
+                nft_list,novaCena = get_user_portfolio(id)
                 context["nfts"] = nft_list
-                context["cena"] = cena
+                context["cena"] = novaCena
                 return render(request, 'profile_portfolio.html', context)
         else:
             return HttpResponse("Molimo vas da unesete korisničko ime.")
@@ -93,31 +78,14 @@ def view_profile_portfolio(request):
 
 def view_profile_collection(request):
     if request.method == 'POST':
-
         username = request.POST.get('username', None)
-
         if username:
             if Korisnik.objects.filter(username=username).exclude(user_type='admin').exists():
                 context = create_main_context(request, username)
-                #  dopuniti kontekst ya informacije
                 id = context["id"]
-
-                nfts = Nft.objects.filter(idvla=id)
-
-                nft_list = []
-                cena = 0
-                for nft in nfts:
-                    nft_data = {
-                        'nft': nft,
-                        'data': None
-                    }
-                    if nft.slika == "":
-                        nft_data['data'] = get_nft_data(nft.url)
-                    nft_list.append(nft_data)
-                    cena += nft.vrednost
+                nft_list,novaCena = get_user_collection(id)
                 context["nfts"] = nft_list
-                context["cena"] = cena
-                #context2 = {"nfts": nft_list,"image":context[]}
+                context["cena"] = novaCena
                 return render(request, 'profile_collection.html', context)
         else:
             return HttpResponse("Molimo vas da unesete korisničko ime.")
@@ -134,37 +102,8 @@ def view_profile_exhibitions(request):
             if Korisnik.objects.filter(username=username).exclude(user_type='admin').exists():
                 context = create_main_context(request, username)
                 id = context["id"]
-                listanfts = Listanft.objects.filter(izlozba__isnull=False, idvla=id)
-
-                izlozbe = []
-                for listanft in listanfts:
-                    nft_list = []
-                    pripada_ids = Pripada.objects.filter(idlis=listanft.idlis).values_list('idnft', flat=True)
-                    izloz = Izlozba.objects.get(idlis =listanft.idlis)
-
-                    nfts = Nft.objects.filter(idnft__in=pripada_ids)
-                    cena = 0
-                    for nft in nfts:
-
-                        nft_data = {
-                            'nft': nft,
-                            'data': None
-                        }
-                        if nft.slika == "":
-
-                            nft_data['data'] = get_nft_data(nft.url)
-                        nft_list.append(nft_data)
-                        cena += nft.vrednost
-                    izlozba = {
-                        'id': izloz.idlis.idlis,
-                        'nfts':nft_list,
-                        'cena':cena,
-                        'naziv':izloz.naziv
-                    }
-                    izlozbe.append(izlozba)
-
+                izlozbe = get_user_exhibitions(id)
                 context["izlozbe"] = izlozbe
-
                 return render(request, 'profile_exhibitions.html', context)
         else:
             return HttpResponse("Molimo vas da unesete korisničko ime.")
@@ -182,30 +121,18 @@ def sort_profile_collection(request):
         if username:
             if Korisnik.objects.filter(username=username).exclude(user_type='admin').exists():
                 context = create_main_context(request, username)
-                #  dopuniti kontekst ya informacije
                 sort = request.POST.get('sort', None)
                 id = context["id"]
                 nfts = Nft.objects.filter(idvla=id)
-                nft_list = []
                 cena = request.POST.get('cena', None)
                 if (sort == "poImenu"):
 
                     nfts = sorted(nfts, key=lambda nft: nft.naziv)
                 elif (sort == "poOceni"):
                     nfts = sorted(nfts, key=lambda nft: nft.prosecnaocena)
-                elif (sort == "poVelicini"):
-                    pass
                 elif (sort == "poVrednosti"):
                     nfts = sorted(nfts, key=lambda nft: nft.vrednost)
-                for nft in nfts:
-
-                    nft_data = {
-                        'nft': nft,
-                        'data': None
-                    }
-                    if nft.slika == "":
-                        nft_data['data'] = get_nft_data(nft.url)
-                    nft_list.append(nft_data)
+                nft_list,novaCena = pack_nfts(nfts)
                 context["nfts"] = nft_list
                 context["cena"] = cena
                 pageType = request.POST.get('pageType', None)
@@ -222,54 +149,14 @@ def sort_profile_collection(request):
 
 def sort_profile_exhibition(request):
     if request.method == 'POST':
-
         username = request.POST.get('username', None)
-
         if username:
             if Korisnik.objects.filter(username=username).exclude(user_type='admin').exists():
                 context = create_main_context(request, username)
-                #  dopuniti kontekst ya informacije
-
                 sort = request.POST.get('sort', None)
                 id = context["id"]
-                listanfts = Listanft.objects.filter(izlozba__isnull=False, idvla=id)
-
-                izlozbe = []
-                for listanft in listanfts:
-                    nft_list = []
-                    pripada_ids = Pripada.objects.filter(idlis=listanft.idlis).values_list('idnft', flat=True)
-                    izloz = Izlozba.objects.get(idlis=listanft.idlis)
-
-                    nfts = Nft.objects.filter(idnft__in=pripada_ids)
-                    cena = 0
-                    velicina = 0
-                    ocena = 0
-                    for nft in nfts:
-
-                        nft_data = {
-                            'nft': nft,
-                            'data': None
-                        }
-                        if nft.slika == "":
-                            nft_data['data'] = get_nft_data(nft.url)
-                        nft_list.append(nft_data)
-                        cena += nft.vrednost
-                        velicina += 1
-                        if nft.prosecnaocena:
-                            ocena += nft.prosecnaocena
-                    prosOc = float(ocena) / velicina
-                    izlozba = {
-                        'id': izloz.idlis.idlis,
-                        'nfts': nft_list,
-                        'cena': cena,
-                        'naziv': izloz.naziv,
-                        'velicina':velicina,
-                        'prosecnaOcena':prosOc
-                    }
-                    izlozbe.append(izlozba)
-
+                izlozbe = get_user_exhibitions(id)
                 if (sort == "poImenu"):
-
                     izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["naziv"])
                 elif (sort == "poOceni"):
                     izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["prosecnaOcena"])
