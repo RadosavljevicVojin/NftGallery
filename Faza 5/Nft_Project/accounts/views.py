@@ -42,7 +42,6 @@ def login_page(request):
         username = request.POST['username']
         password = request.POST['password']
 
-
         user= authenticate(request, username=username, password=password)
 
         if user is not None:
@@ -83,11 +82,14 @@ def register_page(request):
                                                        datumrodjenja=birthdate, mestorodjenja=birthplace, uloga=user_type)
 
                 new_request.save()
-                return redirect('index')
+                messages.success(request, "Uspešno je poslat zahtev za registarciju.")
+
+            else:
+                messages.error(request, message)
 
         except IntegrityError as e:
              message = "Greška pri unosu u bazu: " + str(e)
-        return render(request, 'signin.html', {'error': message})
+        return render(request, 'signin.html', {})
 
     return render(request, 'signin.html')
 
