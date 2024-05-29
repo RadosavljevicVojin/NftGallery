@@ -64,7 +64,7 @@ class Zahtevzaregistraciju(models.Model):
     brojtelefona = models.CharField(db_column='BrojTelefona', max_length=20)  # Field name made lowercase.
     datumrodjenja = models.DateField(db_column='DatumRodjenja')  # Field name made lowercase.
     mestorodjenja = models.CharField(db_column='MestoRodjenja', max_length=20)  # Field name made lowercase.
-    brojkartice = models.CharField(db_column='BrojKartice', max_length=10)  # Field name made lowercase.
+    brojkartice = models.CharField(db_column='BrojKartice', max_length=16)  # Field name made lowercase.
     uloga = models.CharField(db_column='Uloga', max_length=11, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:

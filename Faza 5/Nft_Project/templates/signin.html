@@ -100,6 +100,21 @@
                     <label for="buyer">Kupac</label>
                 </div>
 
+                {% if messages %}
+                <ul class="messages" style="text-align: center;">
+                   {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                            <span style="font-weight: bold;
+                                    color:
+                                    {% if message.tags == 'error' %}red
+                                    {% elif message.tags == 'success' %}green
+                                    {% endif %};
+                                    ">{{ message }}
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
                 <div class="row">
                     <input type="submit" value="Registruj se" class="login-button btn-wrap btn-outline-linear" id="register-button">
                 </div>
