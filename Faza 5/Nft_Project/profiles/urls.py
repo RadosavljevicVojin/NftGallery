@@ -10,7 +10,9 @@ urlpatterns = [
     path("portfolio_sort",profiles_view.sort_profile_collection,name = "portfolio_sort"),
     path("exhibition_sort",profiles_view.sort_profile_exhibition,name = "exhibition_sort"),
     path("change_info", profiles_view.view_change_info, name="change_info"),
-   path("change_info_submit", profiles_view.change_info, name="submit_change_info")
+   path("change_info_submit", profiles_view.change_info, name="submit_change_info"),
+   path("exhibition_view_ajax", profiles_view.exhibition_view_ajax, name="exhibition_view_ajax"),
+   path("collection_view_ajax", profiles_view.collection_view_ajax, name="collection_view_ajax")
 
 
 ]

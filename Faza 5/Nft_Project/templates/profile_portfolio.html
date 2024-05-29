@@ -23,6 +23,7 @@
 
 {%  endblock %}
 {% block profilecontent %}
+    <div id = "cont">
 <div class="container mt-5">
     <header>Ukupna vrednost portfolia: {{ cena|floatformat:2 }}  ETH </header>
        <div class="row">
@@ -45,15 +46,18 @@
   {% endfor %}
     </div>
 </div>
+    </div>>
 
 <form id="sortiraj" method="post" action="{% url 'portfolio_sort' %}" style="display: none;">
             {% csrf_token %}
-            <input type="hidden" name="sort" id="sort">
-            <input type="hidden" name="nfts" id="nfts">
-            <input type="hidden" name="cena" id="cena">
-            <input type="hidden" name="username" id="username">
-            <input type="hidden" name="pageType" id="pageType">
+             <input type="hidden" name="sort" id="sort" value = "{{typeOfSort}}">
+            <input type="hidden" name="nfts" id="nfts" value = "{{nfts}}">
+            <input type="hidden" name="cena" id="cena" value = "{{cena}}">
+            <input type="hidden" name="username" id="username" value = "{{username}}">
+            <input type="hidden" name="pageType" id="pageType" value = "{{ 'portfolio' }}"  >
         </form>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js">
+ </script>
  <script>
             function refreshPagee(username,sortType,cena) {
                 console.log("username passed to function: ",username);  // Dodajte ovo za debugging
@@ -61,8 +65,33 @@
                 document.getElementById("sort").value = sortType;
                 document.getElementById("cena").value = cena;
                 document.getElementById("pageType").value = "portfolio";
-        console.log("Username set in hidden input: ", document.getElementById("usernameInput").value);  // Dodajte ovo za debugging
+        console.log("Username set in hidden input: ", document.getElementById("username").value);  // Dodajte ovo za debugging
         document.getElementById("sortiraj").submit();
             }
+            $(document).ready(function() {
+        function fetchNfts() {
+        var formData = $('#sortiraj').serialize();
+        console.log(formData);
+            $.ajax({
+                url: '{% url 'collection_view_ajax' %}',
+                type: 'POST',
+                data:formData,
+                dataType: 'html',
+                success: function(data) {
+                    $('#cont').empty(); // Prvo brišemo postojeći sadržaj elementa
+                    $('#cont').html(data); // Zatim postavljamo novi HTML u element
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX request failed:', error);
+                }
+            });
+        }
+
+        // Pozivamo funkciju odmah po učitavanju stranice
+        fetchNfts();
+
+        // Postavljamo interval za ponavljanje AJAX zahteva svakih 3 sekunde (3000 milisekundi)
+        setInterval(fetchNfts, 6000);
+         });
         </script>
 {%  endblock %}

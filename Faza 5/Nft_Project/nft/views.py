@@ -11,6 +11,7 @@ from common.decoraters import is_creator
 from .utils import *
 
 from urllib.parse import urlparse
+from django.http import JsonResponse
 
 # Obavezno se dodaje u Header Request-a
 API_KEY = "e0d9ad00e95945918aec9ec56c057650"
@@ -231,8 +232,6 @@ def change_price(request):
         return HttpResponseNotAllowed(['POST'])
 
     #return render(request, 'nft_review.html', {'idnft': request.GET.get('idnft')})
-
-
 def buy_nft(request):
     if request.method == 'POST':
         idnft = int(request.POST['idnft_name'])
@@ -297,3 +296,18 @@ def buy_nft(request):
         return HttpResponseNotAllowed(['POST'])
 
     #return render(request, 'nft_review.html', {'idnft': request.GET.get('idnft')})
+
+def nft_view_ajax(request):
+    if request.method == 'POST':
+        idnft = int(request.POST['idnft_name'])
+        nft = Nft.objects.get(idnft=idnft)
+        print("update nft price")
+        response_data = {
+            'vrednost': nft.vrednost,
+            'ocena':nft.prosecnaocena
+        }
+        return JsonResponse(response_data)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+

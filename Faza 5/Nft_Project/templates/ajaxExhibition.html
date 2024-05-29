@@ -1,0 +1,42 @@
+{% for izlozba in izlozbe %}
+<div class="container mt-5">
+    <div  style="color: whitesmoke;">
+            {{ izlozba.naziv }}
+          </div>
+    <div id="myCarousel-{{ forloop.counter }}" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for nft in izlozba.nfts %}
+                {% if forloop.first %}
+                    <div class="carousel-item active">
+                        <div class="row">
+                {% elif forloop.counter0|divisibleby:4 %}
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="row">
+                {% endif %}
+                            <div class="col-md-3 mb-4">
+                                <div class="album-item">
+                                    <a href="{% url 'exhibition_review' izlozba.id %}">
+                                        {% if nft.data %}
+                                            <img src="{{ nft.data.nft.image_url }}" alt="NFT Image" style="width: 300px;height: 300px">
+                                        {% else %}
+                                            <img src="{{ nft.nft.slika.url }}" alt="NFT Image" style="width: 300px;height: 300px">
+                                        {% endif %}
+                                    </a>
+                                    <div class="caption text-center">{{ nft.nft.naziv }}</div>
+                                </div>
+                            </div>
+                {% endfor %}
+                        </div>
+                    </div>
+        </div>
+        <a class="carousel-control-prev" href="#myCarousel-{{ forloop.counter }}" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </a>
+        <a class="carousel-control-next" href="#myCarousel-{{ forloop.counter }}" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </a>
+    </div>
+</div>
+{% endfor %}

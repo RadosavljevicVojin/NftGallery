@@ -13,7 +13,7 @@ from nft.views import get_nft_data
 from profiles.models import Registrovanikorisnik
 from profiles.utils import create_main_context
 from django.contrib import messages
-from profiles.utils import create_main_context,pack_nfts,pack_nfts_exhibitions,get_user_exhibitions,get_user_portfolio,get_user_collection
+from profiles.utils import create_main_context,pack_nfts,pack_nfts_exhibitions,get_user_exhibitions,get_user_portfolio,get_user_collection,sort_user_exhibitions,sort_user_nfts
 
 
 
@@ -22,15 +22,21 @@ from profiles.utils import create_main_context,pack_nfts,pack_nfts_exhibitions,g
 #Natalija
 # prikaz informacija o profilu, preko searcja, preko buttona moj ptofil- to je else deo - get zahtev
 def view_profile_info(request):
+    print("usao u profil info")
     if request.method == 'POST':
-
         if 'username' in request.POST:
 
             username = request.POST.get('username', None)
+            print(username)
             if username:
                 if Korisnik.objects.filter(username=username).exclude(user_type='admin').exists():
                     context = create_main_context(request, username)
-                    return render(request, 'profile_info.html', context)
+                    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                        print("ajaxx")
+                        return render(request, 'ajaxProfileInfo.html', context)
+                    else:
+                        print("vracam profil info")
+                        return render(request, 'profile_info.html', context)
                 else:
                     return render(request, "index.html", {"message": True})
 
@@ -45,7 +51,11 @@ def view_profile_info(request):
             context['name']= Registrovanikorisnik.objects.get(idkor=request.user).ime
             context['surname']= Registrovanikorisnik.objects.get(idkor=request.user).prezime
             context['birthplace']= Registrovanikorisnik.objects.get(idkor=request.user).mestorodjenja
-            return render(request, 'profile_info.html', context)
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                print("ajaxxxxxx")
+                return render(request, 'ajaxProfileInfo.html.html', context)
+            else:
+                return render(request, 'profile_info.html', context)
 
     else:
         # deo za search treba staviti
@@ -104,6 +114,7 @@ def view_profile_exhibitions(request):
                 id = context["id"]
                 izlozbe = get_user_exhibitions(id)
                 context["izlozbe"] = izlozbe
+                # context["typeOfSort"] = "poImenu"
                 return render(request, 'profile_exhibitions.html', context)
         else:
             return HttpResponse("Molimo vas da unesete korisničko ime.")
@@ -123,19 +134,16 @@ def sort_profile_collection(request):
                 context = create_main_context(request, username)
                 sort = request.POST.get('sort', None)
                 id = context["id"]
-                nfts = Nft.objects.filter(idvla=id)
                 cena = request.POST.get('cena', None)
-                if (sort == "poImenu"):
-
-                    nfts = sorted(nfts, key=lambda nft: nft.naziv)
-                elif (sort == "poOceni"):
-                    nfts = sorted(nfts, key=lambda nft: nft.prosecnaocena)
-                elif (sort == "poVrednosti"):
-                    nfts = sorted(nfts, key=lambda nft: nft.vrednost)
+                pageType = request.POST.get('pageType', None)
+                if pageType == "collection":
+                   nfts = sort_user_nfts(id,sort,"collection")
+                else:
+                    nfts = sort_user_nfts(id,sort,"portfolio")
                 nft_list,novaCena = pack_nfts(nfts)
                 context["nfts"] = nft_list
                 context["cena"] = cena
-                pageType = request.POST.get('pageType', None)
+                context["typeOfSort"] = sort
                 if pageType == "collection":
                   return render(request, 'profile_collection.html', context)
                 else:
@@ -155,16 +163,19 @@ def sort_profile_exhibition(request):
                 context = create_main_context(request, username)
                 sort = request.POST.get('sort', None)
                 id = context["id"]
-                izlozbe = get_user_exhibitions(id)
-                if (sort == "poImenu"):
-                    izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["naziv"])
-                elif (sort == "poOceni"):
-                    izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["prosecnaOcena"])
-                elif (sort == "poVelicini"):
-                    izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["velicina"])
-                elif (sort == "poVrednosti"):
-                    izlozbe= sorted(izlozbe, key=lambda izlozba: izlozba["cena"])
+                izlozbe = sort_user_exhibitions(id,sort)
                 context["izlozbe"] = izlozbe
+                for izlozba in izlozbe:
+                    for nft in izlozba["nfts"]:
+                        if nft["data"] == None:
+                            print(nft["nft"].url)
+                            print(nft["nft"].slika)
+                            print("nije okej")
+                        else:
+                            print(nft["nft"].slika)
+                            print(nft["nft"].url)
+                            print("okej")
+                context["typeOfSort"] = sort
                 return render(request, 'profile_exhibitions.html', context)
         else:
             return HttpResponse("Molimo vas da unesete korisničko ime.")
@@ -172,6 +183,47 @@ def sort_profile_exhibition(request):
         # deo za search treba staviti
         # Ukoliko nije POST zahtev, možemo prikazati formu za unos korisničkog imena ili redirectovati na drugu stranicu
         return HttpResponseNotAllowed(['POST'])
+def exhibition_view_ajax(request):
+    print("AJAAXX")
+    username = request.POST.get('username', None)
+    print(username)
+    if username:
+        if Korisnik.objects.filter(username=username).exclude(user_type='admin').exists():
+            context = create_main_context(request, username)
+            sort = request.POST.get('sort', None)
+            print(sort)
+            id = context["id"]
+            izlozbe = sort_user_exhibitions(id,sort)
+            context["izlozbe"] = izlozbe
+            return render(request,'ajaxExhibition.html',context)
+def collection_view_ajax(request):
+    print("AJAAXX")
+    username = request.POST.get('username', None)
+    print(username)
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        print("jeste ajax")
+    else:
+        print("nije ajax")
+    if username:
+        if Korisnik.objects.filter(username=username).exclude(user_type='admin').exists():
+            context = create_main_context(request, username)
+            sort = request.POST.get('sort', None)
+            pageType = request.POST.get('pageType', None)
+            print(sort)
+            id = context["id"]
+            if pageType == "collection":
+               nfts = sort_user_nfts(id,sort,"collection")
+            elif pageType == "portfolio":
+                nfts = sort_user_nfts(id,sort,"portfolio")
+            print(pageType)
+            nft_list, novaCena = pack_nfts(nfts)
+            context["nfts"] = nft_list
+            context["cena"] = novaCena
+            if pageType == "collection":
+              return render(request,'ajaxCollection.html',context)
+            elif pageType == "portfolio":
+              return render(request, 'ajaxPortfolio.html', context)
+
 
 
 @login_required( login_url='/accounts/error')

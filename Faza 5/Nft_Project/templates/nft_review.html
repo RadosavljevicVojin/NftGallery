@@ -128,12 +128,12 @@
                         </div>
                         <div class="info-row">
                             <span class="info-label">Trenutna vrednost:</span>
-                            <span class="info-value">{{ nft.nft.vrednost|floatformat:2 }} ETH</span>
+                            <span class="info-value" id="nft-vrednost">{{ nft.nft.vrednost|floatformat:2 }} ETH</span>
                         </div>
                         <div class="info-row">
                             <span class="info-label">Prosečna ocena:</span>
                             {% if nft.nft.prosecnaocena is not None %}
-                                <span class="info-value">{{ nft.nft.prosecnaocena|floatformat:2 }}</span>
+                                <span class="info-value" id="nft-ocena">{{ nft.nft.prosecnaocena|floatformat:2 }}</span>
                             {% else %}
                                 <span class="info-value">Nije ocenjen</span>
                             {% endif %}
@@ -146,7 +146,7 @@
                         <!-- ako je registrovan -->
     
                         {% if request.user.is_authenticated and request.user.idkor == owner.idkor %}
-                            <form method="post" action="{% url 'change_price' %}">
+                            <form method="post" id = "changePrice" action="{% url 'change_price' %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="idnft_name" value="{{ nft.nft.idnft }}">
                                 <div style="margin-top: 157px;">
@@ -209,7 +209,8 @@
                         {% csrf_token %}
                         <input type="hidden" name="username" id="usernameInput">
                     </form>
-    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js">
+ </script>
                     <script>
                         function submitForm(username, action) {
                             document.getElementById("usernameInput").value = username;
@@ -219,6 +220,32 @@
                         function buyNft(){
                             alert("Uspesno ste kupili NFT!");
                         }
+                         $(document).ready(function() {
+        function updatePrice() {
+        var formData = $('#changePrice').serialize();
+        console.log(formData);
+            $.ajax({
+                url: '{% url 'updatePrice' %}',
+                type: 'POST',
+                data:formData,
+                dataType: 'json',
+                success: function(data) {
+                    $('#nft-vrednost').text(data.vrednost);
+                    $('#nft-ocena').text(data.ocena);
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX request failed:', error);
+                }
+            });
+        }
+
+        // Pozivamo funkciju odmah po učitavanju stranice
+        updatePrice();
+
+        // Postavljamo interval za ponavljanje AJAX zahteva svakih 3 sekunde (3000 milisekundi)
+        setInterval(updatePrice, 6000);
+
+    });
                     </script>
                 </div>
             </div>

@@ -1,8 +1,4 @@
-{% extends 'base_profile.html' %}
-{% load static %}
-
-<div id = "profil">
- {% block profilemore %}
+{% block profilemore %}
      {%  if  myprofile %}
 
 
@@ -31,7 +27,13 @@
         {% endif %}
 
          {% endif %}
-
+<script>
+    function confirmDelete() {
+        if (confirm("Da li ste sigurni da želite da izbrišete ovog korisnika?")) {
+            document.getElementById("deleteForm").submit();
+        }
+    }
+</script>
 
   </div>
 
@@ -150,40 +152,3 @@
     {% endif %}
     
 {%  endblock  %}
-</div>
- <script src="https://code.jquery.com/jquery-3.6.0.min.js">
- </script>
-<script>
-    function confirmDelete() {
-        if (confirm("Da li ste sigurni da želite da izbrišete ovog korisnika?")) {
-            document.getElementById("deleteForm").submit();
-        }
-    }
-</script>
-<script>
-     $(document).ready(function() {
- function updateInfo() {
-        var formData = $('#deleteForm').serialize();
-        console.log(formData);
-            $.ajax({
-                url: '{% url 'profile_info' %}',
-                type: 'POST',
-                data:formData,
-                dataType: 'html',
-                success: function(data) {
-                    $('#profil').empty(); // Prvo brišemo postojeći sadržaj elementa
-                    $('#profil').html(data); // Zatim postavljamo novi HTML u element
-                },
-                error: function(xhr, status, error) {
-                    console.error('AJAX request failed:', error);
-                }
-            });
-        }
-
-        // Pozivamo funkciju odmah po učitavanju stranice
-        updateInfo();
-
-        // Postavljamo interval za ponavljanje AJAX zahteva svakih 3 sekunde (3000 milisekundi)
-        setInterval(updateInfo, 6000);
-    });
-</script>

@@ -52,13 +52,38 @@ def pack_nfts_exhibitions(nfts):
             'data': None
         }
         if nft.slika == "":
+            print("stavioData")
             nft_data['data'] = get_nft_data(nft.url)
+        else:
+            print("nisamStavioData")
         nft_list.append(nft_data)
         cena += nft.vrednost
         velicina += 1
         ocena += nft.prosecnaocena
     return nft_list, cena, velicina, ocena
-
+def sort_user_exhibitions(idUser,sort):
+    izlozbe = get_user_exhibitions(idUser)
+    if (sort == "poImenu"):
+        izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["naziv"])
+    elif (sort == "poOceni"):
+        izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["prosecnaOcena"])
+    elif (sort == "poVelicini"):
+        izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["velicina"])
+    elif (sort == "poVrednosti"):
+        izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["cena"])
+    return izlozbe
+def sort_user_nfts(idUser,sort,arg):
+    if arg == "collection":
+        nfts = Nft.objects.filter(idvla=idUser)
+    elif arg == "portfolio":
+        nfts = Nft.objects.filter(idkre=idUser)
+    if (sort == "poImenu"):
+        nfts = sorted(nfts, key=lambda nft: nft.naziv)
+    elif (sort == "poOceni"):
+        nfts = sorted(nfts, key=lambda nft: nft.prosecnaocena)
+    elif (sort == "poVrednosti"):
+        nfts = sorted(nfts, key=lambda nft: nft.vrednost)
+    return nfts
 def get_user_exhibitions(idUser):
     listanfts = Listanft.objects.filter(izlozba__isnull=False, idvla=idUser)
     izlozbe = []
