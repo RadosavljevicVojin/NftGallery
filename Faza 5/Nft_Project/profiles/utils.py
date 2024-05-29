@@ -59,7 +59,8 @@ def pack_nfts_exhibitions(nfts):
         nft_list.append(nft_data)
         cena += nft.vrednost
         velicina += 1
-        ocena += nft.prosecnaocena
+        if nft.prosecnaocena:
+            ocena += nft.prosecnaocena
     return nft_list, cena, velicina, ocena
 def sort_user_exhibitions(idUser,sort):
     izlozbe = get_user_exhibitions(idUser)

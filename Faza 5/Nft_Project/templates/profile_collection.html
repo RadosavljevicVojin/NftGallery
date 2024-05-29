@@ -31,11 +31,8 @@
     <div class="col-md-3 mb-4">
       <div class="album-item">
         <a href="{% url 'nft_review' nft.nft.idnft%}">
-          {% if nft.data %}
-    <img src="{{ nft.data.nft.image_url }}"  alt="Slide 1" style="width: 300px;height: 300px">
- {% else %}
+       
      <img src="{{ nft.nft.slika.url }}"  alt="Slide 1" style="width: 300px;height: 300px">
- {% endif %}
         </a>
         <div class="caption text-center">{{ nft.nft.naziv }}</div>
       </div>

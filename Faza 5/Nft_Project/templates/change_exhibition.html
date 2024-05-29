@@ -40,11 +40,9 @@
                         <div class="album-item">
 
                                 <img
-                                        {% if nft.data %}
-                                            src="{{ nft.data.nft.image_url }}"
-                                        {% else %}
-                                            src="{{ nft.nft.slika.url }}"
-                                        {% endif %}
+                                       
+                                        src="{{ nft.nft.slika.url }}"
+                                        
                                         {% if nft.select == True %}
                                             class="selected"
                                         {% endif %}

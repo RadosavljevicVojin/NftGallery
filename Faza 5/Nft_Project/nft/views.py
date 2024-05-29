@@ -1,3 +1,7 @@
+from io import BytesIO
+from tempfile import NamedTemporaryFile
+from django.core.files import File
+
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.http import HttpResponseNotAllowed
@@ -48,6 +52,41 @@ def get_nft_data(nft_url):
 def check_nft_param(file, name, price, description, creator, owner):
     # TODO
     return True
+def fetch_nft_image_url(nft_url):
+    # Razbijte URL na delove
+    parts = nft_url.split('/')
+    token_id = parts.pop()  # Poslednji element u nizu
+    contractAddress = parts.pop()  # Pretposlednji element u nizu
+    chain = parts.pop()
+
+    # OpenSea API Endpoint za preuzimanje NFT metapodataka
+    api_url = f'https://api.opensea.io/api/v2/chain/{chain}/contract/{contractAddress}/nfts/{token_id}'
+    if chain == "base":
+        api_url = f'https://api.opensea.io/api/v2/chain/{chain}/contract/{contractAddress}/nfts/'
+
+
+    # Postavite zaglavlja
+    headers = {
+        'X-API-KEY': 'e0d9ad00e95945918aec9ec56c057650',
+        'Content-Type': 'application/json',
+    }
+
+    # Pošaljite GET zahtev
+    response = requests.get(api_url, headers=headers)
+
+    # Proverite da li je zahtev uspešan
+    if response.status_code == 200:
+        data = response.json()
+        # Pretpostavimo da je struktura odgovora ista kao u vašem JS kodu
+        if "nft" in data:
+            return data['nft']['image_url']
+        else:
+            return None
+    else:
+        print("Greška prilikom preuzimanja podataka:", response.status_code)
+        return None
+
+
 
 
 @login_required(login_url='/accounts/error')
@@ -58,7 +97,6 @@ def create_nft(request):
             file = request.FILES["fileUpload"]
         else:
             file = None
-
         if "nft_url" in request.POST:
             nft_url = request.POST["nft_url"]
         else:
@@ -78,8 +116,18 @@ def create_nft(request):
             if file is not None:
                 nft = Nft(naziv=name, vrednost=price, opis=description, slika=file, idkre=creator, idvla=owner, url="")
             else:
-                nft = Nft(naziv=name, vrednost=price, opis=description, slika="", idkre=creator, idvla=owner,
-                          url=nft_url)
+
+                image_url = fetch_nft_image_url(nft_url)
+                response = requests.get(image_url)
+                if response.status_code == 200:
+                    # Otvaranje slike u memoriji
+                    img_temp = BytesIO(response.content)
+                    img_temp.seek(0)
+                    max_idnft = Nft.objects.all().aggregate(Max('idnft'))['idnft__max']
+                    next_id = (max_idnft or 0) + 1
+                    image_file = File(img_temp, name=str(name)+str(next_id)+".jpg")
+                    nft = Nft(naziv=name, vrednost=price, opis=description, slika=File(image_file), idkre=creator, idvla=owner,
+                              url="")
 
             nft.save()
 
@@ -124,8 +172,8 @@ def nft_review(request, idnft):
         'nft': nft,
         'data': None
     }
-    if nft.slika == "":
-        nft_data['data'] = get_nft_data(nft.url)
+    # if nft.slika == "":
+    #     nft_data['data'] = get_nft_data(nft.url)
 
     context = {"nft": nft_data}
     context["owner"] = nft.idvla.idkor
@@ -134,7 +182,7 @@ def nft_review(request, idnft):
     return render(request, 'nft_review.html', context)
 
 
-from django.db.models import Avg
+from django.db.models import Avg, Max
 
 
 @login_required(login_url='/accounts/error')

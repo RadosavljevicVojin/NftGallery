@@ -121,7 +121,7 @@
                 </div>
                 <div class="row ">
                     <div class="col-md-6 col-sm-12">
-                        <img src="{% static 'images/empty_file.png' %}" alt="" class="img-fluid" style="width: 512px; height: 512px">
+                        <img src="{% static 'images/empty_file.png' %}" alt="" class="img-fluid"  style="width: 512px; height: 512px;">
                     </div>
                     <div class="col-md-6 col-sm-12">
 
@@ -189,7 +189,7 @@
 
 
     });
-
+    
     document.getElementById('showNftButton').addEventListener('click', function() {
 
             // Get contract address and token ID from input fields
@@ -223,7 +223,7 @@
                     document.querySelector('.col-md-6 img').src = data.nft.image_url;
                     document.querySelector('#nftName').value = data.nft.name
                     document.querySelector('#nftDescription').value = data.nft.description;
-                    document.querySelector('#nftPrice').value = data.nft.traits[0].value;
+                    //document.querySelector('#nftPrice').value = data.nft.traits[0].value;
 
                 })
                 .catch(error => {

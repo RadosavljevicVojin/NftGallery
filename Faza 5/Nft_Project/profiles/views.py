@@ -31,6 +31,18 @@ def view_profile_info(request):
             if username:
                 if Korisnik.objects.filter(username=username).exclude(user_type='admin').exists():
                     context = create_main_context(request, username)
+                    user = Korisnik.objects.get(username=username)
+
+                    card = str(Registrovanikorisnik.objects.get(idkor=user).brojkartice)
+                    last_3_digits = card[-3:]
+                    new_card_view = '*' * (len(card) - 3) + last_3_digits
+                    context['phone'] = Registrovanikorisnik.objects.get(idkor=user).brojtelefona
+                    context['card'] = new_card_view
+                    context['name'] = Registrovanikorisnik.objects.get(idkor=user).ime
+                    context['surname'] = Registrovanikorisnik.objects.get(idkor=user).prezime
+                    context['birthplace'] = Registrovanikorisnik.objects.get(idkor=user).mestorodjenja
+
+
                     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                         print("ajaxx")
                         return render(request, 'ajaxProfileInfo.html', context)
@@ -46,11 +58,12 @@ def view_profile_info(request):
             card = str(Registrovanikorisnik.objects.get(idkor=request.user).brojkartice)
             last_3_digits = card[-3:]
             new_card_view = '*' * (len(card) - 3) + last_3_digits
-            context['phone']= Registrovanikorisnik.objects.get(idkor=request.user).brojtelefona
-            context['card']= new_card_view
-            context['name']= Registrovanikorisnik.objects.get(idkor=request.user).ime
-            context['surname']= Registrovanikorisnik.objects.get(idkor=request.user).prezime
-            context['birthplace']= Registrovanikorisnik.objects.get(idkor=request.user).mestorodjenja
+            context['phone'] = Registrovanikorisnik.objects.get(idkor=request.user).brojtelefona
+            context['card'] = new_card_view
+            context['name'] = Registrovanikorisnik.objects.get(idkor=request.user).ime
+            context['surname'] = Registrovanikorisnik.objects.get(idkor=request.user).prezime
+            context['birthplace'] = Registrovanikorisnik.objects.get(idkor=request.user).mestorodjenja
+
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 print("ajaxxxxxx")
                 return render(request, 'ajaxProfileInfo.html.html', context)
@@ -228,27 +241,16 @@ def collection_view_ajax(request):
 
 @login_required( login_url='/accounts/error')
 def view_change_info(request):
-
-
     if request.method == 'POST':
         context = dict()
         user= request.user
         reguser= Registrovanikorisnik.objects.get(idkor=user)
-
-
         context["img"]= reguser.slika.url
-
-
-
-
+    context = dict()
+    user = request.user
+    reguser = Registrovanikorisnik.objects.get(idkor=user)
+    context["img"] = reguser.slika.url
     return render(request, 'change_profile_info.html', context)
-
-
-
-
-
-
-
 
 
 
@@ -261,7 +263,6 @@ def change_info(request):
         old_password = request.POST['stara-lozinka']
         new_password = request.POST['nova-lozinka']
         confirm_password = request.POST['potvrda-lozinke']
-        img=""
         context={}
         if "fileUpload" in request.FILES:
             file = request.FILES["fileUpload"]
@@ -274,7 +275,7 @@ def change_info(request):
         reguser = Registrovanikorisnik.objects.get(idkor=user)
         context["img"] = reguser.slika.url
         if old_password==""  and new_password=="" and confirm_password=="":
-            return render(request, 'change_profile_info.html')
+            return render(request, 'change_profile_info.html', context)
 
         if not check_password(old_password, user.password):
             messages.error(request, 'Stara lozinka nije ispravna!')
@@ -289,4 +290,5 @@ def change_info(request):
             update_session_auth_hash(request, user)
             messages.success(request, 'Lozinka je uspešno promenjena!')
         return render(request, 'change_profile_info.html', context)
+
     return render(request, 'change_profile_info.html')

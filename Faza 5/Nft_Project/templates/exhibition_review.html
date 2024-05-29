@@ -104,11 +104,8 @@
                     <div class="album-item">
                         <a href="{% url 'nft_review' nft.nft.idnft %}">
                             <img
-                                {% if nft.data %}
-                                    src="{{ nft.data.nft.image_url }}"
-                                {% else %}
+                                
                                     src="{{ nft.nft.slika.url }}"
-                                {% endif %}
                             alt="Slika" id="{{ nft.nft.idnft }}" style="width: 300px;height: 300px">
                         </a>
                         <div class="caption text-center">{{ nft.nft.naziv }}</div>

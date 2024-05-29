@@ -35,7 +35,7 @@ class Registrovanikorisnik(models.Model):
     brojtelefona = models.CharField(db_column='BrojTelefona', max_length=20)  # Field name made lowercase.
     datumrodjenja = models.DateTimeField(db_column='DatumRodjenja')  # Field name made lowercase.
     mestorodjenja = models.CharField(db_column='MestoRodjenja', max_length=20)  # Field name made lowercase.
-    brojkartice = models.DecimalField(db_column='BrojKartice', max_digits=10, decimal_places=0)  # Field name made lowercase.
+    brojkartice = models.CharField(db_column='BrojKartice', max_length=16)  # Field name made lowercase.
     slika = models.ImageField(db_column='Slika',upload_to='profile_images/', default='profile_images/default.jpg')
     prodatihNFT = models.IntegerField(default=0, db_column='prodatihNft')
     kupljenihNFT = models.IntegerField(default=0, db_column='kupljenihNft')
