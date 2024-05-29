@@ -1,8 +1,6 @@
 from nft.views import get_nft_data
 from .models import Listanft, Kolekcija, Pripada, Portfolio, Izlozba
 from nft.models import Nft, Ocena
-from profiles.utils import get_user_exhibitions
-
 
 
 def create_context_for_nfts(nfts):

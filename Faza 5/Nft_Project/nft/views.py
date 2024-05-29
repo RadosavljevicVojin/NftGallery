@@ -1,25 +1,17 @@
 from io import BytesIO
-from tempfile import NamedTemporaryFile
 from django.core.files import File
-
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.http import HttpResponseNotAllowed
 from django.shortcuts import render, redirect
-
 import requests
-
 from common.decoraters import is_creator
-
-
 from .utils import *
-
 from urllib.parse import urlparse
 from django.http import JsonResponse
 
 # Obavezno se dodaje u Header Request-a
 API_KEY = "e0d9ad00e95945918aec9ec56c057650"
-
 
 # Ova funkcija ce mozda trebati da bi se od url koji se cuva u bazi mogla dobiti slika i podaci
 # Pozove se ova funkcija sa zadatim url-om i koristi se na sledeci nacin:

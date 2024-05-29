@@ -1,18 +1,15 @@
 from .models import *
 from exhibitions.models import *
 
-
 def first_time_grading(nft, reg_user):
     all_grades = Ocena.objects.filter(idkor=reg_user, idnft=nft)
     if all_grades:
         return False
     return True
 
-
 def get_exhibitions_from_nft(nft):
     lists_where_nft_belongs = [b.idlis for b in Pripada.objects.filter(idnft=nft)]
     return [exhibition for exhibition in Izlozba.objects.all() if exhibition.idlis in lists_where_nft_belongs]
-
 
 def update_exhibition_grade(exhibition, exhibition_nfts):
     grades = Ocena.objects.filter(idnft__in=exhibition_nfts)

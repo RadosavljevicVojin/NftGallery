@@ -4,16 +4,11 @@ from django.contrib.auth.hashers import check_password
 from pyexpat.errors import messages
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import render
-
 from accounts.models import Korisnik
 from common.decoraters import is_not_admin
-from exhibitions.models import Listanft, Pripada,Izlozba
-from nft.models import Nft
-from nft.views import get_nft_data
 from profiles.models import Registrovanikorisnik
-from profiles.utils import create_main_context
 from django.contrib import messages
-from profiles.utils import create_main_context,pack_nfts,pack_nfts_exhibitions,get_user_exhibitions,get_user_portfolio,get_user_collection,sort_user_exhibitions,sort_user_nfts
+from profiles.utils import create_main_context,pack_nfts,get_user_exhibitions,get_user_portfolio,get_user_collection,sort_user_exhibitions,sort_user_nfts
 
 
 

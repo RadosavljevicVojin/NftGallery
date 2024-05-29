@@ -1,6 +1,3 @@
-from django.http import HttpResponse, HttpResponseNotAllowed
-from django.shortcuts import render
-
 from accounts.models import Korisnik
 from exhibitions.models import Listanft, Pripada,Izlozba
 from nft.models import Nft

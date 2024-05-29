@@ -1,11 +1,8 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseNotAllowed
 from django.shortcuts import render, redirect
-
 from common.decoraters import is_creator_or_collector
-
 from profiles.models import Registrovanikorisnik
-
 from .utils import *
 from datetime import datetime
 
