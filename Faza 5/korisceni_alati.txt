@@ -53,3 +53,4 @@ Razvoj Django aplikacije
 		JavaScript: https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js
 	HTML5:
 		Korišćen za kreiranje strukture web stranice. 
+	Ajax: tehnika korišćena uz JavaScript i jQuery za slanje asinhronih zahteva
