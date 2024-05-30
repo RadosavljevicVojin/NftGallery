@@ -17,12 +17,9 @@ from profiles.utils import create_main_context,pack_nfts,get_user_exhibitions,ge
 #Natalija
 # prikaz informacija o profilu, preko searcja, preko buttona moj ptofil- to je else deo - get zahtev
 def view_profile_info(request):
-    print("usao u profil info")
     if request.method == 'POST':
         if 'username' in request.POST:
-
             username = request.POST.get('username', None)
-            print(username)
             if username:
                 if Korisnik.objects.filter(username=username).exclude(user_type='admin').exists():
                     context = create_main_context(request, username)
@@ -39,10 +36,8 @@ def view_profile_info(request):
 
 
                     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                        print("ajaxx")
                         return render(request, 'ajaxProfileInfo.html', context)
                     else:
-                        print("vracam profil info")
                         return render(request, 'profile_info.html', context)
                 else:
                     return render(request, "index.html", {"message": True})
@@ -60,7 +55,6 @@ def view_profile_info(request):
             context['birthplace'] = Registrovanikorisnik.objects.get(idkor=request.user).mestorodjenja
 
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                print("ajaxxxxxx")
                 return render(request, 'ajaxProfileInfo.html.html', context)
             else:
                 return render(request, 'profile_info.html', context)
@@ -173,16 +167,6 @@ def sort_profile_exhibition(request):
                 id = context["id"]
                 izlozbe = sort_user_exhibitions(id,sort)
                 context["izlozbe"] = izlozbe
-                for izlozba in izlozbe:
-                    for nft in izlozba["nfts"]:
-                        if nft["data"] == None:
-                            print(nft["nft"].url)
-                            print(nft["nft"].slika)
-                            print("nije okej")
-                        else:
-                            print(nft["nft"].slika)
-                            print(nft["nft"].url)
-                            print("okej")
                 context["typeOfSort"] = sort
                 return render(request, 'profile_exhibitions.html', context)
         else:
@@ -192,38 +176,27 @@ def sort_profile_exhibition(request):
         # Ukoliko nije POST zahtev, možemo prikazati formu za unos korisničkog imena ili redirectovati na drugu stranicu
         return HttpResponseNotAllowed(['POST'])
 def exhibition_view_ajax(request):
-    print("AJAAXX")
     username = request.POST.get('username', None)
-    print(username)
     if username:
         if Korisnik.objects.filter(username=username).exclude(user_type='admin').exists():
             context = create_main_context(request, username)
             sort = request.POST.get('sort', None)
-            print(sort)
             id = context["id"]
             izlozbe = sort_user_exhibitions(id,sort)
             context["izlozbe"] = izlozbe
             return render(request,'ajaxExhibition.html',context)
 def collection_view_ajax(request):
-    print("AJAAXX")
     username = request.POST.get('username', None)
-    print(username)
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        print("jeste ajax")
-    else:
-        print("nije ajax")
     if username:
         if Korisnik.objects.filter(username=username).exclude(user_type='admin').exists():
             context = create_main_context(request, username)
             sort = request.POST.get('sort', None)
             pageType = request.POST.get('pageType', None)
-            print(sort)
             id = context["id"]
             if pageType == "collection":
                nfts = sort_user_nfts(id,sort,"collection")
             elif pageType == "portfolio":
                 nfts = sort_user_nfts(id,sort,"portfolio")
-            print(pageType)
             nft_list, novaCena = pack_nfts(nfts)
             context["nfts"] = nft_list
             context["cena"] = novaCena

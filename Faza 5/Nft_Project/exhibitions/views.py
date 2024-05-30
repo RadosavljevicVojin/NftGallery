@@ -5,6 +5,7 @@ from common.decoraters import is_creator_or_collector
 from profiles.models import Registrovanikorisnik
 from .utils import *
 from datetime import datetime
+from profiles.utils import sort_user_exhibitions,sort_nfts
 
 
 # Create your views here.
@@ -12,14 +13,7 @@ def index(request):
     izlozbe = getRandomExhibitions()
     if request.method == 'POST':
         sort = request.POST.get('sort', None)
-        if (sort == "poImenu"):
-            izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["naziv"])
-        elif (sort == "poOceni"):
-            izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["prosecnaOcena"])
-        elif (sort == "poVelicini"):
-            izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["velicina"])
-        elif (sort == "poVrednosti"):
-            izlozbe = sorted(izlozbe, key=lambda izlozba: izlozba["cena"])
+        izlozbe = sort_user_exhibitions(-1,sort)
     context = dict()
     context["izlozbe"] = izlozbe
     return render(request, 'index.html', context)
@@ -119,7 +113,9 @@ def change_exhibition(request, exhibition_id):
 
 
 def exhibition_review(request, exhibition_id):
-
+    if request.method == 'POST':
+        sort = request.POST.get('sort', None)
+        exhibition_id = request.POST.get('id', None)
     exhibition_dict = dict()
 
     exhibition_list = Listanft.objects.get(idlis=exhibition_id)
@@ -131,8 +127,9 @@ def exhibition_review(request, exhibition_id):
     exhibition_dict["avg_grade"] = exhibition.prosecnaocena
     exhibition_dict["date"] = exhibition.datumkreiranja
     exhibition_dict["id"] = exhibition_id
-
     nfts = get_nfts_from_exhibition(exhibition)
+    if request.method == 'POST':
+           nfts = sort_nfts(nfts,sort)
     context = create_context_for_nfts(nfts)
 
     context["exhibition"] = exhibition_dict
@@ -141,6 +138,26 @@ def exhibition_review(request, exhibition_id):
 
     return render(request, "exhibition_review.html", context)
 
+def sort_exhibition(request):
+    print("sortiraaaj")
+    sort = request.POST.get('sort', None)
+    exhibition_id = request.POST.get('id', None)
+    exhibition_dict = dict()
+    exhibition_list = Listanft.objects.get(idlis=exhibition_id)
+    exhibition = Izlozba.objects.get(idlis=exhibition_list)
+
+    #exhibition_dict["owner_image"] = user.slika.url
+    exhibition_dict["name"] = exhibition.naziv
+    exhibition_dict["value"] = exhibition_list.ukupnavrednost
+    exhibition_dict["avg_grade"] = exhibition.prosecnaocena
+    exhibition_dict["date"] = exhibition.datumkreiranja
+    exhibition_dict["id"] = exhibition_id
+    nfts = get_nfts_from_exhibition(exhibition)
+    nfts = sort_nfts(nfts,sort)
+    context = create_context_for_nfts(nfts)
+    context["exhibition"] = exhibition_dict
+    context["owner"] = exhibition_list.idvla.idkor
+    return render(request, "exhibition_review.html", context)
 
 @login_required(login_url='/accounts/error')
 @user_passes_test(is_creator_or_collector, login_url='/accounts/error')

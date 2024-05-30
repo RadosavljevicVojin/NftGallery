@@ -44,10 +44,10 @@
                             Sortiraj
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#" onclick="refreshPage('poImenu')">Po imenu</a>
-                            <a class="dropdown-item" href="#" onclick="refreshPage('poOceni')">Po oceni</a>
-                            <a class="dropdown-item" href="#" onclick="refreshPage('poVelicini')">Po velicini</a>
-                            <a class="dropdown-item" href="#" onclick="refreshPage('poVrednosti')">Po vrednosti</a>
+                            <a class="dropdown-item" href="#" onclick="refresh('poImenu',{{ exhibition.id }},'{% url 'sort_exhibition' %}')">Po imenu</a>
+                            <a class="dropdown-item" href="#" onclick="refresh('poOceni',{{ exhibition.id }},'{% url 'sort_exhibition'  %}')">Po oceni</a>
+                            <a class="dropdown-item" href="#" onclick="refresh('poVelicini',{{ exhibition.id }},'{% url 'sort_exhibition' %}')">Po velicini</a>
+                            <a class="dropdown-item" href="#" onclick="refresh('poVrednosti',{{ exhibition.id }},'{% url 'sort_exhibition'  %}')">Po vrednosti</a>
                         </div>
 
                         {% if request.user.is_authenticated %}
@@ -70,6 +70,11 @@
                 <form id="profileForm" method="post" action="" style="display: none;">
                     {% csrf_token %}
                     <input type="hidden" name="username" id="usernameInput">
+                </form>
+                <form id="sortiraj" method="post" action="" style="display: none;">
+                    {% csrf_token %}
+                    <input type="hidden" name="sort" id="sort">
+                    <input type="hidden" name="id" id="id">
                 </form>
                 <script>
                     function izmeniIzlozbu() {
@@ -94,6 +99,13 @@
                         document.getElementById("profileForm").action = action;
                         document.getElementById("profileForm").submit();
                     }
+                    function refresh(sortType,id,action) {
+                console.log("aaaaa");
+                document.getElementById("sort").value = sortType;
+                document.getElementById("id").value = id;
+                document.getElementById("sortiraj").action = action;
+                document.getElementById("sortiraj").submit();
+            }
                 </script>
             </div>
         </div>
