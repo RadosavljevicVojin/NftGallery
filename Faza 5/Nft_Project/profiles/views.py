@@ -17,9 +17,13 @@ from profiles.utils import create_main_context,pack_nfts,get_user_exhibitions,ge
 #Natalija
 # prikaz informacija o profilu, preko searcja, preko buttona moj ptofil- to je else deo - get zahtev
 def view_profile_info(request):
+    print("usaoo")
     if request.method == 'POST':
+        print("jeste post")
         if 'username' in request.POST:
+            print("ima username")
             username = request.POST.get('username', None)
+            print(username)
             if username:
                 if Korisnik.objects.filter(username=username).exclude(user_type='admin').exists():
                     context = create_main_context(request, username)
@@ -36,8 +40,10 @@ def view_profile_info(request):
 
 
                     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                        print("ajaxx")
                         return render(request, 'ajaxProfileInfo.html', context)
                     else:
+                        print("nije ajaxx")
                         return render(request, 'profile_info.html', context)
                 else:
                     return render(request, "index.html", {"message": True})

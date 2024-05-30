@@ -149,7 +149,11 @@
 
     {% endif %}
     
-{%  endblock  %}
+
+    <form id="info" method="post" action="" style="display: none;">
+            {% csrf_token %}
+            <input type="hidden" name="username" id="username" value = "{{ username }}">
+        </form>
 </div>
  <script src="https://code.jquery.com/jquery-3.6.0.min.js">
  </script>
@@ -163,7 +167,8 @@
 <script>
      $(document).ready(function() {
  function updateInfo() {
-        var formData = $('#deleteForm').serialize();
+        console.log("aaaa")
+        var formData = $('#info').serialize();
         console.log(formData);
             $.ajax({
                 url: '{% url 'profile_info' %}',
@@ -181,9 +186,10 @@
         }
 
         // Pozivamo funkciju odmah po učitavanju stranice
-        updateInfo();
 
         // Postavljamo interval za ponavljanje AJAX zahteva svakih 3 sekunde (3000 milisekundi)
         setInterval(updateInfo, 6000);
     });
 </script>
+
+{%  endblock  %}
