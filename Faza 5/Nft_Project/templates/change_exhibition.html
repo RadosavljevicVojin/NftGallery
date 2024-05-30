@@ -26,7 +26,7 @@
 
 {% block maincontent %}
 
-    <form method="post" id="formaIzlozba" class="center" style="text-align: center;" enctype="multipart/form-data">
+    <form method="post" id="formaIzlozba" class="center" style="text-align: center;" enctype="multipart/form-data" onsubmit="return potvrdiIzlozbu()">
         {% csrf_token %}
         <input type="hidden" name="selected_nfts" id="selected_nfts" value="">
 
@@ -58,7 +58,7 @@
 
         <div>
         <!-- Dugme za kreiranje izložbe -->
-            <button type="submit" id="btn1" onclick="potvrdiIzlozbu()"  class="btn btn-lg" style="background-color: #8D52F5; margin-top: 58px;">Potvrdi</button>
+            <button type="submit" id="btn1" class="btn btn-lg" style="background-color: #8D52F5; margin-top: 58px;">Potvrdi</button>
         </div>
 
         <script>
@@ -73,7 +73,7 @@
             if (selectedImages.length < 1) {
                 // Ako nijedna slika nije selektovana, prikazi alert
                 alert('Morate izabrati bar jednu sliku za izložbu!');
-                return;
+                return false;
             }
 
             // Dodatne funkcionalnosti za kreiranje izložbe na osnovu selektovanih slika
@@ -88,6 +88,7 @@
 
             // Prikazivanje poruke ili slanje podataka serveru
             alert('Uspesno ste izmenili izlozbu!');
+            return true;
             }
         </script>
     </form>

@@ -126,11 +126,12 @@
                         </div>
                         <div class="info-row">
                             <span class="info-label">Trenutna vrednost:</span>
-                            <span class="info-value" id="nft-vrednost">{{ nft.nft.vrednost|floatformat:2 }} ETH</span>
+                            <span id="nft-vrednost">{{ nft.nft.vrednost|floatformat:2 }} ETH</span>
+
                         </div>
                         <div class="info-row">
                             <span class="info-label">Prosečna ocena:</span>
-                            {% if nft.nft.prosecnaocena is not None %}
+                            {% if nft.nft.prosecnaocena != 0 %}
                                 <span class="info-value" id="nft-ocena">{{ nft.nft.prosecnaocena|floatformat:2 }}</span>
                             {% else %}
                                 <span class="info-value">Nije ocenjen</span>
@@ -144,7 +145,7 @@
                         <!-- ako je registrovan -->
     
                         {% if request.user.is_authenticated and request.user.idkor == owner.idkor %}
-                            <form method="post" id = "changePrice" action="{% url 'change_price' %}">
+                            <form method="post" id = "changePrice" action="{% url 'change_price' %}" onsubmit="return checkValue()">
                                 {% csrf_token %}
                                 <input type="hidden" name="idnft_name" value="{{ nft.nft.idnft }}">
                                 <div style="margin-top: 157px;">
@@ -228,8 +229,10 @@
                 data:formData,
                 dataType: 'json',
                 success: function(data) {
-                    $('#nft-vrednost').text(data.vrednost);
-                    $('#nft-ocena').text(data.ocena);
+                    var formattedVrednost = parseFloat(data.vrednost).toFixed(2);
+                    var formattedOcena = parseFloat(data.ocena).toFixed(2);
+                    $('#nft-vrednost').text(formattedVrednost + " ETH");
+                    $('#nft-ocena').text(formattedOcena);
                 },
                 error: function(xhr, status, error) {
                     console.error('AJAX request failed:', error);
@@ -245,6 +248,22 @@
 
     });
                     </script>
+
+                <script>
+
+                    function checkValue(){
+                        const newPrice = document.getElementById('new-price').value;
+                        const priceNumber = parseFloat(newPrice);
+
+                        if (isNaN(priceNumber) || priceNumber <= 0) {
+                            alert('Uneta vrednost mora biti broj veći od 0.');
+                            return false;
+                        }
+                        return true;
+
+                    }
+
+                </script>
                 </div>
             </div>
         </div>

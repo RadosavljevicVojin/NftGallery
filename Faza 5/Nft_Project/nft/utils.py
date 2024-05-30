@@ -12,6 +12,35 @@ def get_exhibitions_from_nft(nft):
     return [exhibition for exhibition in Izlozba.objects.all() if exhibition.idlis in lists_where_nft_belongs]
 
 def update_exhibition_grade(exhibition, exhibition_nfts):
+
+    print("\n\nRACUNAM PROSECNU OCENU IZLOZBE!\n\n")
+
+    print("\n\nNftjevi iz izlozbe su:\n")
+
+    graded_len = 0
+    sum_grade = 0
+
+    for nft in exhibition_nfts:
+        print("Nft je " + str(nft))
+        if nft.prosecnaocena > 0:
+            print("Prosecna ocena nft je " + str(nft.prosecnaocena))
+            graded_len += 1
+            sum_grade += nft.prosecnaocena
+        else:
+            print("Ovaj nft nije ocenjen")
+
+
+    print("\nSum grade = " + str(float(sum_grade)))
+    print("\nGradelen = " + str(graded_len))
+    if graded_len > 0:
+        exhibition.prosecnaocena = float(sum_grade) / graded_len
+    else:
+        exhibition.prosecnaocena = 0
+
+    exhibition.save()
+
+    print("\nprosecna ocena izlozbe je " + str(exhibition.prosecnaocena))
+    """
     grades = Ocena.objects.filter(idnft__in=exhibition_nfts)
 
     if grades.exists():
@@ -29,6 +58,7 @@ def update_exhibition_grade(exhibition, exhibition_nfts):
 
     print("\nBroj ocena apdejtovane izlozbe je" + str(len(grades)))
     print("\n Prosek : " + str(exhibition.prosecnaocena))
+    """
 
 
 

@@ -116,6 +116,7 @@ def exhibition_review(request, exhibition_id):
     if request.method == 'POST':
         sort = request.POST.get('sort', None)
         exhibition_id = request.POST.get('id', None)
+
     exhibition_dict = dict()
 
     exhibition_list = Listanft.objects.get(idlis=exhibition_id)
@@ -127,9 +128,13 @@ def exhibition_review(request, exhibition_id):
     exhibition_dict["avg_grade"] = exhibition.prosecnaocena
     exhibition_dict["date"] = exhibition.datumkreiranja
     exhibition_dict["id"] = exhibition_id
+    exhibition_dict["description"] = exhibition.opis
+
     nfts = get_nfts_from_exhibition(exhibition)
+
     if request.method == 'POST':
            nfts = sort_nfts(nfts,sort)
+
     context = create_context_for_nfts(nfts)
 
     context["exhibition"] = exhibition_dict
@@ -137,6 +142,8 @@ def exhibition_review(request, exhibition_id):
     context["owner"] = exhibition_list.idvla.idkor
 
     return render(request, "exhibition_review.html", context)
+
+
 
 def sort_exhibition(request):
     print("sortiraaaj")
@@ -158,6 +165,7 @@ def sort_exhibition(request):
     context["exhibition"] = exhibition_dict
     context["owner"] = exhibition_list.idvla.idkor
     return render(request, "exhibition_review.html", context)
+
 
 @login_required(login_url='/accounts/error')
 @user_passes_test(is_creator_or_collector, login_url='/accounts/error')

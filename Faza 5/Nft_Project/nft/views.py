@@ -41,9 +41,8 @@ def get_nft_data(nft_url):
         return None
 
 
-def check_nft_param(file, name, price, description, creator, owner):
-    # TODO
-    return True
+
+
 def fetch_nft_image_url(nft_url):
     # Razbijte URL na delove
     parts = nft_url.split('/')
@@ -79,7 +78,28 @@ def fetch_nft_image_url(nft_url):
         return None
 
 
+def check_nft_param(file, nft_url, name, price, description, creator, owner):
+    message = ""
+    if file is None and nft_url =="":
+        message += "Morate ucitati sliku Nft!\n"
+    if not name or name.strip() == "":
+        message += "Ime mora biti uneto!\n"
+    if Nft.objects.filter(naziv=name).exists():
+        message += "Ime vec postoji!\n"
+    try:
+        price = float(price)
+        if price <= 0:
+            message += "Cena mora biti veća od 0!\n"
+    except ValueError:
+        message += "Cena mora biti broj!\n"
+    if description is None or len(description.strip()) == 0:
+        message += "Opis mora biti unet!\n"
+    if len(name) >= 20:
+        message += "Ime mora biti manje od 20 karaktera!\n"
+    if len(description) >=1024:
+        message += "Opis mora biti manji od 1024 karaktera!\n"
 
+    return message
 
 @login_required(login_url='/accounts/error')
 @user_passes_test(is_creator, login_url='/accounts/error')
@@ -95,18 +115,19 @@ def create_nft(request):
             nft_url = None
 
         name = request.POST["nftName"]
-        price = float(request.POST["nftPrice"])
+        price = request.POST["nftPrice"]
         description = request.POST["nftDescription"]
 
         creator = Registrovanikorisnik.objects.get(idkor=request.user)
         owner = creator
 
         # Provera da li su dobro uneti parametri
-        if check_nft_param(file, name, price, description, creator, owner):
-
+        message = check_nft_param(file, nft_url, name, price, description, creator, owner)
+        if message == "":
             # Napravi objekat nft sa datim parametrima i sacuva ga u bazi
+            price = float(price)
             if file is not None:
-                nft = Nft(naziv=name, vrednost=price, opis=description, slika=file, idkre=creator, idvla=owner, url="")
+                nft = Nft(naziv=name, vrednost=price, opis=description, prosecnaocena=0, slika=file, idkre=creator, idvla=owner, url="")
             else:
 
                 image_url = fetch_nft_image_url(nft_url)
@@ -118,7 +139,7 @@ def create_nft(request):
                     max_idnft = Nft.objects.all().aggregate(Max('idnft'))['idnft__max']
                     next_id = (max_idnft or 0) + 1
                     image_file = File(img_temp, name=str(name)+str(next_id)+".jpg")
-                    nft = Nft(naziv=name, vrednost=price, opis=description, slika=File(image_file), idkre=creator, idvla=owner,
+                    nft = Nft(naziv=name, vrednost=price, opis=description, prosecnaocena=0, slika=File(image_file), idkre=creator, idvla=owner,
                               url="")
 
             nft.save()
@@ -152,14 +173,15 @@ def create_nft(request):
             return redirect('index')
 
         else:
-            #TODO
-            print("Error")
+            messages.error(request, message)
+            return render(request, 'create_nft.html', {})
 
     return render(request, 'create_nft.html')
 
 
 def nft_review(request, idnft):
     nft = Nft.objects.get(idnft=idnft)
+    print("Vrednost nft je " + str(type(nft.vrednost)))
     nft_data = {
         'nft': nft,
         'data': None
@@ -194,8 +216,8 @@ def grade_nft(request):
             'nft': nft,
             'data': None
         }
-        if nft.slika == "":
-            nft_data['data'] = get_nft_data(nft.url)
+        ##if nft.slika == "":
+            ##nft_data['data'] = get_nft_data(nft.url)
 
         context = {"nft": nft_data}
         context["owner"] = nft.idvla.idkor
@@ -240,7 +262,7 @@ def grade_nft(request):
 @login_required(login_url='/accounts/error')
 def change_price(request):
     if request.method == 'POST':
-        nova_cena = int(request.POST['new_price'])
+        nova_cena = float(request.POST['new_price'])
         idnft = int(request.POST['idnft_name'])
         nft = Nft.objects.get(idnft=idnft)
 
@@ -248,8 +270,8 @@ def change_price(request):
             'nft': nft,
             'data': None
         }
-        if nft.slika == "":
-            nft_data['data'] = get_nft_data(nft.url)
+        #if nft.slika == "":
+           #nft_data['data'] = get_nft_data(nft.url)
 
         context = {"nft": nft_data}
         context["owner"] = nft.idvla.idkor
@@ -323,8 +345,8 @@ def buy_nft(request):
             'nft': nft,
             'data': None
         }
-        if nft.slika == "":
-            nft_data['data'] = get_nft_data(nft.url)
+        #if nft.slika == "":
+         #   nft_data['data'] = get_nft_data(nft.url)
 
         context = {"nft": nft_data}
         context["owner"] = nft.idvla.idkor

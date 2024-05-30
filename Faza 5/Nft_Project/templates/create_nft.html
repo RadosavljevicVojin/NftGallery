@@ -135,7 +135,7 @@
                         <br>
 
                         <div>
-                        <form method="post" enctype="multipart/form-data">
+                        <form method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
                             {% csrf_token %}
 
                             <div id="uploadForm" style="display:block;">
@@ -160,6 +160,23 @@
 
                             <button type="submit" id="submitBtn" class="btn btn-lg"  type="button" style="background-color: #8D52F5; margin-top: 58px;">Potvrdi</button>
                         </form>
+
+                        {% if messages %}
+                            <ul class="messages" style="text-align: center;">
+                               {% for message in messages %}
+                                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                                        <span style="font-weight: bold;
+                                                color:
+                                                {% if message.tags == 'error' %}red
+                                                {% elif message.tags == 'success' %}green
+                                                {% endif %};
+                                                ">{{ message }}
+
+                                        </span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
                     </div>
 
 
@@ -170,6 +187,9 @@
     </div>
 
 <script>
+
+    let showNftButtonClicked = false;
+
 
     document.getElementById('postaviDatoteku').addEventListener('click', function() {
                 uploadForm.style.display = 'block';
@@ -186,13 +206,14 @@
                 document.querySelector('#nftName').value = ""
                 document.querySelector('#nftDescription').value = ""
                 document.querySelector('#nftPrice').value = ""
-
+                showNftButtonClicked = false;
 
     });
     
     document.getElementById('showNftButton').addEventListener('click', function() {
 
             // Get contract address and token ID from input fields
+
             const nftUrl = document.getElementById('nft_url').value;
 
             const parts = nftUrl.split('/');
@@ -223,6 +244,9 @@
                     document.querySelector('.col-md-6 img').src = data.nft.image_url;
                     document.querySelector('#nftName').value = data.nft.name
                     document.querySelector('#nftDescription').value = data.nft.description;
+                    if(document.querySelector('#nftName').value != ""){
+                        showNftButtonClicked = true;
+                    }
                     //document.querySelector('#nftPrice').value = data.nft.traits[0].value;
 
                 })
@@ -234,14 +258,22 @@
 
 <script>
     document.getElementById('fileUpload').addEventListener('change', function() {
-    const file = this.files[0];     if (file) {
-        const reader = new FileReader(); // Kreiramo FileReader objekat
-        reader.onload = function(e) {
-            document.querySelector('.col-md-6 img').src = e.target.result; // Postavljamo izabranu sliku
+        const file = this.files[0];     if (file) {
+            const reader = new FileReader(); // Kreiramo FileReader objekat
+            reader.onload = function(e) {
+                document.querySelector('.col-md-6 img').src = e.target.result; // Postavljamo izabranu sliku
+            }
+            reader.readAsDataURL(file); // Čitamo datoteku kao URL
         }
-        reader.readAsDataURL(file); // Čitamo datoteku kao URL
+    });
+    function validateForm() {
+        const downloadFormVisible = document.getElementById('downloadForm').style.display == 'block';
+        if (downloadFormVisible && !showNftButtonClicked) {
+            alert('Morate prvo prikazati validan NFT pre nego što potvrdite!');
+            return false;
+        }
+        return true;
     }
-});
 </script>
 
 {% endblock %}

@@ -13,8 +13,13 @@
                     </div>
 
                     <div class="d-flex align-items-center justify-content-center mb-3">
+                        <label for="opisIzlozbe" class="me-2"><strong>Opis:</strong></label>
+                        <span id="opisIzlozbe">{{ exhibition.description }}</span>
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-center mb-3">
                         <label for="vrednostIzlozbe" class="me-2"><strong>Vrednost izlozbe:</strong></label>
-                        <span id="vrednostIzlozbe">{{ exhibition.value|floatformat:2 }}</span>
+                        <span id="vrednostIzlozbe">{{ exhibition.value|floatformat:2 }} ETH</span>
                     </div>
 
                     <div class="d-flex align-items-center justify-content-center mb-3">
@@ -71,11 +76,13 @@
                     {% csrf_token %}
                     <input type="hidden" name="username" id="usernameInput">
                 </form>
-                <form id="sortiraj" method="post" action="" style="display: none;">
+
+		<form id="sortiraj" method="post" action="" style="display: none;">
                     {% csrf_token %}
                     <input type="hidden" name="sort" id="sort">
                     <input type="hidden" name="id" id="id">
                 </form>
+
                 <script>
                     function izmeniIzlozbu() {
                         // Preusmeravanje na URL za izmenu izložbe
@@ -83,7 +90,7 @@
                     }
 
                     function obrisiIzlozbu() {
-                        
+
                         // Preusmeravanje na URL za brisanje izložbe
                         if (confirm("Da li ste sigurni da želite da izbrišete izložbu?")) {
                             // Ako je korisnik potvrdio brisanje, preusmeravamo ga na odgovarajuću stranicu
@@ -99,13 +106,14 @@
                         document.getElementById("profileForm").action = action;
                         document.getElementById("profileForm").submit();
                     }
-                    function refresh(sortType,id,action) {
-                console.log("aaaaa");
-                document.getElementById("sort").value = sortType;
-                document.getElementById("id").value = id;
-                document.getElementById("sortiraj").action = action;
-                document.getElementById("sortiraj").submit();
-            }
+
+		    function refresh(sortType,id,action) {
+                	console.log("aaaaa");
+                	document.getElementById("sort").value = sortType;
+                	document.getElementById("id").value = id;
+                	document.getElementById("sortiraj").action = action;
+                	document.getElementById("sortiraj").submit();
+            	   }
                 </script>
             </div>
         </div>
@@ -116,7 +124,7 @@
                     <div class="album-item">
                         <a href="{% url 'nft_review' nft.nft.idnft %}">
                             <img
-                                
+
                                     src="{{ nft.nft.slika.url }}"
                             alt="Slika" id="{{ nft.nft.idnft }}" style="width: 300px;height: 300px">
                         </a>
