@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.checks import messages
 from django.http import HttpResponseNotAllowed
 from django.shortcuts import render, redirect
 from common.decoraters import is_creator_or_collector
@@ -16,6 +17,10 @@ def index(request):
         izlozbe = sort_user_exhibitions(-1,sort)
     context = dict()
     context["izlozbe"] = izlozbe
+    if request.method == 'GET':
+        custom_value = request.GET.get('exists', None)
+        if custom_value is not None:
+            context['message']= True
     return render(request, 'index.html', context)
 
 

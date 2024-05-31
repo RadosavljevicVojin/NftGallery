@@ -8,40 +8,45 @@
             <div class="row">
                 <div class="col-md-6 text-center">
                     <div class="d-flex align-items-center justify-content-center mb-3">
-                        <label for="nazivIzlozbe" class="me-2"><strong>Naziv:</strong></label>
-                        <span id="nazivIzlozbe">{{ exhibition.name }}</span>
+                        <label for="nazivIzlozbe" class="me-2"><strong>Naziv:</strong>
+                            <span style="font-weight: 300;" id="nazivIzlozbe">{{ exhibition.name }}</span></label>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center mb-3">
+                        <label for="opisIzlozbe" class="me-2"><strong>Opis:</strong>
+                        <span id="opisIzlozbe" style="font-weight: 300;">{{ exhibition.description }}</span>
+                        </label>
                     </div>
 
                     <div class="d-flex align-items-center justify-content-center mb-3">
-                        <label for="opisIzlozbe" class="me-2"><strong>Opis:</strong></label>
-                        <span id="opisIzlozbe">{{ exhibition.description }}</span>
+                        <label for="vrednostIzlozbe" class="me-2"><strong>Vrednost izlozbe:</strong>
+                        <span id="vrednostIzlozbe" style="font-weight: 300;">{{ exhibition.value|floatformat:2 }} ETH</span>
+
+                        </label>
                     </div>
 
-                    <div class="d-flex align-items-center justify-content-center mb-3">
-                        <label for="vrednostIzlozbe" class="me-2"><strong>Vrednost izlozbe:</strong></label>
-                        <span id="vrednostIzlozbe">{{ exhibition.value|floatformat:2 }} ETH</span>
+                   <div class="d-flex align-items-center justify-content-center mb-3">
+                        <label for="prosecnaOcenaNFT" class="me-2"><strong>Prosecna ocena:</strong>
+                            {% if exhibition.avg_grade != 0 %}
+                                <span id="prosecnaOcenaNFT" style="font-weight: 300;">{{ exhibition.avg_grade|floatformat:2 }}</span>
+                            {% else %}
+                                <span id="prosecnaOcenaNFT" style="font-weight: 300;">Nije ocenjena</span>
+                            {% endif %}
+                        </label>
                     </div>
-
+                
                     <div class="d-flex align-items-center justify-content-center mb-3">
-                        <label for="prosecnaOcenaNFT" class="me-2"><strong>Prosecna ocena:</strong></label>
-                        {% if exhibition.avg_grade != 0 %}
-                            <span id="procesnaOcenaNFT">{{ exhibition.avg_grade|floatformat:2 }}</span>
-                        {% else %}
-                            <span id="procesnaOcenaNFT">Nije ocenjena</span>
-                        {% endif %}
-                    </div>
-
-                    <div class="d-flex align-items-center justify-content-center mb-3">
-                        <label for="vlasnikIzlozbe" class="me-2"><strong>username:</strong></label>
-                        <a
-                           href="#" onclick="submitForm('{{ owner.username }}', '{% url 'profile_info' %}')"
-                           id="vlasnikIzlozbe" class="info-value">@{{ owner.username }}
+                        <label for="vlasnikIzlozbe" class="me-2"><strong>username:</strong>
+                        <a href="#" onclick="submitForm('{{ owner.username }}', '{% url 'profile_info' %}')"
+                           id="vlasnikIzlozbe"   style="font-weight: 300" class="info-value">@{{ owner.username }}
                         </a>
+                            
+                            </label>
                     </div>
 
                     <div class="d-flex align-items-center justify-content-center mb-3">
-                        <label for="datumKreiranjaIzlozbe" class="me-2"><strong>Datum kreiranja:</strong></label>
-                        <span id="datumKreiranjaIzlozbe">{{ exhibition.date }}</span>
+                        <label for="datumKreiranjaIzlozbe" class="me-2"><strong>Datum kreiranja:</strong>
+                        <span id="datumKreiranjaIzlozbe" style="font-weight: 300">{{ exhibition.date }}</span>
+                            </label>
                     </div>
 
                     <div class="col-lg-4 col-md-6 text-left">
@@ -51,7 +56,6 @@
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="#" onclick="refresh('poImenu',{{ exhibition.id }},'{% url 'sort_exhibition' %}')">Po imenu</a>
                             <a class="dropdown-item" href="#" onclick="refresh('poOceni',{{ exhibition.id }},'{% url 'sort_exhibition'  %}')">Po oceni</a>
-                            <a class="dropdown-item" href="#" onclick="refresh('poVelicini',{{ exhibition.id }},'{% url 'sort_exhibition' %}')">Po velicini</a>
                             <a class="dropdown-item" href="#" onclick="refresh('poVrednosti',{{ exhibition.id }},'{% url 'sort_exhibition'  %}')">Po vrednosti</a>
                         </div>
 

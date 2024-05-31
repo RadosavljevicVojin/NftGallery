@@ -42,9 +42,7 @@
           <div class="profile-info">
         <div class="row">
             <div class="col-md-6 text-center">
-
-
-
+                
                 <div class="d-flex align-items-center justify-content-center mb-3">
                     <label for="email" class="me-2"><strong>Email adresa:</strong></label>
                     <span id="email">{{ email }}</span>
@@ -62,13 +60,11 @@
             </div>
 
             <div class="col-md-6 text-center">
-
-
+                
                 <div class="d-flex align-items-center justify-content-center mb-3">
                     <label for="nftKupljenih" class="me-2"><strong>Broj NFT kupljenih:</strong></label>
                     <span id="nftKupljenih">{{ buy_number }}</span>
                 </div>
-
                 <div class="d-flex align-items-center justify-content-center mb-3">
                     <label for="nftProdatih" class="me-2"><strong>Broj NFT prodatih:</strong></label>
                     <span id="nftProdatih">{{ sell_number }}</span>
@@ -77,10 +73,8 @@
                     <label for="numnft" class="me-2"><strong>Broj NFT u kolekciji:</strong></label>
                     <span id="numnft">{{ num_of_nft }}</span>
                 </div>
-
             </div>
         </div>
-
         <div class="vertical-line my-4"></div> <!-- Elegantna vertikalna crta između informacija -->
     </div>
 
@@ -118,10 +112,7 @@
                     <label for="infoKartica" class="me-2"><strong>Informacije o kartici:</strong></label>
                     <span id="infoKartica">{{ card }}</span>
                 </div>
-
-
             </div>
-
             <div class="col-md-6 text-center">
                 <div class="d-flex align-items-center justify-content-center mb-3">
                     <label for="datumKreiranja" class="me-2"><strong>Datum kreiranja naloga:</strong></label>
@@ -141,7 +132,6 @@
                     <label for="numnft" class="me-2"><strong>Broj NFT u kolekciji:</strong></label>
                     <span id="numnft">{{ num_of_nft }}</span>
                 </div>
-
             </div>
         </div>
           <div class="vertical-line my-4"></div> <!-- Elegantna vertikalna crta između informacija -->
@@ -149,7 +139,6 @@
 
     {% endif %}
     
-
     <form id="info" method="post" action="" style="display: none;">
             {% csrf_token %}
             <input type="hidden" name="username" id="username" value = "{{ username }}">

@@ -60,7 +60,22 @@ def update_exhibition_grade(exhibition, exhibition_nfts):
     print("\n Prosek : " + str(exhibition.prosecnaocena))
     """
 
+def only_in_collection(nft):
+    lists = Listanft.objects.filter(idvla=nft.idvla)
 
+    # Prebrojavamo koliko listi sadrži dati NFT
+    count = Pripada.objects.filter(idnft=nft, idlis__in=lists).count()
+
+    # Vraćamo True ako NFT pripada samo jednoj listi, inače False
+    return count == 1
+
+
+
+def denied_access_to_the_nft(request, nft):
+    if only_in_collection(nft) and request.user.username!=nft.idvla.idkor.username:
+        return True
+    else:
+        return False
 
 def get_nfts_from_exhibition(exhibition):
     nfts = []

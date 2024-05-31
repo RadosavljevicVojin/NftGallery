@@ -181,13 +181,14 @@ def create_nft(request):
 
 def nft_review(request, idnft):
     nft = Nft.objects.get(idnft=idnft)
-    print("Vrednost nft je " + str(type(nft.vrednost)))
+
+    if denied_access_to_the_nft(request, nft):
+        return redirect("error")
+
     nft_data = {
         'nft': nft,
         'data': None
     }
-    # if nft.slika == "":
-    #     nft_data['data'] = get_nft_data(nft.url)
 
     context = {"nft": nft_data}
     context["owner"] = nft.idvla.idkor
@@ -317,18 +318,34 @@ def buy_nft(request):
         prosli_vlasnik_kolekcije = Listanft.objects.filter(idvla=prosli_vlasnik)
 
         for kol in prosli_vlasnik_kolekcije:
+
+            # Nista ne radi ako je portfolio u pitanju
             if not Portfolio.objects.filter(idlis=kol).exists():
-                if Izlozba.objects.filter(idlis=kol).exists() and Pripada.objects.filter(idlis=kol, idnft = nft).exists():
-                    Pripada.objects.filter(idlis=kol, idnft=nft).delete()
-                    izlozba = Izlozba.objects.get(idlis=kol)
-                    nft_izlozbe = get_nfts_from_exhibition(izlozba)
-                    update_exhibition_grade(izlozba, nft_izlozbe)
-                else:
+
+                # Ako je kolekcija ili izlozba kojoj nft pripada
+                if (Kolekcija.objects.filter(idlis=kol).exists() or
+                        (Izlozba.objects.filter(idlis=kol).exists() and Pripada.objects.filter(idlis=kol,
+                                                                                               idnft=nft).exists())):
+
+                    # Obrisi nft iz liste
                     Pripada.objects.filter(idlis=kol, idnft=nft).delete()
 
-                kol.ukupnavrednost -= nft.vrednost
-                kol.brojnft -= 1
-                kol.save()
+                    if Izlozba.objects.filter(idlis=kol).exists():
+                        izlozba = Izlozba.objects.get(idlis=kol)
+
+                        # Dodato za brisanje izlozbe ako se kupi poslednji nft iz izlozbe
+                        if kol.brojnft == 1:
+                            izlozba.delete()
+                            kol.delete()
+                            continue
+
+                        else:
+                            nft_izlozbe = get_nfts_from_exhibition(izlozba)
+                            update_exhibition_grade(izlozba, nft_izlozbe)
+
+                    kol.ukupnavrednost -= nft.vrednost
+                    kol.brojnft -= 1
+                    kol.save()
 
 
         platio_kolekcija = Listanft.objects.filter(idvla=platio)
@@ -357,7 +374,6 @@ def buy_nft(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
-    #return render(request, 'nft_review.html', {'idnft': request.GET.get('idnft')})
 
 def nft_view_ajax(request):
     if request.method == 'POST':

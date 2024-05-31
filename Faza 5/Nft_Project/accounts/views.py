@@ -16,15 +16,12 @@ from .utils import check_data_for_registration
 # Create your views here.
 from .models import Zahtevzaregistraciju, Korisnik, CustomUserManager
 from profiles.models import Registrovanikorisnik, Kupac, Kreator, Kolekcionar
-from exhibitions.models import Listanft, Kolekcija, Portfolio
+from exhibitions.models import Listanft, Kolekcija, Portfolio, Izlozba
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import update_session_auth_hash
 from exhibitions.models import Pripada
-
-
-
 
 #Natalija - logout
 
@@ -179,14 +176,33 @@ def delete_user(request):
 
         lists = Listanft.objects.filter(idvla=reg_user)
 
+
+
+
         # Brisanje objekta pripada za sve liste ciji je korisnik bio vlasnik
         for l in lists:
             for b in Pripada.objects.filter(idlis=l):
                 b.delete()
 
+        for l in lists:
+            if Izlozba.objects.filter(idlis=l).exists():
+                Izlozba.objects.filter(idlis=l).delete()
+            elif Portfolio.objects.filter(idlis=l).exists():
+                Portfolio.objects.filter(idlis=l).delete()
+            elif Kolekcija.objects.filter(idlis=l).exists():
+                Kolekcija.objects.filter(idlis=l).delete()
+
         lists.delete()
 
 
+        if user.user_type=="kreator":
+            Kreator.objects.filter(idkor=reg_user).delete()
+        if user.user_type == "kolekcionar":
+            Kolekcionar.objects.filter(idkor=reg_user).delete()
+        if user.user_type == "kupac":
+            Kupac.objects.filter(idkor=reg_user).delete()
+
+        reg_user.delete()
 
         user.delete()
 

@@ -1,9 +1,10 @@
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.hashers import check_password
+from django.urls import reverse
 from pyexpat.errors import messages
 from django.http import HttpResponse, HttpResponseNotAllowed
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from accounts.models import Korisnik
 from common.decoraters import is_not_admin
 from profiles.models import Registrovanikorisnik
@@ -17,13 +18,9 @@ from profiles.utils import create_main_context,pack_nfts,get_user_exhibitions,ge
 #Natalija
 # prikaz informacija o profilu, preko searcja, preko buttona moj ptofil- to je else deo - get zahtev
 def view_profile_info(request):
-    print("usaoo")
     if request.method == 'POST':
-        print("jeste post")
         if 'username' in request.POST:
-            print("ima username")
             username = request.POST.get('username', None)
-            print(username)
             if username:
                 if Korisnik.objects.filter(username=username).exclude(user_type='admin').exists():
                     context = create_main_context(request, username)
@@ -40,13 +37,11 @@ def view_profile_info(request):
 
 
                     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                        print("ajaxx")
                         return render(request, 'ajaxProfileInfo.html', context)
                     else:
-                        print("nije ajaxx")
                         return render(request, 'profile_info.html', context)
                 else:
-                    return render(request, "index.html", {"message": True})
+                    return redirect(reverse('index') + '?exists=false')
 
         else:
             context = create_main_context(request, request.user.username)

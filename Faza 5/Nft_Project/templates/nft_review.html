@@ -144,7 +144,8 @@
                         <!-- ako nije vlasnik -->
                         <!-- ako je registrovan -->
     
-                        {% if request.user.is_authenticated and request.user.idkor == owner.idkor %}
+                        {% if request.user.is_authenticated  %}
+                            {% if  request.user.idkor == owner.idkor %}
                             <form method="post" id = "changePrice" action="{% url 'change_price' %}" onsubmit="return checkValue()">
                                 {% csrf_token %}
                                 <input type="hidden" name="idnft_name" value="{{ nft.nft.idnft }}">
@@ -156,7 +157,11 @@
                                     </button>
                                 </div>
                             </form>
-                        {% elif not rerequest.user.is_authenticated or request.user.user_type != 'admin' %}
+                            {% endif %}
+                        {% endif %}
+                        {% if request.user.is_authenticated  %}
+                            {% if  request.user.idkor != owner.idkor  and request.user.user_type != 'admin'%}
+
                             <form method="post" action="{% url 'buy_nft' %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="idnft_name" value="{{ nft.nft.idnft }}">
@@ -184,6 +189,7 @@
                                 </div>
                             </form>
                         {% endif %}
+                    {% endif %}
 
                         {% if messages %}
                             <ul class="messages" style="text-align: center;">
