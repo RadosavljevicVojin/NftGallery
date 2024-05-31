@@ -105,7 +105,7 @@ def get_updated_exhibition_attr(request):
 
 
 def getRandomExhibitions():
-    izlozba_ids = Izlozba.objects.order_by('?').values_list('idlis', flat=True)[:4]
+    izlozba_ids = Izlozba.objects.order_by('?').values_list('idlis', flat=True)
     izlozbe = []
     for id in izlozba_ids:
         nft_list = []
