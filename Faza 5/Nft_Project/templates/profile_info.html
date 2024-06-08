@@ -9,7 +9,7 @@
          <div class="container">
           <div class="row">
               <div class="col-lg-4 col-md-6">
-                  <form action="{% url 'change_info' %}" method="post" id="deleteForm">
+                  <form action="{% url 'change_info' %}" method="post" id="updateForm">
                      {% csrf_token %}
                   <button class="btn btn-outline-linear btn-outline-light m-0" type="submit" >
                       Izmeni profil
@@ -149,6 +149,7 @@
 <script>
     function confirmDelete() {
         if (confirm("Da li ste sigurni da želite da izbrišete ovog korisnika?")) {
+            alert("Uspešno ste obrisali korisnika");
             document.getElementById("deleteForm").submit();
         }
     }

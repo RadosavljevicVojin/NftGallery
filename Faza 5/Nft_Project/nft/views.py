@@ -170,7 +170,8 @@ def create_nft(request):
                             creator_list.brojnft += 1
                             creator_list.save()
 
-            return redirect('index')
+            messages.success(request, "Uspesno ste kreirali NFT!")
+            return render(request, 'create_nft.html', {})
 
         else:
             messages.error(request, message)
