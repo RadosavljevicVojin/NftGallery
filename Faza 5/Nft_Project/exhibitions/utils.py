@@ -81,7 +81,11 @@ def set_list_attr(creator_list, list_value, list_len):
 
 
 def get_updated_exhibition_attr(request):
-    selected_nfts = list(map(int, request.POST.get('selected_nfts').split(',')))
+    selected = request.POST.get('selected_nfts')
+    if selected is None:
+        selected_nfts = []
+    else:
+        selected_nfts = list(map(int, selected.split(',')))
     nfts_objects = Nft.objects.filter(idnft__in=selected_nfts)
 
     exhibition_size = len(selected_nfts)
