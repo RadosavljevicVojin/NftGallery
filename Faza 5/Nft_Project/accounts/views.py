@@ -137,8 +137,9 @@ def registration_request(request):
                 slika = File(f)
                 # Postavljanje slike korisniku
                 reg_user.slika.save('def_profile.jpg', slika, save=True)
-
+            print("da li")
             if  request_to_accept.uloga=="kreator":
+                print("kreator")
                 role= Kreator(idkor=reg_user)
                 role.save()
                 portfolio_list = Listanft(idvla=reg_user, ukupnavrednost=0, brojnft=0)

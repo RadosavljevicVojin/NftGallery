@@ -154,32 +154,6 @@
         }
     }
 </script>
-<script>
-     $(document).ready(function() {
- function updateInfo() {
-        console.log("aaaa")
-        var formData = $('#info').serialize();
-        console.log(formData);
-            $.ajax({
-                url: '{% url 'profile_info' %}',
-                type: 'POST',
-                data:formData,
-                dataType: 'html',
-                success: function(data) {
-                    $('#profil').empty(); // Prvo brišemo postojeći sadržaj elementa
-                    $('#profil').html(data); // Zatim postavljamo novi HTML u element
-                },
-                error: function(xhr, status, error) {
-                    console.error('AJAX request failed:', error);
-                }
-            });
-        }
 
-        // Pozivamo funkciju odmah po učitavanju stranice
-
-        // Postavljamo interval za ponavljanje AJAX zahteva svakih 3 sekunde (3000 milisekundi)
-        setInterval(updateInfo, 6000);
-    });
-</script>
 
 {%  endblock  %}
