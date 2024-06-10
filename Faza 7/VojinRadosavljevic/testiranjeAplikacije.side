@@ -1,0 +1,600 @@
+{
+  "id": "747bcac0-dd88-4c98-8391-9af40c24079a",
+  "version": "2.0",
+  "name": "testiranjeAplikacije",
+  "url": "http://127.0.0.1:8000",
+  "tests": [{
+    "id": "09b7d8b6-bfc5-4144-8240-cd970135dc37",
+    "name": "nftOcenjen",
+    "commands": [{
+      "id": "66de847b-e271-426e-b237-65051e607537",
+      "comment": "",
+      "command": "open",
+      "target": "/nft/nft_review/32",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b4e7c9aa-08d4-4bb7-8bd2-1f166c3c511f",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1056",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "0c58b634-41b7-4236-a8d3-b44d904fb902",
+      "comment": "",
+      "command": "click",
+      "target": "css=label:nth-child(7)",
+      "targets": [
+        ["css=label:nth-child(7)", "css:finder"],
+        ["xpath=//label[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c2eca93f-e863-4d62-a5fd-61abc7ad98e4",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-lg:nth-child(1)",
+      "targets": [
+        ["css=.btn-lg:nth-child(1)", "css:finder"],
+        ["xpath=(//button[@type='submit'])[3]", "xpath:attributes"],
+        ["xpath=//form[2]/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Oceni')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5045763c-5b37-4618-9ee3-d76a026bcc3f",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > span",
+      "targets": [
+        ["css=.error > span", "css:finder"],
+        ["xpath=//li/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Vec ste ocenili ovaj NFT!')]", "xpath:innerText"]
+      ],
+      "value": "Vec ste ocenili ovaj NFT!"
+    }]
+  }, {
+    "id": "c199ac60-da5d-413a-a22a-769a4ddfacae",
+    "name": "ocenjivanjeNftUspesno",
+    "commands": [{
+      "id": "735cce38-0e69-4649-870c-4071cabfb8c6",
+      "comment": "",
+      "command": "open",
+      "target": "/nft/nft_review/53",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "81da33d3-5848-413a-8ccb-af8ada78b33e",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1056",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "5dab3961-2090-45fe-b174-19b52194e525",
+      "comment": "",
+      "command": "click",
+      "target": "css=label:nth-child(5)",
+      "targets": [
+        ["css=label:nth-child(5)", "css:finder"],
+        ["xpath=//label[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d82f478f-a7e3-47f2-a632-4ce2f46ab07c",
+      "comment": "",
+      "command": "click",
+      "target": "css=label:nth-child(3)",
+      "targets": [
+        ["css=label:nth-child(3)", "css:finder"],
+        ["xpath=//label", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b5b0d13a-ce74-47e1-bd16-45dd55c16bd9",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-lg:nth-child(1)",
+      "targets": [
+        ["css=.btn-lg:nth-child(1)", "css:finder"],
+        ["xpath=(//button[@type='submit'])[3]", "xpath:attributes"],
+        ["xpath=//form[2]/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Oceni')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ba20a338-8b91-4138-bcab-ffe7f8f9b9e1",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.success > span",
+      "targets": [
+        ["css=.success > span", "css:finder"],
+        ["xpath=//li/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Uspešno ste ocenili NFT!')]", "xpath:innerText"]
+      ],
+      "value": "Uspešno ste ocenili NFT!"
+    }]
+  }, {
+    "id": "a705443b-7836-444b-a756-eb55fd8af2e8",
+    "name": "izmenaIzlozbe",
+    "commands": [{
+      "id": "e5e10c91-72c7-4c55-8ccc-2090b72748da",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b2862c8c-4bc6-41ee-a4bf-47e8873ffae7",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1056",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "24e3b20b-276a-4b76-911f-7e87c8b07012",
+      "comment": "",
+      "command": "click",
+      "target": "id=profil",
+      "targets": [
+        ["id=profil", "id"],
+        ["css=#profil", "css:finder"],
+        ["xpath=//a[contains(text(),'Moj profil')]", "xpath:link"],
+        ["xpath=//a[@id='profil']", "xpath:attributes"],
+        ["xpath=//div[@id='offcanvasNavbar']/div[2]/div[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '#')]", "xpath:href"],
+        ["xpath=//div[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e41510b6-1f18-4fa8-9c0c-092808fd4f2b",
+      "comment": "",
+      "command": "click",
+      "target": "css=#exhibitions > .custom-card-title",
+      "targets": [
+        ["css=#exhibitions > .custom-card-title", "css:finder"],
+        ["xpath=//a[@id='exhibitions']/h5", "xpath:idRelative"],
+        ["xpath=//div[4]/a/h5", "xpath:position"],
+        ["xpath=//h5[contains(.,'Izložbe')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "fb80d5bd-512a-4ba0-94bf-c211931def86",
+      "comment": "",
+      "command": "click",
+      "target": "css=#myCarousel-2 .col-md-3:nth-child(2) img",
+      "targets": [
+        ["css=#myCarousel-2 .col-md-3:nth-child(2) img", "css:finder"],
+        ["xpath=(//img[@alt='NFT Image'])[6]", "xpath:img"],
+        ["xpath=//div[@id='myCarousel-2']/div/div/div/div[2]/div/a/img", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div/div/div/div[2]/div/a/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "cdf4c8a1-3fdc-4c1e-9d15-80a8505bbb13",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-lg-4 > .btn-outline-light",
+      "targets": [
+        ["css=.col-lg-4 > .btn-outline-light", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//button[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1890c6eb-eeb2-47cf-ba02-dc08220dca3c",
+      "comment": "",
+      "command": "click",
+      "target": "id=19",
+      "targets": [
+        ["id=19", "id"],
+        ["css=#\\31 9", "css:finder"],
+        ["xpath=(//img[@alt='Slika'])[9]", "xpath:img"],
+        ["xpath=//img[@id='19']", "xpath:attributes"],
+        ["xpath=//form[@id='formaIzlozba']/div/div/div[9]/div/img", "xpath:idRelative"],
+        ["xpath=//div[9]/div/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0b821e7d-990c-4681-9f79-0b0fb1be1fd1",
+      "comment": "",
+      "command": "click",
+      "target": "id=btn1",
+      "targets": [
+        ["id=btn1", "id"],
+        ["css=#btn1", "css:finder"],
+        ["xpath=//button[@id='btn1']", "xpath:attributes"],
+        ["xpath=//form[@id='formaIzlozba']/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Potvrdi')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "200beaa2-bd19-4bd1-aadf-a715a8318d7d",
+    "name": "kreiranjeNftUspesno",
+    "commands": [{
+      "id": "db911cc3-ffb8-40c4-abf5-2015739016ee",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e9345e96-48ac-42d3-a41f-e57b291f93b4",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1056",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "cb7fcec8-dd30-44be-b991-7c7c71569788",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Kreiraj NFT",
+      "targets": [
+        ["linkText=Kreiraj NFT", "linkText"],
+        ["css=.menu-item:nth-child(4) > .item-anchor", "css:finder"],
+        ["xpath=//a[contains(text(),'Kreiraj NFT')]", "xpath:link"],
+        ["xpath=//div[@id='offcanvasNavbar']/div[2]/div/ul/li[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/nft/create_nft')]", "xpath:href"],
+        ["xpath=//li[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Kreiraj NFT')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "1390a190-7fe9-4ee2-a1cc-671ef8228f82",
+      "comment": "",
+      "command": "click",
+      "target": "id=preuzmiDatoteku",
+      "targets": [
+        ["id=preuzmiDatoteku", "id"],
+        ["css=#preuzmiDatoteku", "css:finder"],
+        ["xpath=//div[@id='preuzmiDatoteku']", "xpath:attributes"],
+        ["xpath=//div/div/div[2]/div[2]/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4d9ed2bf-18ff-4459-88ef-a16808c0c894",
+      "comment": "",
+      "command": "click",
+      "target": "id=nft_url",
+      "targets": [
+        ["id=nft_url", "id"],
+        ["name=nft_url", "name"],
+        ["css=#nft_url", "css:finder"],
+        ["xpath=//input[@id='nft_url']", "xpath:attributes"],
+        ["xpath=//div[@id='downloadForm']/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "60efd5c0-5514-4dd5-b768-7e2e2b8db9a2",
+      "comment": "",
+      "command": "type",
+      "target": "id=nft_url",
+      "targets": [
+        ["id=nft_url", "id"],
+        ["name=nft_url", "name"],
+        ["css=#nft_url", "css:finder"],
+        ["xpath=//input[@id='nft_url']", "xpath:attributes"],
+        ["xpath=//div[@id='downloadForm']/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "https://opensea.io/assets/ethereum/0x1b41d54b3f8de13d58102c50d7431fd6aa1a2c48/7951"
+    }, {
+      "id": "d91661b9-6582-462a-af7d-e27b31ff677d",
+      "comment": "",
+      "command": "click",
+      "target": "id=showNftButton",
+      "targets": [
+        ["id=showNftButton", "id"],
+        ["css=#showNftButton", "css:finder"],
+        ["xpath=//button[@id='showNftButton']", "xpath:attributes"],
+        ["xpath=//div[@id='downloadForm']/button", "xpath:idRelative"],
+        ["xpath=//div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Prikazi NFT')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b6d688fa-3859-4d4e-9c85-e7704cbb547c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-sm-12:nth-child(2)",
+      "targets": [
+        ["css=.col-sm-12:nth-child(2)", "css:finder"],
+        ["xpath=//div/div/div/div[2]/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f2cac0fc-d7f7-45e0-85c1-4c6ec8dbaf15",
+      "comment": "",
+      "command": "click",
+      "target": "id=nftName",
+      "targets": [
+        ["id=nftName", "id"],
+        ["name=nftName", "name"],
+        ["css=#nftName", "css:finder"],
+        ["xpath=//input[@id='nftName']", "xpath:attributes"],
+        ["xpath=//div[3]/form/input[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ba7f4632-2dae-4219-bbcb-bb834f042664",
+      "comment": "",
+      "command": "click",
+      "target": "id=nftName",
+      "targets": [
+        ["id=nftName", "id"],
+        ["name=nftName", "name"],
+        ["css=#nftName", "css:finder"],
+        ["xpath=//input[@id='nftName']", "xpath:attributes"],
+        ["xpath=//div[3]/form/input[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1b3636e2-74f2-41a1-8a26-c786fb984909",
+      "comment": "",
+      "command": "type",
+      "target": "id=nftName",
+      "targets": [
+        ["id=nftName", "id"],
+        ["name=nftName", "name"],
+        ["css=#nftName", "css:finder"],
+        ["xpath=//input[@id='nftName']", "xpath:attributes"],
+        ["xpath=//div[3]/form/input[2]", "xpath:position"]
+      ],
+      "value": "Pirate "
+    }, {
+      "id": "52f87e5b-976a-48a0-b71d-4f6d2cbc8684",
+      "comment": "",
+      "command": "click",
+      "target": "id=nftPrice",
+      "targets": [
+        ["id=nftPrice", "id"],
+        ["name=nftPrice", "name"],
+        ["css=#nftPrice", "css:finder"],
+        ["xpath=//input[@id='nftPrice']", "xpath:attributes"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9d78aea5-c389-4875-aa02-3036fb3726ad",
+      "comment": "",
+      "command": "type",
+      "target": "id=nftPrice",
+      "targets": [
+        ["id=nftPrice", "id"],
+        ["name=nftPrice", "name"],
+        ["css=#nftPrice", "css:finder"],
+        ["xpath=//input[@id='nftPrice']", "xpath:attributes"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": "222"
+    }, {
+      "id": "6fc02df0-b29e-4661-b81c-6ba083167f79",
+      "comment": "",
+      "command": "click",
+      "target": "id=submitBtn",
+      "targets": [
+        ["id=submitBtn", "id"],
+        ["css=#submitBtn", "css:finder"],
+        ["xpath=//button[@id='submitBtn']", "xpath:attributes"],
+        ["xpath=//div[3]/form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Potvrdi')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "15ed6c68-945a-48df-b5ab-edcedbee5aab",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=span",
+      "targets": [
+        ["css=span", "css:finder"],
+        ["xpath=//span", "xpath:position"],
+        ["xpath=//span[contains(.,'Uspesno ste kreirali NFT!')]", "xpath:innerText"]
+      ],
+      "value": "Uspesno ste kreirali NFT!"
+    }]
+  }, {
+    "id": "2c00289e-63f4-4f35-ab57-6cde85a83a13",
+    "name": "kreiranjeNftNeuspesno",
+    "commands": [{
+      "id": "446b225c-3b6f-4b5f-b492-c16a65e2f67d",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "27e0fe79-17de-4a83-94d9-9f149bfcd06c",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1056",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f8f2d07e-43e2-4d9c-a200-a5b2d062896e",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Kreiraj NFT",
+      "targets": [
+        ["linkText=Kreiraj NFT", "linkText"],
+        ["css=.menu-item:nth-child(4) > .item-anchor", "css:finder"],
+        ["xpath=//a[contains(text(),'Kreiraj NFT')]", "xpath:link"],
+        ["xpath=//div[@id='offcanvasNavbar']/div[2]/div/ul/li[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/nft/create_nft')]", "xpath:href"],
+        ["xpath=//li[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Kreiraj NFT')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "95fad159-52a0-4731-8fcf-7cfb65375e0d",
+      "comment": "",
+      "command": "click",
+      "target": "id=preuzmiDatoteku",
+      "targets": [
+        ["id=preuzmiDatoteku", "id"],
+        ["css=#preuzmiDatoteku", "css:finder"],
+        ["xpath=//div[@id='preuzmiDatoteku']", "xpath:attributes"],
+        ["xpath=//div/div/div[2]/div[2]/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7c0cdbe0-f50f-431d-9b3b-a22edc0c7469",
+      "comment": "",
+      "command": "click",
+      "target": "id=nft_url",
+      "targets": [
+        ["id=nft_url", "id"],
+        ["name=nft_url", "name"],
+        ["css=#nft_url", "css:finder"],
+        ["xpath=//input[@id='nft_url']", "xpath:attributes"],
+        ["xpath=//div[@id='downloadForm']/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a47df6a0-4259-4bd6-83d1-0b063d0186ff",
+      "comment": "",
+      "command": "type",
+      "target": "id=nft_url",
+      "targets": [
+        ["id=nft_url", "id"],
+        ["name=nft_url", "name"],
+        ["css=#nft_url", "css:finder"],
+        ["xpath=//input[@id='nft_url']", "xpath:attributes"],
+        ["xpath=//div[@id='downloadForm']/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "https://opensea.io/assets/ethereum/0x1b41d54b3f8de13d58102c50d7431fd6aa1a2c48/7952"
+    }, {
+      "id": "c3346fda-f701-4f81-966a-91cdbdb69e10",
+      "comment": "",
+      "command": "click",
+      "target": "id=showNftButton",
+      "targets": [
+        ["id=showNftButton", "id"],
+        ["css=#showNftButton", "css:finder"],
+        ["xpath=//button[@id='showNftButton']", "xpath:attributes"],
+        ["xpath=//div[@id='downloadForm']/button", "xpath:idRelative"],
+        ["xpath=//div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Prikazi NFT')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "7b06f1b3-6bc2-4253-b055-439e90936df1",
+      "comment": "",
+      "command": "mouseDownAt",
+      "target": "id=nftName",
+      "targets": [
+        ["id=nftName", "id"],
+        ["name=nftName", "name"],
+        ["css=#nftName", "css:finder"],
+        ["xpath=//input[@id='nftName']", "xpath:attributes"],
+        ["xpath=//div[3]/form/input[2]", "xpath:position"]
+      ],
+      "value": "251.5,29"
+    }, {
+      "id": "d2adfdfb-9d8d-42eb-be61-41aebbfb5748",
+      "comment": "",
+      "command": "mouseMoveAt",
+      "target": "id=nftName",
+      "targets": [
+        ["id=nftName", "id"],
+        ["name=nftName", "name"],
+        ["css=#nftName", "css:finder"],
+        ["xpath=//input[@id='nftName']", "xpath:attributes"],
+        ["xpath=//div[3]/form/input[2]", "xpath:position"]
+      ],
+      "value": "251.5,29"
+    }, {
+      "id": "c2cd8a1c-8c68-4a15-a34d-19ade4fb16f4",
+      "comment": "",
+      "command": "mouseUpAt",
+      "target": "id=nftName",
+      "targets": [
+        ["id=nftName", "id"],
+        ["name=nftName", "name"],
+        ["css=#nftName", "css:finder"],
+        ["xpath=//input[@id='nftName']", "xpath:attributes"],
+        ["xpath=//div[3]/form/input[2]", "xpath:position"]
+      ],
+      "value": "251.5,29"
+    }, {
+      "id": "e8d10fd8-d12f-42fd-98e7-c343bdaba3b1",
+      "comment": "",
+      "command": "click",
+      "target": "id=nftName",
+      "targets": [
+        ["id=nftName", "id"],
+        ["name=nftName", "name"],
+        ["css=#nftName", "css:finder"],
+        ["xpath=//input[@id='nftName']", "xpath:attributes"],
+        ["xpath=//div[3]/form/input[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "eef7a54c-f414-471a-af44-3c5204a415ae",
+      "comment": "",
+      "command": "click",
+      "target": "id=nftPrice",
+      "targets": [
+        ["id=nftPrice", "id"],
+        ["name=nftPrice", "name"],
+        ["css=#nftPrice", "css:finder"],
+        ["xpath=//input[@id='nftPrice']", "xpath:attributes"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "73cd753f-aa0d-4ae9-9f7a-b4569c015e86",
+      "comment": "",
+      "command": "type",
+      "target": "id=nftPrice",
+      "targets": [
+        ["id=nftPrice", "id"],
+        ["name=nftPrice", "name"],
+        ["css=#nftPrice", "css:finder"],
+        ["xpath=//input[@id='nftPrice']", "xpath:attributes"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": "143"
+    }, {
+      "id": "c8a9d134-4d96-4b40-9f54-864b3c3f1647",
+      "comment": "",
+      "command": "click",
+      "target": "id=submitBtn",
+      "targets": [
+        ["id=submitBtn", "id"],
+        ["css=#submitBtn", "css:finder"],
+        ["xpath=//button[@id='submitBtn']", "xpath:attributes"],
+        ["xpath=//div[3]/form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Potvrdi')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "03c58114-6574-4d2a-845d-18ff0a877852",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=span",
+      "targets": [
+        ["css=span", "css:finder"],
+        ["xpath=//span", "xpath:position"],
+        ["xpath=//span[contains(.,'Ime mora biti manje od 20 karaktera!')]", "xpath:innerText"]
+      ],
+      "value": "Ime mora biti manje od 20 karaktera!"
+    }]
+  }],
+  "suites": [{
+    "id": "d5cf8471-74c0-47de-8e10-4c6ace6348f3",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["http://127.0.0.1:8000/"],
+  "plugins": []
+}

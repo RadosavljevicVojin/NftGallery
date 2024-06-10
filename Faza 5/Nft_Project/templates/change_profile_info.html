@@ -136,7 +136,7 @@
                 <ul class="messages" style="text-align: center;">
                    {% for message in messages %}
                         <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                            <span style="font-weight: bold;
+                            <span id = "poruka" style="font-weight: bold;
                                     color:
                                     {% if message.tags == 'error' %}red
                                     {% elif message.tags == 'success' %}green
@@ -148,7 +148,7 @@
                 </ul>
             {% endif %}
                     <div class="input-row" >
-                       <button type="submit" id="submitBtn" class="btn btn-lg"  type="button" style="background-color: #8D52F5;  margin: auto; margin-top: 60px">Potvrdi</button>
+                       <button id ="azuriraj" type="submit" id="submitBtn" class="btn btn-lg"  type="button" style="background-color: #8D52F5;  margin: auto; margin-top: 60px">Potvrdi</button>
                     </div>
             </div>
         </form>
