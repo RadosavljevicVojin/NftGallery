@@ -6,7 +6,7 @@ import re
 from profiles.models import Registrovanikorisnik
 
 
-def  check_data_for_registration(username, birthdate, birthplace, name,surname, phone_number, password, confirm_password, email, card):
+def check_data_for_registration(username, birthdate, birthplace, name,surname, phone_number, password, confirm_password, email, card):
     message= ""
 
     username = username.strip()

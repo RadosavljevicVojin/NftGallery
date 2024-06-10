@@ -68,8 +68,8 @@
             {% else %}
             <div class="btn-wrap d-flex my-4 my-lg-4">
 
-            <a href="#" onclick="openProfile()" class="btn btn-linear btn-medium">Moj profil</a>
-            <a href="{% url 'logout' %}" class="btn btn-outline-linear btn-medium m-0">Odjavi se</a>
+            <a href="#" onclick="openProfile()" id="moj-profil" class="btn btn-linear btn-medium">Moj profil</a>
+            <a href="{% url 'logout' %}" id="odjavi-se" class="btn btn-outline-linear btn-medium m-0">Odjavi se</a>
         </div>
 
         <form id="profileForm" method="post" action="{% url 'profile_info' %}" style="display: none;">
@@ -96,8 +96,8 @@
 
     {% else %}
     <div class="btn-wrap d-flex my-4 my-lg-4 ">
-        <a href="{% url 'login' %}" class="btn btn-linear btn-medium">Prijavi se</a>
-        <a href="{% url 'register' %}" class="btn btn-outline-linear btn-medium m-0">Registruj se</a>
+        <a href="{% url 'login' %}" id="prijavi-se" class="btn btn-linear btn-medium">Prijavi se</a>
+        <a href="{% url 'register' %}"id="registruj-se" class="btn btn-outline-linear btn-medium m-0">Registruj se</a>
     </div>
 {% endif %}
 
