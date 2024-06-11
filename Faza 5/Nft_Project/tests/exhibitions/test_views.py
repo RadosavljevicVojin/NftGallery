@@ -1,10 +1,10 @@
 from django.test import TestCase, Client
 from django.urls import reverse
-from exhibitions.models import Izlozba, Listanft
+from exhibitions.models import Izlozba, Listanft, Pripada
 from profiles.models import Registrovanikorisnik
 from accounts.models import Korisnik
 from django.utils import timezone
-
+from django.http import HttpResponseNotAllowed
 
 class TestViews(TestCase):
 
@@ -56,3 +56,40 @@ class TestViews(TestCase):
 
     def test_change_exhibition_post(self):
         response = self.client.post(reverse('change_exhibition', args=[1]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'operation_on_exhibition_success.html')
+    def test_exhibition_review_get(self):
+        response = self.client.get(reverse('exhibition_review', args=[1]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'exhibition_review.html')
+
+    def test_exhibition_review_post(self):
+        response = self.client.post(reverse('exhibition_review', args=[1]), {
+            'sort': 'poImenu',
+            'id': '1'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'exhibition_review.html')
+
+    def test_sort_exhibition_post(self):
+        response = self.client.post(reverse('sort_exhibition'), {
+            'sort': 'poImenu',
+            'id': '1'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'exhibition_review.html')
+
+    def test_remove_exhibition_get(self):
+        response = self.client.get(reverse('remove_exhibition'))
+        self.assertEqual(response.status_code, HttpResponseNotAllowed.status_code)
+        self.assertEqual(response['Allow'], 'POST')
+
+    def test_remove_exhibition_post(self):
+        response = self.client.post(reverse('remove_exhibition'), {
+            'exhibition_id': '1'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'operation_on_exhibition_success.html')
+        self.assertFalse(Izlozba.objects.filter(idlis=self.exhibition_list).exists())
+        self.assertFalse(Listanft.objects.filter(idlis=1).exists())
+        self.assertFalse(Pripada.objects.filter(idlis=self.exhibition_list).exists())
